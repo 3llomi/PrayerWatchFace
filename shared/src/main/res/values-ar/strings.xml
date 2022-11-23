@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calculation_method">طريقة الحساب</string>
+    <string name="update_location">تحديث الموقع</string>
+    <string name="location_updated">تم تحديث الموقع</string>
+    <string name="asr_calculation_method">طريقة حساب صلاة العصر</string>
+    <string name="dubai">دبي</string>
+    <string name="egyptian_method">الهيئة المصرية العامة للمساحة</string>
+    <string name="karachi">كراتشي</string>
+    <string name="kuwait">الكويت</string>
+    <string name="muslim_world_league">هيئة المسلمين العالمية</string>
+    <string name="qatar">قطر</string>
+    <string name="singapore">سنغافورة</string>
+    <string name="umm_alqura">أم القرى</string>
+    <string name="shafi">شافعي</string>
+    <string name="hanafi">حنفي</string>
+    <string name="missing_permissions">لا توجد صلاحيات</string>
+    <string name="moon_sigthing_comittee">لجنة الهلال</string>
+</resources>

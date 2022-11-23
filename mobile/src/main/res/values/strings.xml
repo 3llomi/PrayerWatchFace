@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name" translatable="false">Prayer WatchFace</string>
+    <string name="sync_change_notice">After changing the settings, it will be synced to your watch</string>
+</resources>

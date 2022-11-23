@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calculation_method">Calculation Method</string>
+    <string name="location_updated">Location Updated</string>
+    <string name="update_location">Update Location</string>
+    <string name="asr_calculation_method">Asr Calculation Method</string>
+    <string name="dubai">Dubai</string>
+    <string name="egyptian_method">Egyptian General Authority</string>
+    <string name="karachi">Karachi</string>
+    <string name="kuwait">Kuwait</string>
+    <string name="muslim_world_league">Muslim World League</string>
+    <string name="qatar">Qatar</string>
+    <string name="singapore">Singapore</string>
+    <string name="umm_alqura">Umm AlQura</string>
+    <string name="moon_sigthing_comittee">Moonsighting Committee</string>
+    <string name="shafi">Shafi</string>
+    <string name="hanafi">Hanafi</string>
+    <string name="missing_permissions">Missing permissions</string>
+</resources>

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Prayer WatchFace</string>
+    <string name="please_enable_gps">Please enable GPS in settings</string>
+    <string name="enable_watch_location">Enable Watch Location</string>
+</resources>
