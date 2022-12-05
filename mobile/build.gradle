@@ -11,7 +11,7 @@ android {
         applicationId "com.devlomi.prayerwatchface"
         minSdk 26
         targetSdk 32
-        versionCode 4
+        versionCode 8
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -59,6 +59,7 @@ dependencies {
     implementation 'androidx.compose.material:material-icons-core:1.2.1'
     implementation 'androidx.compose.material:material-icons-extended:1.2.1'
     implementation 'androidx.navigation:navigation-runtime-ktx:2.5.3'
+    implementation 'androidx.wear:wear-remote-interactions:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'

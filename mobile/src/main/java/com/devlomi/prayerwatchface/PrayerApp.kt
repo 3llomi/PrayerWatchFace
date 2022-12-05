@@ -1,6 +1,7 @@
 package com.devlomi.prayerwatchface
 
 import android.app.Application
+import com.devlomi.prayerwatchface.di.AppContainer
 
 class PrayerApp : Application() {
 

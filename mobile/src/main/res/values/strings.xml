@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">Prayer WatchFace</string>
     <string name="sync_change_notice">After changing the settings, it will be synced to your watch</string>
+    <string name="install_watch_app">Install the Watch App</string>
+    <string name="no_connected_watches">No connected watches available. Please make sure that your watch is connected.</string>
+    <string name="couldnt_send_app_to_watch">Couldn\'t send app to watch. make sure that your watch is connected and paired with your phone.</string>
+    <string name="watch_app_sent">A Notification has been sent to your Watch\n %s\nto install it via Google Play.</string>
+    <string name="ok">OK</string>
 </resources>

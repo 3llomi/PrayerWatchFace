@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -20,7 +19,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.Watch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,8 +36,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat
 import com.batoulapps.adhan.CalculationMethod
 import com.batoulapps.adhan.Madhab
+import com.devlomi.prayerwatchface.R
+import com.devlomi.prayerwatchface.common.Status
+import com.devlomi.prayerwatchface.common.isLoading
 import com.devlomi.prayerwatchface.ui.PreviewWatchFaceComposable
-import com.devlomi.shared.R
 import com.devlomi.shared.WatchFacePainter
 import com.devlomi.shared.calculationmethod.CalculationMethodItem
 import com.devlomi.shared.madhab.MadhabItem
@@ -83,10 +87,12 @@ fun ConfigureScreen(
 
     val currentCalculationMethod by viewModel.currentCalculationMethod
     val currentMadhabMethod by viewModel.currentMadhab
+    val openAppLinkOnWatchState = viewModel.openAppLinkResult.collectAsState()
     BackHandler(calculationMethodsSheetState.isVisible) {
         coroutineScope.launch { calculationMethodsSheetState.hide() }
         coroutineScope.launch { madhabMethodsSheetState.hide() }
     }
+
 
     val openLocationSettingsRequest =
         rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
@@ -150,16 +156,36 @@ fun ConfigureScreen(
     }
 
     Box() {
+
+
         Column(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier.fillMaxWidth().height(250.dp)
                     .background(color = colorResource(com.devlomi.prayerwatchface.R.color.wf_preview_bg))
             ) {
+                //used to force update the preview
+                viewModel.updatePreviewState.value
                 PreviewWatchFaceComposable(
                     modifier = Modifier.align(Alignment.Center).size(200.dp)
                         .background(color = colorResource(com.devlomi.prayerwatchface.R.color.wf_preview)),
                     watchFacePainter
                 )
+            }
+            Button(
+                onClick = {
+                    viewModel.sendAppToWatch()
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 8.dp, start = 16.dp, end = 16.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Black,
+                    contentColor = Color.White
+                ),
+            ) {
+                Icon(imageVector = Icons.Sharp.Watch, contentDescription = null)
+                Spacer(modifier = Modifier.size(4.dp))
+                Text(stringResource(R.string.install_watch_app))
             }
 
             LazyColumn(
@@ -192,7 +218,7 @@ fun ConfigureScreen(
 
                                                     Toast.makeText(
                                                         context,
-                                                        R.string.location_updated,
+                                                        com.devlomi.shared.R.string.location_updated,
                                                         Toast.LENGTH_SHORT
                                                     ).show()
                                                     viewModel.setLocation(location)
@@ -270,6 +296,53 @@ fun ConfigureScreen(
             },
             modifier = Modifier.fillMaxSize()
         ) {}
+
+        showProgress = openAppLinkOnWatchState.value.status.isLoading()
+        when (openAppLinkOnWatchState.value.status) {
+            Status.SUCCESS -> {
+                AlertDialog(
+                    onDismissRequest = {
+                        viewModel.installWatchAppDialogDismissed()
+                    },
+                    text = {
+                        Text(
+                            stringResource(
+                                R.string.watch_app_sent,
+                                openAppLinkOnWatchState.value.data?.joinToString(separator = "\n")
+                                    ?: ""
+                            )
+                        )
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                viewModel.installWatchAppDialogDismissed()
+                            }) {
+                            Text(stringResource(R.string.ok))
+                        }
+                    },
+                )
+            }
+            Status.ERROR -> {
+                AlertDialog(
+                    onDismissRequest = {
+                        viewModel.installWatchAppDialogDismissed()
+                    },
+                    text = {
+                        Text(openAppLinkOnWatchState.value.message ?: "")
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                viewModel.installWatchAppDialogDismissed()
+                            }) {
+                            Text(stringResource(R.string.ok))
+                        }
+                    },
+                )
+            }
+            else -> {}
+        }
     }
 
 }

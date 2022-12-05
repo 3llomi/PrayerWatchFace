@@ -69,6 +69,7 @@
                     android:scheme="wear" />
             </intent-filter>
 
+
         </service>
 
         <meta-data

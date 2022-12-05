@@ -2,4 +2,9 @@
 <resources>
     <string name="app_name">Prayer WatchFace</string>
     <string name="sync_change_notice">سيتم مزامنة الإعدادات مع الساعة بعد تغيير الإعدادات</string>
+    <string name="install_watch_app">تثبيت التطبيق على الساعة الذكية</string>
+    <string name="no_connected_watches">لاتوجد ساعات ذكية متصلة. تأكد أن ساعتك متصلة.</string>
+    <string name="couldnt_send_app_to_watch">فشل إرسال التطبيق الى الساعة. تأكد أن ساعتك متصلة ومقترنة بهاتفك.</string>
+    <string name="watch_app_sent">تم إرسال إشعار الى ساعتك الذكية\n%s لتثبيت التطبيق من خلال متجر بلاي.</string>
+    <string name="ok">حسناً</string>
 </resources>

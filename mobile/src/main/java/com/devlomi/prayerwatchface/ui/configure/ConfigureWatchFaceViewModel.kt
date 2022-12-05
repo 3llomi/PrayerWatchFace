@@ -1,8 +1,9 @@
 package com.devlomi.prayerwatchface.ui.configure
 
 import android.content.Context
+import android.content.Intent
 import android.location.Location
-import android.util.Log
+import android.net.Uri
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -11,21 +12,24 @@ import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.AP
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.wear.remote.interactions.RemoteActivityHelper
 import com.batoulapps.adhan.CalculationMethod
+import com.batoulapps.adhan.Coordinates
 import com.batoulapps.adhan.Madhab
 import com.devlomi.prayerwatchface.PrayerApp
-import com.devlomi.prayerwatchface.ui.data.SettingsDataStoreImp
+import com.devlomi.prayerwatchface.R
+import com.devlomi.prayerwatchface.common.Resource
+import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.shared.ConfigKeys
-import com.devlomi.shared.R
+import com.devlomi.shared.PrayerConfigItem
 import com.devlomi.shared.await
 import com.devlomi.shared.calculationmethod.CalculationMethodDataSource
-import com.devlomi.shared.deleteAllDataItems
 import com.devlomi.shared.madhab.MadhabMethodsDataSource
 import com.google.android.gms.wearable.DataMap
 import com.google.android.gms.wearable.PutDataMapRequest
 import com.google.android.gms.wearable.Wearable
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.launch
 
 class ConfigureWatchFaceViewModel(
@@ -68,6 +72,9 @@ class ConfigureWatchFaceViewModel(
 
     private val dataClient by lazy { Wearable.getDataClient(appContext) }
 
+    private val _openAppLinkResult = MutableStateFlow<Resource<List<String>>>(Resource.initial())
+    val openAppLinkResult: StateFlow<Resource<List<String>>> get() = _openAppLinkResult
+
     val madhabMethods by lazy {
         MadhabMethodsDataSource.getItems(appContext)
     }
@@ -75,69 +82,68 @@ class ConfigureWatchFaceViewModel(
         CalculationMethodDataSource.getItems(appContext)
     }
 
+    val updatePreviewState = mutableStateOf(0)
+
     init {
         _items.value = listOf(
             ConfigureItem(
-                appContext.getString(R.string.calculation_method),
+                appContext.getString(com.devlomi.shared.R.string.calculation_method),
                 "",
-                R.drawable.ic_calculation_method,
+                com.devlomi.shared.R.drawable.ic_calculation_method,
             ),
             ConfigureItem(
-                appContext.getString(R.string.asr_calculation_method),
+                appContext.getString(com.devlomi.shared.R.string.asr_calculation_method),
                 "",
-                R.drawable.ic_madhab
+                com.devlomi.shared.R.drawable.ic_madhab
             ),
 
             ConfigureItem(
-                appContext.getString(R.string.update_location),
+                appContext.getString(com.devlomi.shared.R.string.update_location),
                 "",
-                R.drawable.update_location
+                com.devlomi.shared.R.drawable.update_location
             ),
         )
 
         viewModelScope.launch {
-            settingsDataStore.calculationMethod.collectLatest { storedCalculationMethod ->
-                storedCalculationMethod?.let { calculationMethod ->
-                    val calcMethodTitle = getCalculationMethodTitle(calculationMethod) ?: ""
-                    val newList = _items.value.toMutableList()
-                    newList[0] = newList[0].copy(subtitle = calcMethodTitle)
-                    _items.value = newList.toList()
-                    CalculationMethod.values().firstOrNull { it.name == calculationMethod }
+            combine(
+                settingsDataStore.calculationMethod,
+                settingsDataStore.madhab,
+                settingsDataStore.lat,
+                settingsDataStore.lng
+            ) { calculationMethod, madhab, lat, lng ->
+                return@combine PrayerConfigItem(calculationMethod, madhab, lat, lng)
+            }.collectLatest { prayerConfigItem ->
+                val calcMethodTitle = prayerConfigItem.calculationMethod?.let { calcMethod ->
+                    CalculationMethod.values().firstOrNull { it.name == calcMethod }
                         ?.let { foundCalculationMethod ->
                             _currentCalculationMethod.value = foundCalculationMethod
                         }
-                }
-            }
-        }
-        viewModelScope.launch {
-            settingsDataStore.madhab.collectLatest { storedMadhab ->
-                storedMadhab?.let { madhab ->
-                    val madhabTitle = getMadhabTitle(madhab) ?: ""
-                    val newList = _items.value.toMutableList()
-                    newList[1] = newList[1].copy(subtitle = madhabTitle)
-                    _items.value = newList.toList()
-                    _currentMadhab.value = Madhab.valueOf(storedMadhab)
-                }
-            }
-        }
-        viewModelScope.launch {
-            latLngFlow().collectLatest { latLngStr ->
-                latLngStr?.let { latLng ->
-                    val newList = _items.value.toMutableList()
-                    newList[2] = newList[2].copy(subtitle = latLng)
-                    _items.value = newList.toList()
-                }
+                    return@let getCalculationMethodTitle(calcMethod)
+                } ?: ""
+
+
+                val madhabTitle = prayerConfigItem.madhab?.let { madhab ->
+                    _currentMadhab.value = Madhab.valueOf(madhab)
+                    getMadhabTitle(madhab)
+                } ?: ""
+
+                val latLngSubtitle =
+                    if (prayerConfigItem.lat != null && prayerConfigItem.lng != null) {
+                        "${prayerConfigItem.lat},${prayerConfigItem.lng}"
+                    } else ""
+
+                val newList = items.value.toMutableList()
+                newList[0] = newList[0].copy(subtitle = calcMethodTitle)
+                newList[1] = newList[1].copy(subtitle = madhabTitle)
+                newList[2] = newList[2].copy(subtitle = latLngSubtitle)
+                _items.value = newList.toList()
+
+                updatePreviewState.value = updatePreviewState.value + 1
             }
         }
 
     }
 
-    private fun latLngFlow() = settingsDataStore.lat.combine(settingsDataStore.lng) { lat, lng ->
-        if (lat != null && lng != null) {
-            return@combine "$lat,$lng"
-        }
-        return@combine ""
-    }
 
     private fun getCalculationMethodTitle(calculationMethod: String): String? {
         return CalculationMethodDataSource.getItems(appContext)
@@ -182,14 +188,14 @@ class ConfigureWatchFaceViewModel(
     suspend fun sendToWatch(callback: (DataMap) -> Unit) {
         /*
         If we were sending the same keys to the watch, it may not be sent since it may be the same
-        That's why we're deleting the old data first and send a new one
+        That's why we're adding the 'time' to force update
          */
 
         try {
-            dataClient.deleteAllDataItems()
-
             val request = PutDataMapRequest.create("/config").apply {
                 callback(this.dataMap)
+                //used to force update
+                this.dataMap.putLong("time", System.currentTimeMillis())
             }.setUrgent().asPutDataRequest()
             dataClient.putDataItem(request).await()
 
@@ -198,4 +204,47 @@ class ConfigureWatchFaceViewModel(
         }
     }
 
+    fun sendAppToWatch() {
+        val appLink = "https://play.google.com/store/apps/details?id=com.devlomi.prayerwatchface"
+        val remoteActivityHelper = RemoteActivityHelper(appContext)
+        _openAppLinkResult.value = Resource.loading()
+        viewModelScope.launch {
+            try {
+                val connectedNodes = Wearable.getNodeClient(appContext).connectedNodes.await()
+                if (connectedNodes.isEmpty()) {
+                    _openAppLinkResult.value =
+                        Resource.error(msg = appContext.getString(R.string.no_connected_watches))
+                } else {
+                    connectedNodes.forEach {
+                        val devicesNames = arrayListOf<String>()
+                        try {
+                            remoteActivityHelper.startRemoteActivity(
+                                Intent(Intent.ACTION_VIEW).setData(
+                                    Uri.parse(appLink)
+                                ).addCategory(Intent.CATEGORY_BROWSABLE),
+                                it.id
+                            ).await()
+                            devicesNames.add(it.displayName)
+                        } catch (e: Exception) {
+
+                        }
+                        if (devicesNames.isEmpty()) {
+                            _openAppLinkResult.value =
+                                Resource.error(msg = appContext.getString(R.string.couldnt_send_app_to_watch))
+                        } else {
+                            _openAppLinkResult.value = Resource.success(devicesNames)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                _openAppLinkResult.value =
+                    Resource.error(msg = appContext.getString(R.string.couldnt_send_app_to_watch))
+            }
+        }
+
+    }
+
+    fun installWatchAppDialogDismissed() {
+        _openAppLinkResult.value = Resource.initial()
+    }
 }

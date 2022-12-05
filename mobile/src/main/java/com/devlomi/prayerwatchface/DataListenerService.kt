@@ -1,7 +1,7 @@
 package com.devlomi.prayerwatchface
 
 import android.util.Log
-import com.devlomi.prayerwatchface.ui.data.SettingsDataStoreImp
+import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.shared.ConfigKeys
 import com.devlomi.shared.getDoubleOrNull
 import com.google.android.gms.wearable.DataEventBuffer

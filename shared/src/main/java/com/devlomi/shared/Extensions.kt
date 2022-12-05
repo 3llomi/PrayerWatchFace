@@ -41,16 +41,6 @@ fun DataMap.getDoubleOrNull(key: String): Double? {
     return null
 }
 
-suspend fun DataClient.deleteAllDataItems() {
-    val currentDataItems = dataItems.await()
-
-
-    if (currentDataItems.count > 0) {
-        val uri = currentDataItems[0].uri
-        deleteDataItems(uri).await()
-
-    }
-}
 
 suspend fun <T> Task<T>.await(): T {
     return suspendCancellableCoroutine { continuation ->

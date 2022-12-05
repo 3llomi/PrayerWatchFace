@@ -78,12 +78,24 @@ class WatchFacePainter(
     init {
 
         scope.launch {
-            settingsDataStore.calculationMethod.collectLatest {
-                it?.let { calcMethod ->
+            combine(
+                settingsDataStore.calculationMethod,
+                settingsDataStore.madhab,
+                settingsDataStore.lat,
+                settingsDataStore.lng
+            ) { calculationMethod, madhab, lat, lng ->
+                return@combine PrayerConfigItem(calculationMethod, madhab, lat, lng)
+            }.collectLatest {
+                madhab = Madhab.valueOf(it.madhab ?: Madhab.SHAFI.name)
+                if (it.lat != null && it.lng != null) {
+                    coordinates = Coordinates(it.lat, it.lng)
+                }
+                it.calculationMethod?.let { calcMethod ->
                     CalculationMethod.valueOf(calcMethod)?.let { foundCalcMethod ->
                         prayerTimesParams = foundCalcMethod.parameters.also { calcParams ->
                             calcParams.madhab = madhab
                         }
+
                         initPrayerTimes(Date())
                         scope.launch {
                             _changeState.emit(Unit)
@@ -91,38 +103,6 @@ class WatchFacePainter(
                     }
                 }
             }
-        }
-        scope.launch {
-            settingsDataStore.madhab.collectLatest {
-                
-                it?.let { madhab ->
-                    Madhab.valueOf(madhab)?.let { foundMadhab ->
-                        prayerTimesParams.madhab = foundMadhab
-                        this@WatchFacePainter.madhab = foundMadhab
-                        initPrayerTimes(Date())
-                        scope.launch {
-                            _changeState.emit(Unit)
-                        }
-                    }
-                }
-            }
-        }
-        scope.launch {
-
-            settingsDataStore.lat.combine(settingsDataStore.lng) { lat, lng -> Pair(lat, lng) }
-                .collectLatest { (lat, lng) ->
-                    
-
-                    if (lat != null && lng != null) {
-                        coordinates = Coordinates(lat, lng)
-                        initPrayerTimes(Date())
-                        scope.launch {
-                            _changeState.emit(Unit)
-                        }
-                    }
-                    
-
-                }
         }
 
 
@@ -232,7 +212,7 @@ class WatchFacePainter(
         this.width = width
         this.height = height
         mAmbient = isAmbient
-        
+
 
         val date = Date.from(zonedDateTime.toInstant())
 
@@ -243,7 +223,7 @@ class WatchFacePainter(
             currentDate = todayName
         }
 
-//        drawBackground(canvas)
+
         drawCurrentTime(canvas, date)
         drawTimeLeftForNextPrayer(canvas, date)
         drawPrayer(canvas, date)

@@ -1,4 +1,4 @@
-package com.devlomi.prayerwatchface.ui
+package com.devlomi.prayerwatchface
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

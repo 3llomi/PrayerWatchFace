@@ -1,4 +1,4 @@
-package com.devlomi.prayerwatchface.ui.data
+package com.devlomi.prayerwatchface.data
 
 import android.content.Context
 import androidx.datastore.core.DataStore
