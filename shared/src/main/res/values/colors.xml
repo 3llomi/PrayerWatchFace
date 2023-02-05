@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="wf_preview">#2B324B</color>
+    <color name="wf_preview_bg">#4D1B6C2D</color>
+    <color name="wf_bottom_bg">#D4E1FB</color>
+    <color name="wf_fg">#FFFFFF</color>
+    <color name="wf_bottom_fg">@color/black</color>
+</resources>

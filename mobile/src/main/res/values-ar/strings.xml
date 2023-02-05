@@ -7,4 +7,10 @@
     <string name="couldnt_send_app_to_watch">فشل إرسال التطبيق الى الساعة. تأكد أن ساعتك متصلة ومقترنة بهاتفك.</string>
     <string name="watch_app_sent">تم إرسال إشعار الى ساعتك الذكية\n%s لتثبيت التطبيق من خلال متجر بلاي.</string>
     <string name="ok">حسناً</string>
+    <string name="background_color">لون الخلفية</string>
+    <string name="bottom_part_background_color">لون الخلفية - الجزء السفلي</string>
+    <string name="foreground_color">لون الخط الأساسي</string>
+    <string name="foreground_color_bottom_part">لون الخط - الجزء السفلي</string>
+    <string name="colors">الألوان</string>
+    <string name="twenty_four_hours">٢٤ ساعة</string>
 </resources>

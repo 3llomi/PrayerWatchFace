@@ -4,5 +4,11 @@ package com.devlomi.shared
     val calculationMethod: String?,
     val madhab: String?,
     val lat: Double?,
-    val lng: Double?
+    val lng: Double?,
+)
+data class BackgroundColorSettingsItem(
+   val backgroundColor:String?,
+   val backgroundColorBottomPart:String?,
+   val foregroundColor:String?,
+   val foregroundColorBottomPart:String?,
 )

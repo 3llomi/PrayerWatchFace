@@ -5,6 +5,7 @@ import android.graphics.*
 import android.text.TextPaint
 import android.util.Log
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.withTranslation
 import com.batoulapps.adhan.*
 import com.batoulapps.adhan.data.DateComponents
 import kotlinx.coroutines.*
@@ -16,6 +17,8 @@ import java.time.ZonedDateTime
 import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalField
 import java.util.*
 
 class WatchFacePainter(
@@ -24,9 +27,9 @@ class WatchFacePainter(
 ) {
     private lateinit var hijriDate: HijrahDate
 
-    private var timeFormat: SimpleDateFormat
+    private lateinit var timeFormat: SimpleDateFormat
     private var amPmFormat: SimpleDateFormat
-    private var dayFormat: SimpleDateFormat
+    private var dayMonthFormat: SimpleDateFormat
     private var dayNameFormat: SimpleDateFormat
     private lateinit var prayerTimes: PrayerTimes
 
@@ -35,27 +38,29 @@ class WatchFacePainter(
     private lateinit var timePaint: TextPaint
     private lateinit var amPmPaint: TextPaint
     private lateinit var dayPaint: TextPaint
-    private lateinit var timeLeftCirclePaint: Paint
     private lateinit var timeLeftTextPaint: Paint
-    private lateinit var prayerTimeCirclePaint: Paint
+    private lateinit var remainingTextPaint: TextPaint
     private lateinit var prayerNameTextPaint: TextPaint
     private lateinit var prayerTimeTextPaint: TextPaint
-    private lateinit var dateCirclePaint: Paint
     private lateinit var dateTextPaint: TextPaint
-    private lateinit var hijriCirclePaint: Paint
     private lateinit var hijriTextPaint: Paint
+    private lateinit var bottomArcPaint: Paint
+    private lateinit var bottomSeparatorPaint: Paint
 
     private var backgroundColor = -1
-    private var prayerCircleColor = -1
-    private var dateCircleColor = -1
+    private var backgroundColorBottomPart = -1
 
-    private var whiteTextColor = -1
+    private var mainForegroundColor = -1
+    private var onBottomForegroundColor = -1
+    private var ambientForegroundColor = -1
     private var greyTextColor = -1
 
     private var hijriDateFormatter: DateTimeFormatter
 
     private var mAmbient: Boolean = false
     private var currentDate = ""
+
+    private var remainingY = 0f
 
 
     private val scope: CoroutineScope =
@@ -74,16 +79,62 @@ class WatchFacePainter(
         }
     private var madhab = Madhab.SHAFI
 
+    private var is24Hours = false
+
 
     init {
+
+        scope.launch {
+            combine(
+                settingsDataStore.backgroundColor,
+                settingsDataStore.backgroundBottomPart,
+                settingsDataStore.foregroundColor,
+                settingsDataStore.foregroundBottomPart,
+            ) { backgroundColor, backgroundBottomPart, foregroundColor, foregroundBottomPart ->
+                return@combine BackgroundColorSettingsItem(
+                    backgroundColor,
+                    backgroundBottomPart,
+                    foregroundColor,
+                    foregroundBottomPart
+                )
+            }.collectLatest { item ->
+
+                item.backgroundColor?.let {
+                    val color = Color.parseColor(it)
+                    backgroundColor = color
+                }
+
+                item.backgroundColorBottomPart?.let {
+                    val color = Color.parseColor(it)
+                    backgroundColorBottomPart = color
+                }
+
+
+                item.foregroundColor?.let {
+                    val color = Color.parseColor(it)
+                    mainForegroundColor = color
+                }
+
+                item.foregroundColorBottomPart?.let {
+                    val color = Color.parseColor(it)
+                    onBottomForegroundColor = color
+                }
+
+                initializePaint()
+                scope.launch {
+                    _changeState.emit(Unit)
+                }
+            }
+        }
 
         scope.launch {
             combine(
                 settingsDataStore.calculationMethod,
                 settingsDataStore.madhab,
                 settingsDataStore.lat,
-                settingsDataStore.lng
-            ) { calculationMethod, madhab, lat, lng ->
+                settingsDataStore.lng,
+                settingsDataStore.backgroundColor
+            ) { calculationMethod, madhab, lat, lng, storedBgColor ->
                 return@combine PrayerConfigItem(calculationMethod, madhab, lat, lng)
             }.collectLatest {
                 madhab = Madhab.valueOf(it.madhab ?: Madhab.SHAFI.name)
@@ -102,21 +153,38 @@ class WatchFacePainter(
                         }
                     }
                 }
+
+
+            }
+        }
+
+        scope.launch {
+            settingsDataStore.is24Hours.collectLatest {
+                this@WatchFacePainter.is24Hours = it
+                initializeTimeFormat(is24Hours)
+                scope.launch {
+                    _changeState.emit(Unit)
+                }
             }
         }
 
 
 
-        timeFormat = SimpleDateFormat("hh:mm")
-        amPmFormat = SimpleDateFormat("a")
-        dayFormat = SimpleDateFormat("dd")
-        dayNameFormat = SimpleDateFormat("EEE")
+        initializeTimeFormat(is24Hours)
+        amPmFormat = SimpleDateFormat("a", Locale.US)
+        dayMonthFormat = SimpleDateFormat("dd MMM", Locale.US)
+        dayNameFormat = SimpleDateFormat("EEE", Locale.US)
 
-        hijriDateFormatter = DateTimeFormatter.ofPattern("dd")
+        hijriDateFormatter = DateTimeFormatter.ofPattern("dd MMM", Locale.US)
 
 
         initializeColors()
         initializePaint()
+    }
+
+    private fun initializeTimeFormat(is24Hours: Boolean) {
+        val pattern = if (is24Hours) "HH:mm" else "hh:mm"
+        timeFormat = SimpleDateFormat(pattern, Locale.US)
     }
 
 
@@ -124,79 +192,41 @@ class WatchFacePainter(
         if (mAmbient) {
 
             mBackgroundPaint.color = Color.BLACK
-            timePaint.color = Color.WHITE
-            amPmPaint.color = Color.WHITE
-            dayPaint.color = Color.WHITE
-
-            timeLeftCirclePaint.color = Color.WHITE
-            timeLeftTextPaint.color = Color.WHITE
-
-            prayerTimeCirclePaint.color = Color.WHITE
-
-            prayerNameTextPaint.color = Color.WHITE
-            prayerTimeTextPaint.color = Color.WHITE
-
-            dateCirclePaint.color = Color.WHITE
-            dateTextPaint.color = Color.WHITE
-
-            hijriCirclePaint.color = Color.WHITE
-            hijriTextPaint.color = Color.WHITE
-
-            prayerTimeCirclePaint.style = Paint.Style.STROKE
-            timeLeftCirclePaint.style = Paint.Style.STROKE
-            dateCirclePaint.style = Paint.Style.STROKE
-            hijriCirclePaint.style = Paint.Style.STROKE
-
             setAntiAlias(false)
 
 
         } else {
             mBackgroundPaint.color = backgroundColor
-            timePaint.color = whiteTextColor
-            amPmPaint.color = greyTextColor
-            dayPaint.color = whiteTextColor
-
-            timeLeftCirclePaint.color = prayerCircleColor
-            timeLeftTextPaint.color = whiteTextColor
-
-            prayerTimeCirclePaint.color = prayerCircleColor
-
-            prayerNameTextPaint.color = whiteTextColor
-            prayerTimeTextPaint.color = whiteTextColor
-
-            dateCirclePaint.color = dateCircleColor
-            dateTextPaint.color = whiteTextColor
-
-            hijriCirclePaint.color = dateCircleColor
-            hijriTextPaint.color = whiteTextColor
-
-            prayerTimeCirclePaint.style = Paint.Style.FILL
-            timeLeftCirclePaint.style = Paint.Style.FILL
-            dateCirclePaint.style = Paint.Style.FILL
-            hijriCirclePaint.style = Paint.Style.FILL
-
-
-
             setAntiAlias(true)
-
         }
+
+        val foregroundColor = if (mAmbient) ambientForegroundColor else mainForegroundColor
+        val onBottomColor = if (mAmbient) ambientForegroundColor else onBottomForegroundColor
+        timePaint.color = foregroundColor
+        amPmPaint.color = if (mAmbient) foregroundColor else greyTextColor
+        dayPaint.color = foregroundColor
+
+        bottomSeparatorPaint.color = onBottomColor
+        remainingTextPaint.color = onBottomColor
+        timeLeftTextPaint.color = onBottomColor
+        prayerNameTextPaint.color = onBottomColor
+        prayerTimeTextPaint.color = onBottomColor
+
+        dateTextPaint.color = foregroundColor
+        hijriTextPaint.color = foregroundColor
+
     }
 
     private fun setAntiAlias(bool: Boolean) {
         timePaint.isAntiAlias = bool
         amPmPaint.isAntiAlias = bool
         dayPaint.isAntiAlias = bool
-        timeLeftCirclePaint.isAntiAlias = bool
         timeLeftTextPaint.isAntiAlias = bool
-
-        prayerTimeCirclePaint.isAntiAlias = bool
         prayerNameTextPaint.isAntiAlias = bool
         prayerTimeTextPaint.isAntiAlias = bool
 
-        dateCirclePaint.isAntiAlias = bool
         dateTextPaint.isAntiAlias = bool
 
-        hijriCirclePaint.isAntiAlias = bool
         hijriTextPaint.isAntiAlias = bool
     }
 
@@ -216,20 +246,40 @@ class WatchFacePainter(
 
         val date = Date.from(zonedDateTime.toInstant())
 
-        val todayName = dayFormat.format(date)
+        val todayName = dayMonthFormat.format(date)
         if (currentDate != todayName) {
             initPrayerTimes(date)
             initHijriDate(date)
             currentDate = todayName
         }
+        val nextPrayer = prayerTimes.nextPrayer()
 
 
         drawCurrentTime(canvas, date)
+
+        if (nextPrayer == Prayer.NONE) {
+            val date = Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))
+            initPrayerTimes(date)
+        }
+        if (!isAmbient) {
+            drawBottomArc(canvas)
+        }
         drawTimeLeftForNextPrayer(canvas, date)
-        drawPrayer(canvas, date)
+        drawPrayer(canvas)
+        drawBottomSeparator(canvas)
+
         drawDate(canvas, date)
         drawHijriDate(canvas, date)
         drawDayName(canvas, date)
+    }
+
+    private fun drawBottomSeparator(canvas: Canvas) {
+
+        val lineHeight = dpToPx(38f, context).toFloat()
+        val lineY = remainingY - dpToPx(12f, context)
+        canvas.withTranslation(width / 2f, lineY) {
+            canvas.drawLine(0f, lineHeight, 0f, 0f, bottomSeparatorPaint)
+        }
     }
 
 
@@ -245,12 +295,13 @@ class WatchFacePainter(
     private fun drawCurrentTime(canvas: Canvas, date: Date) {
         val time = timeFormat.format(date)
         val centerX = width / 2f
-        val centerY = height / 2f
         val width = timePaint.measureText(time)
-        val y = centerY + dpToPx(15f, context).toFloat()
-
-        canvas.drawText(time, centerX - width / 2, y, timePaint)
-        drawAMPM(canvas, centerX, y, date)
+        val y = height * 0.33f
+        val x = centerX - width / 2
+        canvas.drawText(time, x, y, timePaint)
+        if (!is24Hours) {
+            drawAMPM(canvas, x + width, y, date)
+        }
 
     }
 
@@ -258,16 +309,14 @@ class WatchFacePainter(
         val time = amPmFormat.format(date)
         val width = amPmPaint.measureText(time)
 
-        val x = x + width / 1.5f
-        canvas.drawText(time, x, y + dpToPx(19f, context), amPmPaint)
+        val x = x - width - dpToPx(4f, context)
+        canvas.drawText(time, x, y + dpToPx(17f, context), amPmPaint)
     }
 
 
     private fun drawTimeLeftForNextPrayer(canvas: Canvas, date: Date) {
         val nextPrayer = prayerTimes.nextPrayer()
-        if (nextPrayer == Prayer.NONE) {
-            return
-        }
+
 
         val timeForPrayer = prayerTimes.timeForPrayer(nextPrayer)
         val diff = timeForPrayer.time - date.time
@@ -287,28 +336,34 @@ class WatchFacePainter(
         }
 
         val time = String.format(Locale.US, "%2d:%02d", hours, minutes)
-        val centerX = width / 2f
-        val centerY = height / 2f
 
-        val y = centerY + width / 5 + dpToPx(5f, context)
         val width = timeLeftTextPaint.measureText(time)
         val height = time.getBounds(timeLeftTextPaint).height()
 
-        val radius = dpToPx(17f, context).toFloat()
+        val remainingText = "REMAINING"
+        val remainingWidth = remainingTextPaint.measureText(remainingText)
+        val remainingHeight = remainingText.getBounds(remainingTextPaint).height()
+        val remainingX = this.width / 2 - remainingWidth - dpToPx(8f, context)
+        remainingY = this.height - dpToPx(30f, context) - remainingHeight
+        canvas.drawText(remainingText, remainingX, remainingY, remainingTextPaint)
 
-        canvas.drawCircle(centerX, y, radius, timeLeftCirclePaint)
 
-        canvas.drawText(
-            time,
-            centerX - dpToPx(2f, context) - width / 2f,
-            y + height / 2f - dpToPx(2f, context),
-            timeLeftTextPaint
-        )
+        val y = remainingY + dpToPx(6f, context) + height
+
+        val timeLeftX = remainingX + remainingWidth / 2f - width / 2f
+        canvas.withTranslation(x = timeLeftX, y = y) {
+            canvas.drawText(
+                time,
+                0f,
+                0f,
+                timeLeftTextPaint
+            )
+        }
 
     }
 
 
-    private fun drawPrayer(canvas: Canvas, date: Date) {
+    private fun drawPrayer(canvas: Canvas) {
         val nextPrayer = prayerTimes.nextPrayer()
         if (nextPrayer == Prayer.NONE) {
             return
@@ -317,58 +372,59 @@ class WatchFacePainter(
         val prayerName = nextPrayer.name
 
         val prayerNameWidth = prayerNameTextPaint.measureText(prayerName)
-        val prayerNameHeight = prayerName.getBounds(prayerNameTextPaint).height()
 
         val centerX = width / 2f
-        val centerY = height / 2f
 
-        val y = centerY - width / 5 + dpToPx(5f, context)
 
-        val radius = dpToPx(17f, context).toFloat()
+        val x = centerX + dpToPx(12f, context)
+        val textY = remainingY
 
-        val circlePaint = prayerTimeCirclePaint
-        canvas.drawCircle(centerX, y, radius, circlePaint)
+        canvas.withTranslation(x = x, y = textY) {
+            canvas.drawText(
+                prayerName,
+                0f,
+                0f,
+                prayerNameTextPaint
+            )
 
-        val textY = y - prayerNameHeight
-        canvas.drawText(
-            prayerName,
-            centerX - prayerNameWidth / 2f,
-            textY,
-            prayerNameTextPaint
-        )
-
-        drawPrayerTime(nextPrayer, canvas, centerX, textY)
+        }
+        drawPrayerTime(nextPrayer, canvas, x, textY, prayerNameWidth)
     }
 
-    private fun drawPrayerTime(prayer: Prayer, canvas: Canvas, x: Float, y: Float) {
+    private fun drawPrayerTime(
+        prayer: Prayer,
+        canvas: Canvas,
+        x: Float,
+        y: Float,
+        prayerNameWidth: Float
+    ) {
         val timeForPrayer = prayerTimes.timeForPrayer(prayer)
         val time = timeFormat.format(timeForPrayer)
         val height = time.getBounds(prayerTimeTextPaint).height()
         val width = prayerTimeTextPaint.measureText(time)
 
-        canvas.drawText(
-            time,
-            x - width / 2f,
-            y + height + dpToPx(3f, context),
-            prayerTimeTextPaint
-        )
+        val x = x + prayerNameWidth / 2f - width / 2f
+        canvas.withTranslation(x = x, y = y + height + dpToPx(6f, context)) {
+            canvas.drawText(
+                time,
+                0f,
+                0f,
+                prayerTimeTextPaint
+            )
+        }
     }
 
     private fun drawDate(canvas: Canvas, date: Date) {
-        val time = dayFormat.format(date)
+        val time = dayMonthFormat.format(date)
+        val textHeight = time.getBounds(dateTextPaint).height()
+        val x = dpToPx(16f, context).toFloat()
 
-        val radius = dpToPx(10f, context).toFloat()
-        val x = width.toFloat() - (width / 5f) + dpToPx(5f, context)
-        canvas.drawCircle(
-            x + dpToPx(4f, context),
-            width / 2f,
-            radius,
-            dateCirclePaint
-        )
+
+        val y = height / 2f + (textHeight / 2f)
         canvas.drawText(
             time,
-            x - dpToPx(3f, context),
-            width / 2f + dpToPx(4f, context),
+            x,
+            y,
             dateTextPaint
         )
     }
@@ -376,21 +432,28 @@ class WatchFacePainter(
     private fun drawHijriDate(canvas: Canvas, date: Date) {
         val hijriDateStr = hijriDate.format(hijriDateFormatter)
 
-        val radius = dpToPx(10f, context).toFloat()
 
-        val x = width.toFloat() - (width / 5f) + dpToPx(25f, context)
-        canvas.drawCircle(
-            x + dpToPx(4f, context),
-            width / 2f,
-            radius,
-            dateCirclePaint
-        )
+        val textWidth = hijriTextPaint.measureText(hijriDateStr)
+        val x = width - textWidth - dpToPx(5f, context)
+        val textHeight = hijriDateStr.getBounds(hijriTextPaint).height()
+        val y = height / 2f + (textHeight / 2f)
+
         canvas.drawText(
             hijriDateStr,
-            x - dpToPx(3f, context),
-            width / 2f + dpToPx(4f, context),
+            x,
+            y,
             hijriTextPaint
         )
+    }
+
+    private fun drawBottomArc(canvas: Canvas) {
+
+        val rectHeight = height * 0.28f
+        canvas.withTranslation(y = height - rectHeight) {
+            val rectangle = RectF(0f, 0f, this@WatchFacePainter.width, rectHeight)
+            canvas.drawRect(rectangle, bottomArcPaint)
+
+        }
     }
 
     private fun drawDayName(canvas: Canvas, date: Date) {
@@ -398,12 +461,17 @@ class WatchFacePainter(
 
         val height = date.getBounds(dayPaint).height()
 
-        val x = width.toFloat() - (width / 5f)
 
+        val centerX = width / 2f
+        val width = dayPaint.measureText(date)
+        val x = centerX - width / 2
+
+
+        val y = height + dpToPx(12f, context).toFloat()
         canvas.drawText(
             date,
-            x - dpToPx(3f, context),
-            width / 2f + height + dpToPx(4f, context) + height,
+            x,
+            y,
             dayPaint
         )
     }
@@ -427,10 +495,11 @@ class WatchFacePainter(
     }
 
     private fun initializeColors() {
-        backgroundColor = Color.parseColor("#2B324B")
-        dateCircleColor = Color.parseColor("#E32E2E")
-        prayerCircleColor = Color.parseColor("#163B72")
-        whiteTextColor = Color.WHITE
+        backgroundColor = context.getColor(R.color.wf_preview)
+        backgroundColorBottomPart = context.getColor(R.color.wf_bottom_bg)
+        mainForegroundColor = context.getColor(R.color.wf_fg)
+        onBottomForegroundColor = context.getColor(R.color.wf_bottom_fg)
+        ambientForegroundColor = Color.WHITE
         greyTextColor = Color.GRAY
     }
 
@@ -439,15 +508,26 @@ class WatchFacePainter(
             color = backgroundColor
         }
 
+        bottomArcPaint = Paint().apply {
+            isAntiAlias = true
+            color = backgroundColorBottomPart
+            style = Paint.Style.FILL
+        }
+
+        bottomSeparatorPaint = Paint().apply {
+            this.color = onBottomForegroundColor
+            style = Paint.Style.STROKE
+        }
+
         timePaint = TextPaint().apply {
             typeface = ResourcesCompat.getFont(context, R.font.rubik)
             textSize = spToPx(45f, context).toFloat()
-            color = whiteTextColor
+            color = mainForegroundColor
             isAntiAlias = true
         }
 
         amPmPaint = TextPaint().apply {
-            textSize = spToPx(20f, context).toFloat()
+            textSize = spToPx(16f, context).toFloat()
             color = greyTextColor
             isAntiAlias = true
         }
@@ -455,62 +535,53 @@ class WatchFacePainter(
         dayPaint = TextPaint().apply {
             typeface = ResourcesCompat.getFont(context, R.font.righteous)
             textSize = spToPx(12f, context).toFloat()
-            color = whiteTextColor
-            isAntiAlias = true
-        }
-
-        dateCirclePaint = Paint().apply {
-            color = dateCircleColor
+            color = mainForegroundColor
             isAntiAlias = true
         }
 
         dateTextPaint = TextPaint().apply {
-            typeface = Typeface.DEFAULT_BOLD
-            textSize = spToPx(13f, context).toFloat()
-            color = whiteTextColor
+            typeface = ResourcesCompat.getFont(context, R.font.alata)
+            textSize = spToPx(15f, context).toFloat()
+            color = mainForegroundColor
             isAntiAlias = true
         }
 
-        hijriCirclePaint = Paint().apply {
-            color = dateCircleColor
-            isAntiAlias = true
-        }
 
         hijriTextPaint = TextPaint().apply {
+            typeface = ResourcesCompat.getFont(context, R.font.alata)
             textSize = spToPx(13f, context).toFloat()
-            color = whiteTextColor
+            color = mainForegroundColor
             isAntiAlias = true
         }
 
 
 
         prayerNameTextPaint = TextPaint().apply {
-            textSize = spToPx(6f, context).toFloat()
-            color = whiteTextColor
+            textSize = spToPx(12f, context).toFloat()
+            typeface =
+                Typeface.create(ResourcesCompat.getFont(context, R.font.cairo), Typeface.BOLD)
+            color = onBottomForegroundColor
             isAntiAlias = true
         }
 
         prayerTimeTextPaint = TextPaint().apply {
-            textSize = spToPx(12f, context).toFloat()
-            color = whiteTextColor
-            isAntiAlias = true
-        }
-
-        prayerTimeCirclePaint = Paint().apply {
-            color = prayerCircleColor
-            isAntiAlias = true
-        }
-
-
-
-        timeLeftCirclePaint = Paint().apply {
-            color = prayerCircleColor
+            typeface = ResourcesCompat.getFont(context, R.font.cairo)
+            textSize = spToPx(15f, context).toFloat()
+            color = onBottomForegroundColor
             isAntiAlias = true
         }
 
         timeLeftTextPaint = TextPaint().apply {
-            textSize = spToPx(14f, context).toFloat()
-            color = whiteTextColor
+            typeface = ResourcesCompat.getFont(context, R.font.cairo)
+            textSize = spToPx(15f, context).toFloat()
+            color = onBottomForegroundColor
+            isAntiAlias = true
+        }
+
+        remainingTextPaint = TextPaint().apply {
+            typeface = ResourcesCompat.getFont(context, R.font.cairo)
+            textSize = spToPx(10f, context).toFloat()
+            color = onBottomForegroundColor
             isAntiAlias = true
         }
 

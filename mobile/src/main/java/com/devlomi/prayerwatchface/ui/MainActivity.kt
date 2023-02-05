@@ -1,10 +1,7 @@
 package com.devlomi.prayerwatchface.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -21,20 +18,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.lifecycleScope
-import androidx.wear.remote.interactions.RemoteActivityHelper
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.ui.configure.ConfigureScreen
 import com.devlomi.prayerwatchface.ui.configure.ConfigureWatchFaceViewModel
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
-import com.devlomi.shared.await
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.wearable.CapabilityClient
-import com.google.android.gms.wearable.CapabilityInfo
-import com.google.android.gms.wearable.Wearable
-import kotlinx.coroutines.guava.await
-import kotlinx.coroutines.launch
+import com.devlomi.prayerwatchface.ui.configure.ColorSettingsScreen
+import com.devlomi.prayerwatchface.ui.configure.WatchPreviewComposable
 
 
 class MainActivity : ComponentActivity() {
@@ -51,8 +44,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
 
-
         setContent {
+            val navController = rememberNavController()
+
             Scaffold(
                 topBar = {
                     TopAppBar(
@@ -81,7 +75,24 @@ class MainActivity : ComponentActivity() {
 
                         )
                 }, content = {
-                    ConfigureScreen(viewModel, watchFacePainter)
+                    Column {
+                        WatchPreviewComposable(viewModel, watchFacePainter)
+                        NavHost(
+                            navController = navController,
+                            startDestination = Screen.Main.route
+                        ) {
+                            composable(route = Screen.Main.route) {
+                                ConfigureScreen(viewModel, navController)
+                            }
+
+                            composable(route = Screen.Colors.route) {
+                                ColorSettingsScreen(
+                                    viewModel,
+                                    )
+                            }
+                        }
+                    }
+
                 })
         }
 

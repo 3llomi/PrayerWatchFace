@@ -1,13 +1,17 @@
 package com.devlomi.prayerwatchface.ui.configure
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,4 +81,43 @@ fun PreviewConfigureItemChip() {
             onClick = { }
         )
     }
+}
+
+@Composable
+fun ConfigureItemChipBackground(
+    title: String,
+    icon: Int?,
+    color:Int,
+    onClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Chip(
+        modifier = modifier.fillMaxWidth(),
+        icon = {
+            if (icon != null) {
+                Icon(
+                    painterResource(icon),
+                    null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .wrapContentSize(align = Alignment.Center)
+                )
+            }
+        },
+        label = {
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        },
+        secondaryLabel = {
+            Box(
+                modifier = Modifier.size(10.dp).clip(CircleShape).background(Color(color))
+            )
+        },
+        onClick = {
+            onClick(title)
+        }
+    )
 }

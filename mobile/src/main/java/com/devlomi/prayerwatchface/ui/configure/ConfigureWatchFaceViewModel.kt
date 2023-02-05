@@ -2,6 +2,7 @@ package com.devlomi.prayerwatchface.ui.configure
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import androidx.compose.runtime.MutableState
@@ -20,6 +21,7 @@ import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.common.Resource
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
+import com.devlomi.shared.BackgroundColorSettingsItem
 import com.devlomi.shared.ConfigKeys
 import com.devlomi.shared.PrayerConfigItem
 import com.devlomi.shared.await
@@ -60,6 +62,34 @@ class ConfigureWatchFaceViewModel(
     private val _items: MutableState<List<ConfigureItem>> = mutableStateOf(listOf())
     val items: State<List<ConfigureItem>>
         get() = _items
+
+    //TODO USE COLLECT AS STATE PERHAPS INSTEAD OF DEFINING NEW STATES?
+    private val _backgroundColor: MutableState<Int> =
+        mutableStateOf(appContext.getColor(com.devlomi.shared.R.color.wf_preview))
+    val backgroundColor: State<Int>
+        get() = _backgroundColor
+
+    private val _backgroundColorBottomPart: MutableState<Int> =
+        mutableStateOf(appContext.getColor(com.devlomi.shared.R.color.wf_bottom_bg))
+    val backgroundColorBottomPart: State<Int>
+        get() = _backgroundColorBottomPart
+
+
+    private val _foregroundColor: MutableState<Int> =
+        mutableStateOf(appContext.getColor(com.devlomi.shared.R.color.wf_fg))
+    val foregroundColor: State<Int>
+        get() = _foregroundColor
+
+    private val _foregroundColorBottomPart: MutableState<Int> =
+        mutableStateOf(appContext.getColor(com.devlomi.shared.R.color.wf_bottom_fg))
+    val foregroundColorBottomPart: State<Int>
+        get() = _foregroundColorBottomPart
+
+
+    private val _is24Hours: MutableState<Boolean> =
+        mutableStateOf(false)
+    val is24Hours: State<Boolean>
+        get() = _is24Hours
 
     private val _currentCalculationMethod: MutableState<CalculationMethod> =
         mutableStateOf(CalculationMethod.OTHER)
@@ -106,13 +136,54 @@ class ConfigureWatchFaceViewModel(
 
         viewModelScope.launch {
             combine(
+                settingsDataStore.backgroundColor,
+                settingsDataStore.backgroundBottomPart,
+                settingsDataStore.foregroundColor,
+                settingsDataStore.foregroundBottomPart,
+            ) { backgroundColor, backgroundBottomPart, foregroundColor, foregroundBottomPart ->
+                return@combine BackgroundColorSettingsItem(
+                    backgroundColor,
+                    backgroundBottomPart,
+                    foregroundColor,
+                    foregroundBottomPart
+                )
+            }.collectLatest { item ->
+
+                item.backgroundColor?.let {
+                    _backgroundColor.value = Color.parseColor(it)
+                }
+
+                item.backgroundColorBottomPart?.let {
+                    _backgroundColorBottomPart.value = Color.parseColor(it)
+                }
+
+
+                item.foregroundColor?.let {
+                    _foregroundColor.value = Color.parseColor(it)
+                }
+
+                item.foregroundColorBottomPart?.let {
+                    _foregroundColorBottomPart.value = Color.parseColor(it)
+                }
+            }
+        }
+        viewModelScope.launch {
+            combine(
                 settingsDataStore.calculationMethod,
                 settingsDataStore.madhab,
                 settingsDataStore.lat,
-                settingsDataStore.lng
-            ) { calculationMethod, madhab, lat, lng ->
-                return@combine PrayerConfigItem(calculationMethod, madhab, lat, lng)
+                settingsDataStore.lng,
+
+                ) { calculationMethod, madhab, lat, lng ->
+                return@combine PrayerConfigItem(
+                    calculationMethod,
+                    madhab,
+                    lat,
+                    lng,
+
+                    )
             }.collectLatest { prayerConfigItem ->
+
                 val calcMethodTitle = prayerConfigItem.calculationMethod?.let { calcMethod ->
                     CalculationMethod.values().firstOrNull { it.name == calcMethod }
                         ?.let { foundCalculationMethod ->
@@ -139,6 +210,12 @@ class ConfigureWatchFaceViewModel(
                 _items.value = newList.toList()
 
                 updatePreviewState.value = updatePreviewState.value + 1
+            }
+        }
+
+        viewModelScope.launch {
+            settingsDataStore.is24Hours.collectLatest {
+                _is24Hours.value = it
             }
         }
 
@@ -247,4 +324,52 @@ class ConfigureWatchFaceViewModel(
     fun installWatchAppDialogDismissed() {
         _openAppLinkResult.value = Resource.initial()
     }
+
+    fun setBackgroundColor(color: String) {
+        viewModelScope.launch {
+            settingsDataStore.setBackgroundColor(color)
+            sendToWatch {
+                it.putString(ConfigKeys.BACKGROUND_COLOR,color)
+            }
+        }
+    }
+
+    fun setBackgroundColorBottomPart(color: String) {
+        viewModelScope.launch {
+            settingsDataStore.setBackgroundBottomPart(color)
+            sendToWatch {
+                it.putString(ConfigKeys.BACKGROUND_COLOR_BOTTOM_PART,color)
+            }
+        }
+    }
+
+    fun setForegroundColor(color: String) {
+        viewModelScope.launch {
+            settingsDataStore.setForegroundColor(color)
+            sendToWatch {
+                it.putString(ConfigKeys.FOREGROUND_COLOR,color)
+            }
+        }
+    }
+
+    fun setForegroundColorBottomPart(color: String) {
+        viewModelScope.launch {
+            settingsDataStore.setForegroundBottomPart(color)
+            sendToWatch {
+                it.putString(ConfigKeys.FOREGROUND_COLOR_BOTTOM_PART,color)
+            }
+        }
+    }
+
+
+
+    fun set24Hours(value: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.set24Hours(value)
+            sendToWatch {
+                it.putBoolean(ConfigKeys.TWENTY_FOUR_HOURS,value)
+            }
+        }
+    }
+
 }

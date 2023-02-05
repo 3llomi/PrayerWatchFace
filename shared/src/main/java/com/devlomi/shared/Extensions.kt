@@ -5,7 +5,6 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.util.TypedValue
 import com.google.android.gms.tasks.Task
-import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.DataMap
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -54,3 +53,6 @@ suspend fun <T> Task<T>.await(): T {
     }
 }
 
+fun Int.toHexColor() = String.format("#%08X", -0x1 and this)
+fun DataMap.getBooleanOrNull(key: String) =
+    if (this.containsKey(key)) this.getBoolean(key) else null

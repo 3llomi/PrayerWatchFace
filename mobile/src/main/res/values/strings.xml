@@ -6,4 +6,10 @@
     <string name="couldnt_send_app_to_watch">Couldn\'t send app to watch. make sure that your watch is connected and paired with your phone.</string>
     <string name="watch_app_sent">A Notification has been sent to your Watch\n %s\nto install it via Google Play.</string>
     <string name="ok">OK</string>
+    <string name="background_color">Background Color</string>
+    <string name="bottom_part_background_color">Bottom Part Background Color</string>
+    <string name="foreground_color">Foreground Color</string>
+    <string name="foreground_color_bottom_part">Foreground Color Bottom Part</string>
+    <string name="colors">Colors</string>
+    <string name="twenty_four_hours">24 hours</string>
 </resources>

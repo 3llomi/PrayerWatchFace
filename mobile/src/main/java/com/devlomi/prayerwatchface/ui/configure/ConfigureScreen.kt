@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -27,22 +28,27 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat
+import androidx.navigation.NavHostController
 import com.batoulapps.adhan.CalculationMethod
 import com.batoulapps.adhan.Madhab
 import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.common.Status
 import com.devlomi.prayerwatchface.common.isLoading
 import com.devlomi.prayerwatchface.ui.PreviewWatchFaceComposable
+import com.devlomi.prayerwatchface.ui.Screen
 import com.devlomi.shared.WatchFacePainter
 import com.devlomi.shared.calculationmethod.CalculationMethodItem
 import com.devlomi.shared.madhab.MadhabItem
+import com.devlomi.shared.toHexColor
+import com.godaddy.android.colorpicker.ClassicColorPicker
+import com.godaddy.android.colorpicker.HsvColor
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.Priority
 import com.patloew.colocation.CoLocation
@@ -53,7 +59,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ConfigureScreen(
     viewModel: ConfigureWatchFaceViewModel,
-    watchFacePainter: WatchFacePainter
+    navController: NavHostController
 ) {
 
     val items by viewModel.items
@@ -71,7 +77,12 @@ fun ConfigureScreen(
         CoLocation.from(context)
     }
 
+    val is24Hours = remember {
+        viewModel.is24Hours
+    }
+
     var showProgress by remember { mutableStateOf(false) }
+
 
     val calculationMethodsSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -85,12 +96,19 @@ fun ConfigureScreen(
         skipHalfExpanded = true
     )
 
+    val backgroundColorSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
+    )
+
     val currentCalculationMethod by viewModel.currentCalculationMethod
     val currentMadhabMethod by viewModel.currentMadhab
     val openAppLinkOnWatchState = viewModel.openAppLinkResult.collectAsState()
-    BackHandler(calculationMethodsSheetState.isVisible) {
+    BackHandler(calculationMethodsSheetState.isVisible || backgroundColorSheetState.isVisible) {
         coroutineScope.launch { calculationMethodsSheetState.hide() }
         coroutineScope.launch { madhabMethodsSheetState.hide() }
+        coroutineScope.launch { backgroundColorSheetState.hide() }
     }
 
 
@@ -159,18 +177,6 @@ fun ConfigureScreen(
 
 
         Column(modifier = Modifier.fillMaxSize()) {
-            Box(
-                modifier = Modifier.fillMaxWidth().height(250.dp)
-                    .background(color = colorResource(com.devlomi.prayerwatchface.R.color.wf_preview_bg))
-            ) {
-                //used to force update the preview
-                viewModel.updatePreviewState.value
-                PreviewWatchFaceComposable(
-                    modifier = Modifier.align(Alignment.Center).size(200.dp)
-                        .background(color = colorResource(com.devlomi.prayerwatchface.R.color.wf_preview)),
-                    watchFacePainter
-                )
-            }
             Button(
                 onClick = {
                     viewModel.sendAppToWatch()
@@ -187,7 +193,6 @@ fun ConfigureScreen(
                 Spacer(modifier = Modifier.size(4.dp))
                 Text(stringResource(R.string.install_watch_app))
             }
-
             LazyColumn(
                 modifier = Modifier.fillMaxWidth().padding(top = 16.dp).wrapContentHeight(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -248,6 +253,25 @@ fun ConfigureScreen(
                             }
                         })
                 }
+                item {
+                    ConfigureItemCard(stringResource(R.string.colors),
+                        null, com.devlomi.shared.R.drawable.ic_color, onClick = {
+                            navController.navigate(route = Screen.Colors.route)
+                        })
+                }
+                item {
+                    ConfigureItemCardToggle(
+                        title = stringResource(R.string.twenty_four_hours),
+                        icon = R.drawable.ic_time,
+                        checked = is24Hours.value,
+                        onClick = {
+                            viewModel.set24Hours(!is24Hours.value)
+                        },
+                        onCheckedChange = {
+                            viewModel.set24Hours(it)
+                        }
+                    )
+                }
             }
             Text(
                 modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 16.dp).fillMaxWidth()
@@ -293,6 +317,22 @@ fun ConfigureScreen(
                             madhabMethodsSheetState.hide()
                         }
                     })
+            },
+            modifier = Modifier.fillMaxSize()
+        ) {}
+
+        ModalBottomSheetLayout(
+            sheetState = backgroundColorSheetState,
+            sheetContent = {
+                ClassicColorPicker(
+                    modifier = Modifier.height(300.dp).padding(20.dp),
+                    onColorChanged = { color: HsvColor ->
+                        // Do something with the color
+
+                        viewModel.setBackgroundColor(color.toColor().toArgb().toHexColor())
+                    },
+                    color = HsvColor.DEFAULT
+                )
             },
             modifier = Modifier.fillMaxSize()
         ) {}
@@ -343,6 +383,27 @@ fun ConfigureScreen(
             }
             else -> {}
         }
+
+
+    }
+
+}
+
+@Composable
+fun WatchPreviewComposable(
+    viewModel: ConfigureWatchFaceViewModel,
+    watchFacePainter: WatchFacePainter
+) {
+    Box(
+        modifier = Modifier.fillMaxWidth().height(250.dp)
+    ) {
+        //used to force update the preview
+        viewModel.updatePreviewState.value
+        PreviewWatchFaceComposable(
+            modifier = Modifier.align(Alignment.Center).size(200.dp)
+                .background(color = Color(viewModel.backgroundColor.value)),
+            watchFacePainter
+        )
     }
 
 }

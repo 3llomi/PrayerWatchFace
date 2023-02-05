@@ -18,5 +18,20 @@ interface SettingsDataStore {
 
     suspend fun setLng(lng: Double)
 
+    val backgroundColor: Flow<String?>
+    suspend fun setBackgroundColor(color: String)
+
+    val foregroundColor: Flow<String?>
+    suspend fun setForegroundColor(color: String)
+
+
+    val backgroundBottomPart: Flow<String?>
+    suspend fun setBackgroundBottomPart(color: String)
+
+    val foregroundBottomPart: Flow<String?>
+    suspend fun setForegroundBottomPart(color: String)
+
+    val is24Hours: Flow<Boolean>
+    suspend fun set24Hours(boolean: Boolean)
 
 }

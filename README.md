@@ -23,12 +23,11 @@ Watch Face either using the Companion app on your phone or using your watch.
 
 1. Support API 21+ on Mobile
 2. Add Hijri Offset
-3. Add customizability (like changing colors, 24 Hours)
-4. Add Analog watch face
-5. Add Walkthrough Tutorial on how to add a Watch Face
-6. Add Manual Prayer times adjustments
-7. Check for Google Play Services On Mobile.
-8. Add Arabic Translation
+3. Add Analog watch face
+4. Add Walkthrough Tutorial on how to add a Watch Face
+5. Add Manual Prayer times adjustments
+6. Check for Google Play Services On Mobile.
+7. Add Arabic Support to the Watch Face
 
 ## Author
 

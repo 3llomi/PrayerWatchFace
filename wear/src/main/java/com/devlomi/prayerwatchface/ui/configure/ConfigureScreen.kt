@@ -46,6 +46,7 @@ fun ConfigureScreen(viewModel: ConfigureWatchFaceViewModel, navController: NavCo
     val coLocation = remember {
         CoLocation.from(context)
     }
+
     var showLocationDialog by remember { mutableStateOf(false) }
     var showProgress by remember { mutableStateOf(false) }
 
@@ -71,7 +72,11 @@ fun ConfigureScreen(viewModel: ConfigureWatchFaceViewModel, navController: NavCo
                 }
             }
         } else {
-            Toast.makeText(context, com.devlomi.shared.R.string.missing_permissions, Toast.LENGTH_SHORT)
+            Toast.makeText(
+                context,
+                com.devlomi.shared.R.string.missing_permissions,
+                Toast.LENGTH_SHORT
+            )
                 .show()
         }
     }
@@ -90,13 +95,13 @@ fun ConfigureScreen(viewModel: ConfigureWatchFaceViewModel, navController: NavCo
                         1 -> navController.navigate(route = Screen.MadhabMethods.route)
                         2 -> {
                             if (hasGivenLocationPermissions(context)) {
-                                
+
                                 coroutineScope.launch {
                                     if (isLocationEnabled(context)) {
                                         showProgress = true
                                         requestLocation(coLocation)?.let { location ->
                                             showProgress = false
-                                            
+
                                             Toast.makeText(
                                                 context,
                                                 com.devlomi.shared.R.string.location_updated,
@@ -115,6 +120,7 @@ fun ConfigureScreen(viewModel: ConfigureWatchFaceViewModel, navController: NavCo
                     }
                 })
         }
+
     }
     if (showLocationDialog) {
         Alert(
@@ -142,12 +148,15 @@ fun ConfigureScreen(viewModel: ConfigureWatchFaceViewModel, navController: NavCo
             )
         }
     }
+
     if (showProgress) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
 
     }
+
+
 }
 
 private fun checkPermissions(getPermission: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>) {
@@ -168,7 +177,7 @@ private fun isLocationEnabled(context: Context): Boolean {
 private suspend fun requestLocation(
     coLocation: CoLocation
 ): Location? {
-    
+
     return coLocation.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY)
 }
 
