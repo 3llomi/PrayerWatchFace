@@ -14,9 +14,6 @@ Watch Face either using the Companion app on your phone or using your watch.
   <img src="etc/screenshot_1.png" width="225" /> 
   <img src="etc/screenshot_2.png" width="225" />
   <img src="etc/screenshot_3.png" width="225" />
-  <img src="etc/screenshot_4.png" width="225" />
-  <img src="etc/screenshot_5.png" width="225" />
-  <img src="etc/screenshot_6.png" width="225" />
 </p>
 
 ## TODOs
