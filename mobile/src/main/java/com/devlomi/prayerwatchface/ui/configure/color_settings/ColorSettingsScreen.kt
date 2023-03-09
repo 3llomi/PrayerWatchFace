@@ -1,4 +1,4 @@
-package com.devlomi.prayerwatchface.ui.configure
+package com.devlomi.prayerwatchface.ui.configure.color_settings
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
@@ -11,8 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.devlomi.prayerwatchface.R
+import com.devlomi.prayerwatchface.ui.configure.ConfigureItemCardBackgroundItem
+import com.devlomi.prayerwatchface.ui.configure.ConfigureWatchFaceViewModel
 import com.devlomi.shared.toHexColor
 import com.godaddy.android.colorpicker.ClassicColorPicker
 import com.godaddy.android.colorpicker.HsvColor

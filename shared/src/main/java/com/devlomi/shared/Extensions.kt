@@ -56,3 +56,5 @@ suspend fun <T> Task<T>.await(): T {
 fun Int.toHexColor() = String.format("#%08X", -0x1 and this)
 fun DataMap.getBooleanOrNull(key: String) =
     if (this.containsKey(key)) this.getBoolean(key) else null
+fun DataMap.getIntOrNull(key: String) =
+    if (this.containsKey(key)) this.getInt(key) else null

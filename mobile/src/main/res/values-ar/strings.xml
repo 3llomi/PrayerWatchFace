@@ -13,4 +13,12 @@
     <string name="foreground_color_bottom_part">لون الخط - الجزء السفلي</string>
     <string name="colors">الألوان</string>
     <string name="twenty_four_hours">٢٤ ساعة</string>
+    <string name="hijri_offset">تصحيح التوقيت الهجري</string>
+    <string name="fajr">الفجر</string>
+    <string name="dhuhr">الظهر</string>
+    <string name="shurooq">الشروق</string>
+    <string name="asr">العصر</string>
+    <string name="maghrib">المغرب</string>
+    <string name="ishaa">العشاء</string>
+    <string name="prayer_times">أوقات الصلاة</string>
 </resources>

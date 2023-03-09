@@ -5,6 +5,7 @@ import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.shared.ConfigKeys
 import com.devlomi.shared.getBooleanOrNull
 import com.devlomi.shared.getDoubleOrNull
+import com.devlomi.shared.getIntOrNull
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.MessageEvent
@@ -59,6 +60,29 @@ class DataListenerService : WearableListenerService() {
                         }
                     dataMap.getBooleanOrNull(ConfigKeys.TWENTY_FOUR_HOURS)?.let {
                         settingsDatStore.set24Hours(it)
+                    }
+
+                    dataMap.getIntOrNull(ConfigKeys.HIJRI_OFFSET)?.let {
+                        settingsDatStore.setHijriOffset(it)
+                    }
+
+                    dataMap.getIntOrNull(ConfigKeys.FAJR_OFFSET)?.let {
+                        settingsDatStore.setFajrOffset(it)
+                    }
+                    dataMap.getIntOrNull(ConfigKeys.SHUROOQ_OFFSET)?.let {
+                        settingsDatStore.setShurooqOffset(it)
+                    }
+                    dataMap.getIntOrNull(ConfigKeys.DHUHR_OFFSET)?.let {
+                        settingsDatStore.setDhuhrOffset(it)
+                    }
+                    dataMap.getIntOrNull(ConfigKeys.ASR_OFFSET)?.let {
+                        settingsDatStore.setAsrOffset(it)
+                    }
+                    dataMap.getIntOrNull(ConfigKeys.MAGHRIB_OFFSET)?.let {
+                        settingsDatStore.setMaghribOffset(it)
+                    }
+                    dataMap.getIntOrNull(ConfigKeys.ISHA_OFFSET)?.let {
+                        settingsDatStore.setIshaaOffset(it)
                     }
                 } catch (e: Exception) {
 

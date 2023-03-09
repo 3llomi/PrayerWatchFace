@@ -61,7 +61,6 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
         }
     }
 
-
     private val _backgroundColor = stringPreferencesKey("bgcolor")
 
     override val backgroundColor: Flow<String?> = context.dataStore.data
@@ -126,6 +125,95 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     override suspend fun set24Hours(boolean: Boolean) {
         context.dataStore.edit { data ->
             data[_is24Hours] = boolean
+        }
+    }
+
+    private val _hijriOffset = intPreferencesKey("hijri_offset")
+
+
+    override val hijriOffset: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[_hijriOffset] ?: 0
+        }
+
+    override suspend fun setHijriOffset(offset: Int) {
+        context.dataStore.edit { data ->
+            data[_hijriOffset] = offset
+        }
+    }
+
+    private val _fajrOffset = intPreferencesKey("fajr_offset")
+    private val _shurooqOffset = intPreferencesKey("shurooq_offset")
+    private val _dhuhrOffset = intPreferencesKey("dhuhr_offset")
+    private val _asrOffset = intPreferencesKey("asr_offset")
+    private val _maghribOffset = intPreferencesKey("maghrib_offset")
+    private val _ishaOffset = intPreferencesKey("isha_offset")
+
+
+    override val fajrOffset: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[_fajrOffset] ?: 0
+        }
+
+    override suspend fun setFajrOffset(offset: Int) {
+        context.dataStore.edit { data ->
+            data[_fajrOffset] = offset
+        }
+    }
+
+    override val shurooqOffset: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[_shurooqOffset] ?: 0
+        }
+
+
+    override suspend fun setShurooqOffset(offset: Int) {
+        context.dataStore.edit { data ->
+            data[_shurooqOffset] = offset
+        }
+    }
+
+    override val dhuhrOffset: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[_dhuhrOffset] ?: 0
+        }
+
+    override suspend fun setDhuhrOffset(offset: Int) {
+        context.dataStore.edit { data ->
+            data[_dhuhrOffset] = offset
+        }
+    }
+
+    override val asrOffset: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[_asrOffset] ?: 0
+        }
+
+    override suspend fun setAsrOffset(offset: Int) {
+        context.dataStore.edit { data ->
+            data[_asrOffset] = offset
+        }
+    }
+
+    override val maghribOffset: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[_maghribOffset] ?: 0
+        }
+
+    override suspend fun setMaghribOffset(offset: Int) {
+        context.dataStore.edit { data ->
+            data[_maghribOffset] = offset
+        }
+    }
+
+    override val ishaaOffset: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[_ishaOffset] ?: 0
+        }
+
+    override suspend fun setIshaaOffset(offset: Int) {
+        context.dataStore.edit { data ->
+            data[_ishaOffset] = offset
         }
     }
 }

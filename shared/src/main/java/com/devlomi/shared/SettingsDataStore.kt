@@ -34,4 +34,24 @@ interface SettingsDataStore {
     val is24Hours: Flow<Boolean>
     suspend fun set24Hours(boolean: Boolean)
 
+    val hijriOffset: Flow<Int>
+    suspend fun setHijriOffset(offset: Int)
+
+    val fajrOffset: Flow<Int>
+    suspend fun setFajrOffset(offset: Int)
+
+    val shurooqOffset: Flow<Int>
+    suspend fun setShurooqOffset(offset: Int)
+
+    val dhuhrOffset: Flow<Int>
+    suspend fun setDhuhrOffset(offset: Int)
+
+    val asrOffset: Flow<Int>
+    suspend fun setAsrOffset(offset: Int)
+
+    val maghribOffset: Flow<Int>
+    suspend fun setMaghribOffset(offset: Int)
+
+    val ishaaOffset: Flow<Int>
+    suspend fun setIshaaOffset(offset: Int)
 }

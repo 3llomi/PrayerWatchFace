@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -80,7 +79,12 @@ fun ConfigureScreen(
     val is24Hours = remember {
         viewModel.is24Hours
     }
-
+    val hijriOffset = remember {
+        viewModel.hijriOffset
+    }
+    val hijriDate = remember {
+        viewModel.hijriDate
+    }
     var showProgress by remember { mutableStateOf(false) }
 
 
@@ -272,14 +276,43 @@ fun ConfigureScreen(
                         }
                     )
                 }
+                item {
+                    ConfigureItemCardOffset(
+                        title = stringResource(R.string.hijri_offset),
+                        icon = R.drawable.ic_date,
+                        subtitle = hijriDate.value,
+                        offset = hijriOffset.value,
+                        onValueChange = {
+                            viewModel.onHijriOffsetChangeText(it)
+                        },
+                        onMinusClick = {
+                            viewModel.decrementHijriOffset()
+                        },
+                        onPlusClick = {
+                            viewModel.incrementHijriOffset()
+                        }
+                    )
+                }
+
+                item{
+                    ConfigureItemCard(stringResource(R.string.prayer_times),
+                        null, R.drawable.ic_prayer, onClick = {
+                            navController.navigate(route = Screen.PrayerTimes.route)
+                        })
+                }
+
+                item {
+                    Text(
+                        modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 16.dp, bottom = 16.dp)
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        text = stringResource(com.devlomi.prayerwatchface.R.string.sync_change_notice),
+                        textAlign = TextAlign.Center,
+                        color = Color.Gray
+                    )
+                }
             }
-            Text(
-                modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 16.dp).fillMaxWidth()
-                    .wrapContentHeight(),
-                text = stringResource(com.devlomi.prayerwatchface.R.string.sync_change_notice),
-                textAlign = TextAlign.Center,
-                color = Color.Gray
-            )
+
 
         }
         if (showProgress) {

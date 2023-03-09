@@ -12,4 +12,12 @@
     <string name="foreground_color_bottom_part">Foreground Color Bottom Part</string>
     <string name="colors">Colors</string>
     <string name="twenty_four_hours">24 hours</string>
+    <string name="hijri_offset">Hijri Offset</string>
+    <string name="fajr">Fajr</string>
+    <string name="dhuhr">Dhuhr</string>
+    <string name="shurooq">Shurooq</string>
+    <string name="asr">Asr</string>
+    <string name="maghrib">Maghrib</string>
+    <string name="ishaa">Ishaa</string>
+    <string name="prayer_times">Prayer Times</string>
 </resources>

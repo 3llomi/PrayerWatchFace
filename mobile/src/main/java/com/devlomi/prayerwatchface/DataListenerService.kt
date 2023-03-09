@@ -5,6 +5,7 @@ import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.shared.ConfigKeys
 import com.devlomi.shared.getBooleanOrNull
 import com.devlomi.shared.getDoubleOrNull
+import com.devlomi.shared.getIntOrNull
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.WearableListenerService

@@ -23,11 +23,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.R
-import com.devlomi.prayerwatchface.ui.configure.ConfigureScreen
-import com.devlomi.prayerwatchface.ui.configure.ConfigureWatchFaceViewModel
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
-import com.devlomi.prayerwatchface.ui.configure.ColorSettingsScreen
-import com.devlomi.prayerwatchface.ui.configure.WatchPreviewComposable
+import com.devlomi.prayerwatchface.ui.configure.*
+import com.devlomi.prayerwatchface.ui.configure.color_settings.ColorSettingsScreen
+import com.devlomi.prayerwatchface.ui.configure.prayer_times_adjustment.PrayerTimeAdjustmentScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -89,6 +88,11 @@ class MainActivity : ComponentActivity() {
                                 ColorSettingsScreen(
                                     viewModel,
                                     )
+                            }
+                            composable(route = Screen.PrayerTimes.route) {
+                                PrayerTimeAdjustmentScreen(
+                                    viewModel,
+                                )
                             }
                         }
                     }

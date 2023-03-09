@@ -10,5 +10,13 @@ object ConfigKeys {
     const val FOREGROUND_COLOR = "fgcolor"
     const val FOREGROUND_COLOR_BOTTOM_PART = "fgcolorbpart"
     const val TWENTY_FOUR_HOURS = "24h"
+    const val HIJRI_OFFSET = "hijriOffset"
+    const val FAJR_OFFSET = "fajrOffset"
+    const val SHUROOQ_OFFSET = "shurooqOffset"
+    const val DHUHR_OFFSET = "dhuhrOffset"
+    const val ASR_OFFSET = "asrOffset"
+    const val MAGHRIB_OFFSET = "maghribOffset"
+    const val ISHA_OFFSET = "ishaOffset"
+
 
 }

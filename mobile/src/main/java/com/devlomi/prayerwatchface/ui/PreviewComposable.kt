@@ -8,7 +8,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.lifecycle.Lifecycle
-import com.devlomi.prayerwatchface.OnLifecycleEvent
+import com.devlomi.prayerwatchface.common.OnLifecycleEvent
 import com.devlomi.shared.WatchFacePainter
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
@@ -22,8 +22,6 @@ fun PreviewWatchFaceComposable(
     val zonedDateTime = ZonedDateTime.now()
     val coroutineScope = rememberCoroutineScope()
     Box(modifier = modifier.drawBehind {
-
-
         this.drawIntoCanvas {
             watchFacePainter.draw(
                 it.nativeCanvas,
@@ -32,10 +30,7 @@ fun PreviewWatchFaceComposable(
                 size.width,
                 size.height
             )
-
         }
-
-
     })
 
     OnLifecycleEvent { owner, event ->

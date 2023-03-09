@@ -80,10 +80,77 @@ class WatchFacePainter(
     private var madhab = Madhab.SHAFI
 
     private var is24Hours = false
+    private var hijriOffset = 0
 
 
     init {
 
+        listenForBackgroundColor()
+        listenForPrayerConfig()
+        listenForPrayerOffset()
+
+        initializeTimeFormat(is24Hours)
+        amPmFormat = SimpleDateFormat("a", Locale.US)
+        dayMonthFormat = SimpleDateFormat("dd MMM", Locale.US)
+        dayNameFormat = SimpleDateFormat("EEE", Locale.US)
+
+        hijriDateFormatter = DateTimeFormatter.ofPattern("dd MMM", Locale.US)
+
+
+        initializeColors()
+        initializePaint()
+    }
+
+    private fun listenForPrayerConfig() {
+        scope.launch {
+            combine(
+                settingsDataStore.calculationMethod,
+                settingsDataStore.madhab,
+                settingsDataStore.lat,
+                settingsDataStore.lng,
+            ) { calculationMethod, madhab, lat, lng ->
+                return@combine PrayerConfigItem(calculationMethod, madhab, lat, lng)
+            }.collectLatest {
+                madhab = Madhab.valueOf(it.madhab ?: Madhab.SHAFI.name)
+                if (it.lat != null && it.lng != null) {
+                    coordinates = Coordinates(it.lat, it.lng)
+                }
+                it.calculationMethod?.let { calcMethod ->
+                    CalculationMethod.valueOf(calcMethod)?.let { foundCalcMethod ->
+                        prayerTimesParams = foundCalcMethod.parameters.also { calcParams ->
+                            calcParams.madhab = madhab
+                        }
+
+                        initPrayerTimes(Date())
+                        scope.launch {
+                            _changeState.emit(Unit)
+                        }
+                    }
+                }
+            }
+        }
+
+        scope.launch {
+            settingsDataStore.is24Hours.collectLatest {
+                this@WatchFacePainter.is24Hours = it
+                initializeTimeFormat(is24Hours)
+                scope.launch {
+                    _changeState.emit(Unit)
+                }
+            }
+        }
+
+        scope.launch {
+            settingsDataStore.hijriOffset.collectLatest {
+                this@WatchFacePainter.hijriOffset = it
+                scope.launch {
+                    _changeState.emit(Unit)
+                }
+            }
+        }
+    }
+
+    private fun listenForBackgroundColor() {
         scope.launch {
             combine(
                 settingsDataStore.backgroundColor,
@@ -126,60 +193,68 @@ class WatchFacePainter(
                 }
             }
         }
+    }
 
+    private fun listenForPrayerOffset() {
         scope.launch {
-            combine(
-                settingsDataStore.calculationMethod,
-                settingsDataStore.madhab,
-                settingsDataStore.lat,
-                settingsDataStore.lng,
-                settingsDataStore.backgroundColor
-            ) { calculationMethod, madhab, lat, lng, storedBgColor ->
-                return@combine PrayerConfigItem(calculationMethod, madhab, lat, lng)
-            }.collectLatest {
-                madhab = Madhab.valueOf(it.madhab ?: Madhab.SHAFI.name)
-                if (it.lat != null && it.lng != null) {
-                    coordinates = Coordinates(it.lat, it.lng)
-                }
-                it.calculationMethod?.let { calcMethod ->
-                    CalculationMethod.valueOf(calcMethod)?.let { foundCalcMethod ->
-                        prayerTimesParams = foundCalcMethod.parameters.also { calcParams ->
-                            calcParams.madhab = madhab
-                        }
-
-                        initPrayerTimes(Date())
-                        scope.launch {
-                            _changeState.emit(Unit)
-                        }
-                    }
-                }
-
-
-            }
-        }
-
-        scope.launch {
-            settingsDataStore.is24Hours.collectLatest {
-                this@WatchFacePainter.is24Hours = it
-                initializeTimeFormat(is24Hours)
+            settingsDataStore.fajrOffset.collectLatest {
+                prayerTimesParams.adjustments.fajr = it
                 scope.launch {
+                    initPrayerTimes(Date())
                     _changeState.emit(Unit)
                 }
             }
         }
 
+        scope.launch {
+            settingsDataStore.shurooqOffset.collectLatest {
+                prayerTimesParams.adjustments.sunrise = it
+                scope.launch {
+                    initPrayerTimes(Date())
+                    _changeState.emit(Unit)
+                }
+            }
+        }
 
+        scope.launch {
+            settingsDataStore.dhuhrOffset.collectLatest {
+                prayerTimesParams.adjustments.dhuhr = it
+                scope.launch {
+                    initPrayerTimes(Date())
+                    _changeState.emit(Unit)
+                }
+            }
+        }
 
-        initializeTimeFormat(is24Hours)
-        amPmFormat = SimpleDateFormat("a", Locale.US)
-        dayMonthFormat = SimpleDateFormat("dd MMM", Locale.US)
-        dayNameFormat = SimpleDateFormat("EEE", Locale.US)
+        scope.launch {
+            settingsDataStore.asrOffset.collectLatest {
+                prayerTimesParams.adjustments.asr = it
+                scope.launch {
+                    initPrayerTimes(Date())
+                    _changeState.emit(Unit)
+                }
+            }
+        }
 
-        hijriDateFormatter = DateTimeFormatter.ofPattern("dd MMM", Locale.US)
+        scope.launch {
+            settingsDataStore.maghribOffset.collectLatest {
+                prayerTimesParams.adjustments.maghrib = it
+                scope.launch {
+                    initPrayerTimes(Date())
+                    _changeState.emit(Unit)
+                }
+            }
+        }
 
-
-        initializeColors()
-        initializePaint()
+        scope.launch {
+            settingsDataStore.ishaaOffset.collectLatest {
+                prayerTimesParams.adjustments.isha = it
+                scope.launch {
+                    initPrayerTimes(Date())
+                    _changeState.emit(Unit)
+                }
+            }
+        }
     }
 
     private fun initializeTimeFormat(is24Hours: Boolean) {
@@ -269,7 +344,7 @@ class WatchFacePainter(
         drawBottomSeparator(canvas)
 
         drawDate(canvas, date)
-        drawHijriDate(canvas, date)
+        drawHijriDate(canvas)
         drawDayName(canvas, date)
     }
 
@@ -429,9 +504,9 @@ class WatchFacePainter(
         )
     }
 
-    private fun drawHijriDate(canvas: Canvas, date: Date) {
-        val hijriDateStr = hijriDate.format(hijriDateFormatter)
-
+    private fun drawHijriDate(canvas: Canvas) {
+        val hijriDateStr =
+            hijriDate.plus(hijriOffset.toLong(), ChronoUnit.DAYS).format(hijriDateFormatter)
 
         val textWidth = hijriTextPaint.measureText(hijriDateStr)
         val x = width - textWidth - dpToPx(5f, context)
