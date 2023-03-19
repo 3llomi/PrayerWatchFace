@@ -14,6 +14,7 @@
     <string name="umm_alqura">أم القرى</string>
     <string name="shafi">شافعي</string>
     <string name="hanafi">حنفي</string>
+    <string name="isna">الجمعية الإسلامية لأمريكا الشمالية</string>
     <string name="missing_permissions">لا توجد صلاحيات</string>
     <string name="moon_sigthing_comittee">لجنة الهلال</string>
 </resources>

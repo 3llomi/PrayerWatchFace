@@ -11,8 +11,8 @@ android {
         applicationId "com.devlomi.prayerwatchface"
         minSdk 26
         targetSdk 32
-        versionCode 12
-        versionName "1.2"
+        versionCode 16
+        versionName "1.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

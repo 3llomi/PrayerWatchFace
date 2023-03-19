@@ -15,5 +15,6 @@ object CalculationMethodDataSource {
      CalculationMethodItem(context.getString(R.string.qatar),CalculationMethod.QATAR),
      CalculationMethodItem(context.getString(R.string.singapore),CalculationMethod.SINGAPORE),
      CalculationMethodItem(context.getString(R.string.moon_sigthing_comittee),CalculationMethod.MOON_SIGHTING_COMMITTEE),
+     CalculationMethodItem(context.getString(R.string.isna),CalculationMethod.NORTH_AMERICA),
     )
 }
