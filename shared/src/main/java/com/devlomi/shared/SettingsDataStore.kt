@@ -54,4 +54,7 @@ interface SettingsDataStore {
 
     val ishaaOffset: Flow<Int>
     suspend fun setIshaaOffset(offset: Int)
+
+    val daylightSavingTimeOffset: Flow<Int>
+    suspend fun setDaylightSavingTimeOffset(offset: Int)
 }

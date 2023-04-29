@@ -84,6 +84,9 @@ class DataListenerService : WearableListenerService() {
                     dataMap.getIntOrNull(ConfigKeys.ISHA_OFFSET)?.let {
                         settingsDatStore.setIshaaOffset(it)
                     }
+                    dataMap.getIntOrNull(ConfigKeys.DAYLIGHT_SAVING_OFFSET)?.let {
+                        settingsDatStore.setDaylightSavingTimeOffset(it)
+                    }
                 } catch (e: Exception) {
 
                 }

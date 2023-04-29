@@ -17,6 +17,7 @@ object ConfigKeys {
     const val ASR_OFFSET = "asrOffset"
     const val MAGHRIB_OFFSET = "maghribOffset"
     const val ISHA_OFFSET = "ishaOffset"
+    const val DAYLIGHT_SAVING_OFFSET = "daylightOffset"
 
 
 }

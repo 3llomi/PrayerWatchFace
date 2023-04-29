@@ -21,4 +21,6 @@
     <string name="maghrib">المغرب</string>
     <string name="ishaa">العشاء</string>
     <string name="prayer_times">أوقات الصلاة</string>
+    <string name="daylight_saving_time">التوقيت الصيفي/الشتوي</string>
+    <string name="daylight_type">(ساعة)</string>
 </resources>

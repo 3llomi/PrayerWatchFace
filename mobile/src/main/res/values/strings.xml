@@ -20,4 +20,6 @@
     <string name="maghrib">Maghrib</string>
     <string name="ishaa">Ishaa</string>
     <string name="prayer_times">Prayer Times</string>
+    <string name="daylight_saving_time">Daylight saving time</string>
+    <string name="daylight_type">(Hour)</string>
 </resources>

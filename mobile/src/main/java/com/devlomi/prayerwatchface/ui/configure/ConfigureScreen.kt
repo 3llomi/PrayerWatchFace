@@ -87,6 +87,9 @@ fun ConfigureScreen(
     }
     var showProgress by remember { mutableStateOf(false) }
 
+    val daylightOffset = remember {
+        viewModel.daylightSavingOffset
+    }
 
     val calculationMethodsSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -282,6 +285,7 @@ fun ConfigureScreen(
                         icon = R.drawable.ic_date,
                         subtitle = hijriDate.value,
                         offset = hijriOffset.value,
+                        isEditingEnabled = true,
                         onValueChange = {
                             viewModel.onHijriOffsetChangeText(it)
                         },
@@ -294,7 +298,7 @@ fun ConfigureScreen(
                     )
                 }
 
-                item{
+                item {
                     ConfigureItemCard(stringResource(R.string.prayer_times),
                         null, R.drawable.ic_prayer, onClick = {
                             navController.navigate(route = Screen.PrayerTimes.route)
@@ -302,8 +306,30 @@ fun ConfigureScreen(
                 }
 
                 item {
+                    ConfigureItemCardOffset(
+                        title = stringResource(R.string.daylight_saving_time),
+                        icon = R.drawable.ic_daylight,
+                        subtitle = stringResource(R.string.daylight_type),
+                        offset = daylightOffset.value,
+                        isEditingEnabled = false,
+                        onValueChange = {},
+                        onMinusClick = {
+                            viewModel.decrementDaylightOffset()
+                        },
+                        onPlusClick = {
+                            viewModel.incrementDaylightOffset()
+                        }
+                    )
+                }
+
+                item {
                     Text(
-                        modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 16.dp, bottom = 16.dp)
+                        modifier = Modifier.padding(
+                            start = 4.dp,
+                            end = 4.dp,
+                            top = 16.dp,
+                            bottom = 16.dp
+                        )
                             .fillMaxWidth()
                             .wrapContentHeight(),
                         text = stringResource(com.devlomi.prayerwatchface.R.string.sync_change_notice),

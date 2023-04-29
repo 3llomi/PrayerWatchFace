@@ -18,7 +18,6 @@ import java.time.chrono.HijrahChronology
 import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalField
 import java.util.*
 
 class WatchFacePainter(
@@ -195,9 +194,23 @@ class WatchFacePainter(
         }
     }
 
+    private fun combinePrayerOffsetWithDaylight(prayerOffsetFlow: Flow<Int>): Flow<Int> {
+        return combine(
+            prayerOffsetFlow,
+            settingsDataStore.daylightSavingTimeOffset
+        ) { prayerOffset, daylightOffset ->
+
+            return@combine Pair(prayerOffset, daylightOffset)//convert it to minutes
+        }.map {
+            val (prayerOffest, daylightOffset) = it
+            return@map prayerOffest + (daylightOffset * 60)
+        }
+    }
+
     private fun listenForPrayerOffset() {
         scope.launch {
-            settingsDataStore.fajrOffset.collectLatest {
+
+            combinePrayerOffsetWithDaylight(settingsDataStore.fajrOffset).collectLatest {
                 prayerTimesParams.adjustments.fajr = it
                 scope.launch {
                     initPrayerTimes(Date())
@@ -207,7 +220,7 @@ class WatchFacePainter(
         }
 
         scope.launch {
-            settingsDataStore.shurooqOffset.collectLatest {
+            combinePrayerOffsetWithDaylight(settingsDataStore.shurooqOffset).collectLatest {
                 prayerTimesParams.adjustments.sunrise = it
                 scope.launch {
                     initPrayerTimes(Date())
@@ -217,7 +230,7 @@ class WatchFacePainter(
         }
 
         scope.launch {
-            settingsDataStore.dhuhrOffset.collectLatest {
+            combinePrayerOffsetWithDaylight(settingsDataStore.dhuhrOffset).collectLatest {
                 prayerTimesParams.adjustments.dhuhr = it
                 scope.launch {
                     initPrayerTimes(Date())
@@ -227,7 +240,7 @@ class WatchFacePainter(
         }
 
         scope.launch {
-            settingsDataStore.asrOffset.collectLatest {
+            combinePrayerOffsetWithDaylight(settingsDataStore.asrOffset).collectLatest {
                 prayerTimesParams.adjustments.asr = it
                 scope.launch {
                     initPrayerTimes(Date())
@@ -237,7 +250,7 @@ class WatchFacePainter(
         }
 
         scope.launch {
-            settingsDataStore.maghribOffset.collectLatest {
+            combinePrayerOffsetWithDaylight(settingsDataStore.maghribOffset).collectLatest {
                 prayerTimesParams.adjustments.maghrib = it
                 scope.launch {
                     initPrayerTimes(Date())
@@ -247,7 +260,7 @@ class WatchFacePainter(
         }
 
         scope.launch {
-            settingsDataStore.ishaaOffset.collectLatest {
+            combinePrayerOffsetWithDaylight(settingsDataStore.ishaaOffset).collectLatest {
                 prayerTimesParams.adjustments.isha = it
                 scope.launch {
                     initPrayerTimes(Date())

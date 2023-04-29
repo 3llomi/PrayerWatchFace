@@ -148,6 +148,8 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     private val _maghribOffset = intPreferencesKey("maghrib_offset")
     private val _ishaOffset = intPreferencesKey("isha_offset")
 
+    private val _daylightSavingOffset = intPreferencesKey("daylight_saving_offset")
+
 
     override val fajrOffset: Flow<Int> = context.dataStore.data
         .map { preferences ->
@@ -213,6 +215,17 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     override suspend fun setIshaaOffset(offset: Int) {
         context.dataStore.edit { data ->
             data[_ishaOffset] = offset
+        }
+    }
+
+    override val daylightSavingTimeOffset: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[_daylightSavingOffset] ?: 0
+        }
+
+    override suspend fun setDaylightSavingTimeOffset(offset: Int) {
+        context.dataStore.edit { data ->
+            data[_daylightSavingOffset] = offset
         }
     }
 }

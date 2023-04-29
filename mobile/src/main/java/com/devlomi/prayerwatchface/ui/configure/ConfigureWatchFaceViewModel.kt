@@ -129,6 +129,11 @@ class ConfigureWatchFaceViewModel(
     val hijriDate: State<String>
         get() = _hijriDate
 
+    private val _daylightSavingOffset: MutableState<Int> =
+        mutableStateOf(0)
+    val daylightSavingOffset: State<Int>
+        get() = _daylightSavingOffset
+
     private lateinit var timeFormat: SimpleDateFormat
 
 
@@ -312,6 +317,12 @@ class ConfigureWatchFaceViewModel(
             settingsDataStore.hijriOffset.collectLatest {
                 _hijriOffset.value = it
                 updateHijriDate()
+            }
+        }
+
+        viewModelScope.launch {
+            settingsDataStore.daylightSavingTimeOffset.collectLatest {
+                _daylightSavingOffset.value = it
             }
         }
     }
@@ -687,5 +698,24 @@ class ConfigureWatchFaceViewModel(
         sendToWatch {
             it.putInt(key, offset)
         }
+    }
+
+    private fun setDaylightSavingOffset(offset: Int) {
+        viewModelScope.launch {
+            settingsDataStore.setDaylightSavingTimeOffset(offset)
+            sendToWatch {
+                it.putInt(ConfigKeys.DAYLIGHT_SAVING_OFFSET, offset)
+            }
+        }
+    }
+
+    fun decrementDaylightOffset() {
+        val offset = daylightSavingOffset.value - 1
+        setDaylightSavingOffset(offset)
+    }
+
+    fun incrementDaylightOffset() {
+        val offset = daylightSavingOffset.value + 1
+        setDaylightSavingOffset(offset)
     }
 }

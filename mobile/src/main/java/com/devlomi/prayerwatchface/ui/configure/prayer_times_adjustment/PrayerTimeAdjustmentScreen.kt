@@ -26,6 +26,7 @@ fun PrayerTimeAdjustmentScreen(viewModel: ConfigureWatchFaceViewModel) {
                         subtitle = prayer.prayerTime,
                         icon = null,
                         offset = prayer.offset,
+                        isEditingEnabled = true,
                         onPlusClick = { viewModel.onPrayerTimeOffsetPlusClick(prayer.prayer) },
                         onMinusClick = { viewModel.onPrayerTimeOffsetMinusClick(prayer.prayer) },
                         onValueChange = {
