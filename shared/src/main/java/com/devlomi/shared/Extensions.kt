@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.TypedValue
+import com.batoulapps.adhan.Prayer
+import com.batoulapps.adhan.PrayerTimes
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.wearable.DataMap
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -56,5 +58,18 @@ suspend fun <T> Task<T>.await(): T {
 fun Int.toHexColor() = String.format("#%08X", -0x1 and this)
 fun DataMap.getBooleanOrNull(key: String) =
     if (this.containsKey(key)) this.getBoolean(key) else null
+
 fun DataMap.getIntOrNull(key: String) =
     if (this.containsKey(key)) this.getInt(key) else null
+
+fun PrayerTimes.previousPrayer(): Prayer {
+    return when (nextPrayer()) {
+        Prayer.NONE -> Prayer.NONE
+        Prayer.FAJR -> Prayer.ISHA
+        Prayer.SUNRISE -> Prayer.FAJR
+        Prayer.DHUHR -> Prayer.SUNRISE
+        Prayer.ASR -> Prayer.DHUHR
+        Prayer.MAGHRIB -> Prayer.ASR
+        Prayer.ISHA -> Prayer.MAGHRIB
+    }
+}

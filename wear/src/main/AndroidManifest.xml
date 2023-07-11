@@ -8,12 +8,17 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
     <application
+        android:name=".PrayerApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".PrayerApp"
         android:theme="@style/Theme.WatchFace">
+        <activity
+            android:name=".ui.prayer_times.PrayerTimesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.WatchFace" />
+
         <uses-library
             android:name="com.google.android.wearable"
             android:required="true" />
@@ -34,8 +39,8 @@
         </activity>
 
         <service
-            android:exported="true"
             android:name=".watchface.PrayerWatchFaceService"
+            android:exported="true"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_WALLPAPER">
             <meta-data
@@ -53,29 +58,24 @@
 
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
             </intent-filter>
-
         </service>
-
         <service
             android:name=".DataListenerService"
             android:enabled="true"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.DATA_CHANGED" />
+
                 <data
                     android:host="*"
                     android:pathPrefix="/config"
                     android:scheme="wear" />
             </intent-filter>
-
-
         </service>
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
     </application>
 
 </manifest>

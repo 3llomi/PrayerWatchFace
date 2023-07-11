@@ -323,6 +323,41 @@ fun ConfigureScreen(
                 }
 
                 item {
+                    ElapsedTimeCard(
+                        title = stringResource(R.string.elapsed_time),
+                        icon = R.drawable.ic_timelapse,
+                        subtitle = stringResource(R.string.elapsed_time_desc),
+                        offset = viewModel.elapsedTimeMinutes.value,
+                        isEditingEnabled = false,
+                        onValueChange = {},
+                        onMinusClick = {
+                            viewModel.decrementElapsedTime()
+                        },
+                        onPlusClick = {
+                            viewModel.incrementElapsedTime()
+                        },
+                        checked = viewModel.elapsedTimeEnabled.value,
+                        onCheckedChange = {
+                            viewModel.onElapsedTimeSwitchChange(it)
+                        }
+
+                    )
+                }
+
+                item {
+                    ConfigureItemCardToggle(
+                        title = stringResource(R.string.show_prayer_times_on_click),
+                        icon = R.drawable.ic_touch,
+                        subtitle = stringResource(R.string.show_prayer_times_on_click_desc),
+                        checked = viewModel.showPrayerTimesOnClick.value,
+                        onCheckedChange = {
+                            viewModel.onShowPrayerTimesSwitchChange(it)
+                        },
+                        onClick = {}
+                    )
+                }
+
+                item {
                     Text(
                         modifier = Modifier.padding(
                             start = 4.dp,

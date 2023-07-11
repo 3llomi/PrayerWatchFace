@@ -87,6 +87,15 @@ class DataListenerService : WearableListenerService() {
                     dataMap.getIntOrNull(ConfigKeys.DAYLIGHT_SAVING_OFFSET)?.let {
                         settingsDatStore.setDaylightSavingTimeOffset(it)
                     }
+                    dataMap.getIntOrNull(ConfigKeys.ELAPSED_TIME_MINUTES)?.let {
+                        settingsDatStore.setElapsedTimeMinutes(it)
+                    }
+                    dataMap.getBooleanOrNull(ConfigKeys.ELAPSED_TIME_ENABLED)?.let {
+                        settingsDatStore.setElapsedTimeEnabled(it)
+                    }
+                    dataMap.getBooleanOrNull(ConfigKeys.SHOW_PRAYER_TIMES_ON_CLICK)?.let {
+                        settingsDatStore.openPrayerTimesOnClick(it)
+                    }
                 } catch (e: Exception) {
 
                 }

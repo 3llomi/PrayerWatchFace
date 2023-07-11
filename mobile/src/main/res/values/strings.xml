@@ -13,13 +13,11 @@
     <string name="colors">Colors</string>
     <string name="twenty_four_hours">24 hours</string>
     <string name="hijri_offset">Hijri Offset</string>
-    <string name="fajr">Fajr</string>
-    <string name="dhuhr">Dhuhr</string>
-    <string name="shurooq">Shurooq</string>
-    <string name="asr">Asr</string>
-    <string name="maghrib">Maghrib</string>
-    <string name="ishaa">Ishaa</string>
     <string name="prayer_times">Prayer Times</string>
     <string name="daylight_saving_time">Daylight saving time</string>
     <string name="daylight_type">(Hour)</string>
+    <string name="elapsed_time">Elapsed time</string>
+    <string name="elapsed_time_desc">If enabled, elapsed time will show up after the prayer time for the selected minutes.</string>
+    <string name="show_prayer_times_on_click">Show Prayer Times on click</string>
+    <string name="show_prayer_times_on_click_desc">Show all prayer times when clicking on the Watch Face.</string>
 </resources>

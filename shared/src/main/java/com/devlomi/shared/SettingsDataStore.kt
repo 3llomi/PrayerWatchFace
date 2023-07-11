@@ -57,4 +57,13 @@ interface SettingsDataStore {
 
     val daylightSavingTimeOffset: Flow<Int>
     suspend fun setDaylightSavingTimeOffset(offset: Int)
+
+    val elapsedTimeEnabled: Flow<Boolean>
+    suspend fun setElapsedTimeEnabled(boolean: Boolean)
+
+    val elapsedTimeMinutes: Flow<Int>
+    suspend fun setElapsedTimeMinutes(minutes: Int)
+
+    val openPrayerTimesOnClick: Flow<Boolean>
+    suspend fun openPrayerTimesOnClick(boolean: Boolean)
 }

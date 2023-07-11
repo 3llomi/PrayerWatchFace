@@ -150,6 +150,13 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
 
     private val _daylightSavingOffset = intPreferencesKey("daylight_saving_offset")
 
+    private val _elapsedTimeEnabled =
+        booleanPreferencesKey("elapsed_time_enabled")
+    private val _elapsedTimeMinutes =
+        intPreferencesKey("elapsed_time_minutes")
+
+    private val _openPrayerTimesOnClick =
+        booleanPreferencesKey("open_prayer_times_on_click")
 
     override val fajrOffset: Flow<Int> = context.dataStore.data
         .map { preferences ->
@@ -226,6 +233,37 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     override suspend fun setDaylightSavingTimeOffset(offset: Int) {
         context.dataStore.edit { data ->
             data[_daylightSavingOffset] = offset
+        }
+    }
+
+    override val elapsedTimeEnabled: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[_elapsedTimeEnabled] ?: false
+    }
+
+    override suspend fun setElapsedTimeEnabled(boolean: Boolean) {
+        context.dataStore.edit { data ->
+            data[_elapsedTimeEnabled] = boolean
+        }
+    }
+
+    override val elapsedTimeMinutes: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[_elapsedTimeMinutes] ?: 30
+    }
+
+    override suspend fun setElapsedTimeMinutes(minutes: Int) {
+        context.dataStore.edit { data ->
+            data[_elapsedTimeMinutes] = minutes
+        }
+    }
+
+    override val openPrayerTimesOnClick: Flow<Boolean> =
+        context.dataStore.data.map { preferences ->
+            preferences[_openPrayerTimesOnClick] ?: true
+        }
+
+    override suspend fun openPrayerTimesOnClick(boolean: Boolean) {
+        context.dataStore.edit { data ->
+            data[_openPrayerTimesOnClick] = boolean
         }
     }
 }

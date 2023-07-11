@@ -18,6 +18,9 @@ object ConfigKeys {
     const val MAGHRIB_OFFSET = "maghribOffset"
     const val ISHA_OFFSET = "ishaOffset"
     const val DAYLIGHT_SAVING_OFFSET = "daylightOffset"
+    const val ELAPSED_TIME_ENABLED = "elapsedTimeEnabled"
+    const val ELAPSED_TIME_MINUTES = "elapsedMinutes"
+    const val SHOW_PRAYER_TIMES_ON_CLICK = "showPrayerTimesOnClick"
 
 
 }

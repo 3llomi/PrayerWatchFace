@@ -65,6 +65,9 @@ class ConfigureWatchFaceViewModel(
             }
         }
 
+        private const val MIN_ELAPSED_TIME_MINUTES = 5
+        private const val MAX_ELAPSED_TIME_MINUTES = 60
+
     }
 
 
@@ -134,6 +137,22 @@ class ConfigureWatchFaceViewModel(
     val daylightSavingOffset: State<Int>
         get() = _daylightSavingOffset
 
+
+    private val _elapsedTimeEnabled: MutableState<Boolean> =
+        mutableStateOf(false)
+    val elapsedTimeEnabled: State<Boolean>
+        get() = _elapsedTimeEnabled
+
+    private val _elapsedTimeMinutes: MutableState<Int> =
+        mutableStateOf(0)
+    val elapsedTimeMinutes: State<Int>
+        get() = _elapsedTimeMinutes
+
+    private val _showPrayerTimesOnClick: MutableState<Boolean> =
+        mutableStateOf(false)
+    val showPrayerTimesOnClick: State<Boolean>
+        get() = _showPrayerTimesOnClick
+
     private lateinit var timeFormat: SimpleDateFormat
 
 
@@ -194,18 +213,43 @@ class ConfigureWatchFaceViewModel(
         initPrayerTimes()
         initTimeFormat()
         _prayerTimesItems.value = listOf(
-            PrayerItem(Prayer.FAJR, appContext.getString(R.string.fajr), "", 0),
-            PrayerItem(Prayer.SUNRISE, appContext.getString(R.string.shurooq), "", 0),
-            PrayerItem(Prayer.DHUHR, appContext.getString(R.string.dhuhr), "", 0),
-            PrayerItem(Prayer.ASR, appContext.getString(R.string.asr), "", 0),
-            PrayerItem(Prayer.MAGHRIB, appContext.getString(R.string.maghrib), "", 0),
-            PrayerItem(Prayer.ISHA, appContext.getString(R.string.ishaa), "", 0),
+            PrayerItem(Prayer.FAJR, appContext.getString(com.devlomi.shared.R.string.fajr), "", 0),
+            PrayerItem(
+                Prayer.SUNRISE,
+                appContext.getString(com.devlomi.shared.R.string.shurooq),
+                "",
+                0
+            ),
+            PrayerItem(
+                Prayer.DHUHR,
+                appContext.getString(com.devlomi.shared.R.string.dhuhr),
+                "",
+                0
+            ),
+            PrayerItem(Prayer.ASR, appContext.getString(com.devlomi.shared.R.string.asr), "", 0),
+            PrayerItem(
+                Prayer.MAGHRIB,
+                appContext.getString(com.devlomi.shared.R.string.maghrib),
+                "",
+                0
+            ),
+            PrayerItem(Prayer.ISHA, appContext.getString(com.devlomi.shared.R.string.ishaa), "", 0),
         )
 
         listenForColors()
         listenForPrayerConfig()
         listenForPrayerOffset()
+        listenForElapsedTime()
+        listenForShowPrayerTimesOnClick()
 
+    }
+
+    private fun listenForShowPrayerTimesOnClick() {
+        viewModelScope.launch {
+            settingsDataStore.openPrayerTimesOnClick.collectLatest {
+                _showPrayerTimesOnClick.value = it
+            }
+        }
     }
 
     private fun listenForColors() {
@@ -411,6 +455,21 @@ class ConfigureWatchFaceViewModel(
                         it?.let { newList[5] = it }
                     }
                 _prayerTimesItems.value = newList
+            }
+        }
+
+    }
+
+    private fun listenForElapsedTime() {
+        viewModelScope.launch {
+            settingsDataStore.elapsedTimeEnabled.collectLatest {
+                _elapsedTimeEnabled.value = it
+            }
+        }
+
+        viewModelScope.launch {
+            settingsDataStore.elapsedTimeMinutes.collectLatest {
+                _elapsedTimeMinutes.value = it
             }
         }
     }
@@ -619,21 +678,27 @@ class ConfigureWatchFaceViewModel(
             Prayer.FAJR -> {
                 (prayerTimesItems.value.getOrNull(0)?.offset ?: 0)
             }
+
             Prayer.SUNRISE -> {
                 (prayerTimesItems.value.getOrNull(1)?.offset ?: 0)
             }
+
             Prayer.DHUHR -> {
                 (prayerTimesItems.value.getOrNull(2)?.offset ?: 0)
             }
+
             Prayer.ASR -> {
                 (prayerTimesItems.value.getOrNull(3)?.offset ?: 0)
             }
+
             Prayer.MAGHRIB -> {
                 (prayerTimesItems.value.getOrNull(4)?.offset ?: 0)
             }
+
             Prayer.ISHA -> {
                 (prayerTimesItems.value.getOrNull(5)?.offset ?: 0)
             }
+
             else -> 0
         }
         return offset
@@ -645,26 +710,32 @@ class ConfigureWatchFaceViewModel(
                 settingsDataStore.setFajrOffset(offset)
                 sendPrayerTimeOffsetToWatch(ConfigKeys.FAJR_OFFSET, offset)
             }
+
             Prayer.SUNRISE -> {
                 settingsDataStore.setShurooqOffset(offset)
                 sendPrayerTimeOffsetToWatch(ConfigKeys.SHUROOQ_OFFSET, offset)
             }
+
             Prayer.DHUHR -> {
                 settingsDataStore.setDhuhrOffset(offset)
                 sendPrayerTimeOffsetToWatch(ConfigKeys.DHUHR_OFFSET, offset)
             }
+
             Prayer.ASR -> {
                 settingsDataStore.setAsrOffset(offset)
                 sendPrayerTimeOffsetToWatch(ConfigKeys.ASR_OFFSET, offset)
             }
+
             Prayer.MAGHRIB -> {
                 settingsDataStore.setMaghribOffset(offset)
                 sendPrayerTimeOffsetToWatch(ConfigKeys.MAGHRIB_OFFSET, offset)
             }
+
             Prayer.ISHA -> {
                 settingsDataStore.setIshaaOffset(offset)
                 sendPrayerTimeOffsetToWatch(ConfigKeys.ISHA_OFFSET, offset)
             }
+
             else -> {}
         }
 
@@ -717,5 +788,51 @@ class ConfigureWatchFaceViewModel(
     fun incrementDaylightOffset() {
         val offset = daylightSavingOffset.value + 1
         setDaylightSavingOffset(offset)
+    }
+
+    fun decrementElapsedTime() {
+        val newMinutes = elapsedTimeMinutes.value - 1
+        if (newMinutes < MIN_ELAPSED_TIME_MINUTES) {
+            return
+        }
+
+        viewModelScope.launch {
+            settingsDataStore.setElapsedTimeMinutes(newMinutes)
+            sendToWatch {
+                it.putInt(ConfigKeys.ELAPSED_TIME_MINUTES, newMinutes)
+            }
+        }
+    }
+
+    fun incrementElapsedTime() {
+        val newMinutes = elapsedTimeMinutes.value + 1
+        if (newMinutes > MAX_ELAPSED_TIME_MINUTES) {
+            return
+        }
+
+        viewModelScope.launch {
+            settingsDataStore.setElapsedTimeMinutes(newMinutes)
+            sendToWatch {
+                it.putInt(ConfigKeys.ELAPSED_TIME_MINUTES, newMinutes)
+            }
+        }
+    }
+
+    fun onElapsedTimeSwitchChange(boolean: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.setElapsedTimeEnabled(boolean)
+            sendToWatch {
+                it.putBoolean(ConfigKeys.ELAPSED_TIME_ENABLED, boolean)
+            }
+        }
+    }
+
+    fun onShowPrayerTimesSwitchChange(boolean: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.openPrayerTimesOnClick(boolean)
+            sendToWatch {
+                it.putBoolean(ConfigKeys.SHOW_PRAYER_TIMES_ON_CLICK, boolean)
+            }
+        }
     }
 }

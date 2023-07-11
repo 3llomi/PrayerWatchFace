@@ -10,8 +10,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.DataArray
-import androidx.compose.material.icons.filled.PlusOne
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -151,6 +148,7 @@ fun ConfigureItemCardBackgroundItem(
 fun ConfigureItemCardToggle(
     modifier: Modifier = Modifier,
     title: String,
+    subtitle: String? = null,
     icon: Int?,
     checked: Boolean,
     onClick: (String) -> Unit,
@@ -181,14 +179,19 @@ fun ConfigureItemCardToggle(
                     )
                 }
                 Spacer(modifier = Modifier.size(8.dp))
-                Column() {
-                    Row {
-                        Text(text = title, modifier = Modifier.weight(1f))
-                        Switch(
-                            checked = checked,
-                            onCheckedChange = onCheckedChange
-                        )
+                Row {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = title)
+                        if (subtitle != null) {
+                            Text(text = subtitle, color = Color.Gray, fontSize = 10.sp)
+                        }
                     }
+                    Switch(
+                        checked = checked,
+                        onCheckedChange = onCheckedChange
+                    )
+
+
                 }
             }
         }
@@ -278,6 +281,107 @@ fun ConfigureItemCardOffset(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ElapsedTimeCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    subtitle: String?,
+    offset: Int,
+    icon: Int?,
+    isEditingEnabled: Boolean,
+    onValueChange: (String) -> Unit,
+    onPlusClick: () -> Unit,
+    onMinusClick: () -> Unit,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+            .wrapContentHeight(),
+        shape = RoundedCornerShape(2.dp),
+        elevation = 4.dp,
+    ) {
+        Column(
+            modifier = Modifier.padding(top = 12.dp, bottom = 12.dp, start = 4.dp, end = 4.dp)
+                .defaultMinSize(minHeight = 40.dp), verticalArrangement = Arrangement.Center
+        ) {
+            Row() {
+
+                Spacer(modifier = Modifier.size(8.dp))
+                Row(modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
+                    if (icon != null) {
+                        Icon(
+                            painterResource(icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(30.dp)
+                                .padding(start = 4.dp, end = 4.dp),
+                            tint = colorResource(R.color.primary_variant)
+                        )
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(text = title)
+                        if (subtitle != null) {
+                            Text(text = subtitle, color = Color.Gray, fontSize = 10.sp)
+                        }
+                    }
+                    Switch(
+                        checked = checked,
+                        onCheckedChange = onCheckedChange
+                    )
+
+
+                }
+            }
+            Row(modifier = Modifier.fillMaxWidth().wrapContentHeight()) {
+                Spacer(Modifier.weight(1f))
+                Column() {
+                    if (checked) {
+                        Row {
+                            IconButton(onClick = onPlusClick) {
+                                Icon(Icons.Filled.Add, "")
+                            }
+                            Box(modifier = Modifier.wrapContentHeight().width(60.dp)) {
+                                TextField(
+                                    offset.toString(),
+                                    onValueChange = onValueChange,
+                                    modifier = Modifier.wrapContentHeight().width(60.dp),
+                                    shape = RoundedCornerShape(8.dp),
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Number
+                                    ),
+                                    colors = TextFieldDefaults.textFieldColors(
+                                        textColor = Color.Black,
+                                        disabledTextColor = Color.Transparent,
+                                        backgroundColor = Color.LightGray,
+                                        focusedIndicatorColor = Color.Transparent,
+                                        unfocusedIndicatorColor = Color.Transparent,
+                                        disabledIndicatorColor = Color.Transparent
+                                    ),
+                                    textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+                                )
+                                if (!isEditingEnabled) {
+                                    // Set alpha(0f) to hide click animation
+                                    Box(
+                                        modifier = Modifier.matchParentSize().alpha(0f)
+                                            .clickable(onClick = {})
+                                    )
+                                }
+                            }
+
+                            IconButton(onClick = onMinusClick) {
+                                Icon(Icons.Filled.Remove, "")
+                            }
+
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 }

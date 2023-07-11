@@ -1,12 +1,23 @@
 package com.devlomi.prayerwatchface.watchface
 
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.util.Log
 import android.view.SurfaceHolder
 import androidx.wear.watchface.*
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
+import com.devlomi.prayerwatchface.ui.configure.WatchFaceConfigureActivity
+import com.devlomi.prayerwatchface.ui.prayer_times.PrayerTimesActivity
 import com.devlomi.shared.SettingsDataStore
 import com.devlomi.shared.WatchFacePainter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class PrayerWatchFaceService : WatchFaceService() {
     private val settingsDataStore: SettingsDataStore by lazy {
@@ -15,6 +26,9 @@ class PrayerWatchFaceService : WatchFaceService() {
     private val watchFacePainter: WatchFacePainter by lazy {
         WatchFacePainter(applicationContext, settingsDataStore)
     }
+
+    private val scope: CoroutineScope =
+        CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     override suspend fun createWatchFace(
         surfaceHolder: SurfaceHolder,
@@ -34,11 +48,35 @@ class PrayerWatchFaceService : WatchFaceService() {
         )
 
         // Creates the watch face.
-        return WatchFace(
+        val watchFace = WatchFace(
             watchFaceType = WatchFaceType.DIGITAL,
             renderer = renderer
         )
+        watchFace.setTapListener(object : WatchFace.TapListener {
+            override fun onTapEvent(
+                tapType: Int,
+                tapEvent: TapEvent,
+                complicationSlot: ComplicationSlot?
+            ) {
+                if (tapType == TapType.UP) {
+                    scope.launch {
+                        val shouldShowPrayerTimesOnClick =
+                            settingsDataStore.openPrayerTimesOnClick.first()
+                        if (shouldShowPrayerTimesOnClick) {
+                            val intent =
+                                Intent(this@PrayerWatchFaceService, PrayerTimesActivity::class.java)
+                            intent.flags = FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+        })
+        return watchFace
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
+    }
 }

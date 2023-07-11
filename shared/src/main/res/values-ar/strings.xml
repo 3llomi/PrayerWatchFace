@@ -17,4 +17,10 @@
     <string name="isna">الجمعية الإسلامية لأمريكا الشمالية</string>
     <string name="missing_permissions">لا توجد صلاحيات</string>
     <string name="moon_sigthing_comittee">لجنة الهلال</string>
+    <string name="fajr">الفجر</string>
+    <string name="dhuhr">الظهر</string>
+    <string name="shurooq">الشروق</string>
+    <string name="asr">العصر</string>
+    <string name="maghrib">المغرب</string>
+    <string name="ishaa">العشاء</string>
 </resources>
