@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.devlomi.prayerwatchface"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 22
         versionName "1.3.0"
 
