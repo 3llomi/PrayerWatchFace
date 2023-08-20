@@ -23,5 +23,7 @@
     <string name="asr">Asr</string>
     <string name="maghrib">Maghrib</string>
     <string name="ishaa">Ishaa</string>
+    <string name="elapsed">ELAPSED</string>
+    <string name="remaining">REMAINING</string>
 
 </resources>

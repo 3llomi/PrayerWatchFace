@@ -66,4 +66,10 @@ interface SettingsDataStore {
 
     val openPrayerTimesOnClick: Flow<Boolean>
     suspend fun openPrayerTimesOnClick(boolean: Boolean)
+
+    val locale: Flow<Int>
+    suspend fun setLocale(type: Int)
+
+    val notificationsEnabled: Flow<Boolean>
+    suspend fun setNotificationsEnabled(boolean: Boolean)
 }

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.location.Location
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -21,13 +20,18 @@ import com.batoulapps.adhan.data.DateComponents
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.common.Resource
+import com.devlomi.prayerwatchface.data.LocaleDataSource
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
+import com.devlomi.prayerwatchface.ui.configure.locale.LocaleItem
 import com.devlomi.prayerwatchface.ui.configure.prayer_times_adjustment.PrayerItem
 import com.devlomi.shared.BackgroundColorSettingsItem
 import com.devlomi.shared.ConfigKeys
+import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.PrayerConfigItem
 import com.devlomi.shared.await
 import com.devlomi.shared.calculationmethod.CalculationMethodDataSource
+import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
+import com.devlomi.shared.locale.LocaleHelper
 import com.devlomi.shared.madhab.MadhabMethodsDataSource
 import com.google.android.gms.wearable.DataMap
 import com.google.android.gms.wearable.PutDataMapRequest
@@ -45,7 +49,8 @@ import java.util.*
 
 class ConfigureWatchFaceViewModel(
     private val appContext: Context,
-    private val settingsDataStore: SettingsDataStoreImp
+    private val settingsDataStore: SettingsDataStoreImp,
+    private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase,
 ) : ViewModel() {
     companion object {
 
@@ -58,9 +63,11 @@ class ConfigureWatchFaceViewModel(
                 val settingsDataStore =
                     baseApplication.appContainer.settingsDataStore
 
+                val getPrayerNameByLocaleUseCase = GetPrayerNameByLocaleUseCase(baseApplication)
                 ConfigureWatchFaceViewModel(
                     baseApplication,
-                    settingsDataStore
+                    settingsDataStore,
+                    getPrayerNameByLocaleUseCase
                 )
             }
         }
@@ -153,6 +160,23 @@ class ConfigureWatchFaceViewModel(
     val showPrayerTimesOnClick: State<Boolean>
         get() = _showPrayerTimesOnClick
 
+    private val _localeItems: MutableState<List<LocaleItem>> =
+        mutableStateOf(LocaleDataSource.getItems(appContext))
+    val localeItems: State<List<LocaleItem>>
+        get() = _localeItems
+
+    private val _currentLocaleType: MutableState<LocaleType> =
+        mutableStateOf(LocaleType.ENGLISH)
+    val currentLocaleType: State<LocaleType>
+        get() = _currentLocaleType
+
+    private var currentLocale = Locale.US
+
+    private val _notificationsOn: MutableState<Boolean> =
+        mutableStateOf(true)
+    val notificationsOn: State<Boolean>
+        get() = _notificationsOn
+
     private lateinit var timeFormat: SimpleDateFormat
 
 
@@ -213,27 +237,41 @@ class ConfigureWatchFaceViewModel(
         initPrayerTimes()
         initTimeFormat()
         _prayerTimesItems.value = listOf(
-            PrayerItem(Prayer.FAJR, appContext.getString(com.devlomi.shared.R.string.fajr), "", 0),
+            PrayerItem(
+                Prayer.FAJR,
+                getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.FAJR, currentLocale),
+                "",
+                0
+            ),
             PrayerItem(
                 Prayer.SUNRISE,
-                appContext.getString(com.devlomi.shared.R.string.shurooq),
+                getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.SUNRISE, currentLocale),
                 "",
                 0
             ),
             PrayerItem(
                 Prayer.DHUHR,
-                appContext.getString(com.devlomi.shared.R.string.dhuhr),
+                getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.DHUHR, currentLocale),
                 "",
                 0
             ),
-            PrayerItem(Prayer.ASR, appContext.getString(com.devlomi.shared.R.string.asr), "", 0),
+            PrayerItem(
+                Prayer.ASR,
+                getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.ASR, currentLocale),
+                "", 0
+            ),
             PrayerItem(
                 Prayer.MAGHRIB,
-                appContext.getString(com.devlomi.shared.R.string.maghrib),
+                getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.MAGHRIB, currentLocale),
                 "",
                 0
             ),
-            PrayerItem(Prayer.ISHA, appContext.getString(com.devlomi.shared.R.string.ishaa), "", 0),
+            PrayerItem(
+                Prayer.ISHA,
+                getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.ISHA, currentLocale),
+                "",
+                0
+            ),
         )
 
         listenForColors()
@@ -241,7 +279,50 @@ class ConfigureWatchFaceViewModel(
         listenForPrayerOffset()
         listenForElapsedTime()
         listenForShowPrayerTimesOnClick()
+        listenForLocaleChange()
+        listenForNotifications()
+        scheduleNotifications()
+    }
 
+    private fun scheduleNotifications() {
+        //Schedule for the first time if enabled.
+        viewModelScope.launch {
+            val notificationsEnabled = settingsDataStore.notificationsEnabled.first()
+            if (notificationsEnabled) {
+                sendToWatch {
+                    it.putBoolean(ConfigKeys.NOTIFICATIONS_ENABLED, true)
+                }
+            }
+        }
+    }
+
+    private fun listenForNotifications() {
+        viewModelScope.launch {
+            settingsDataStore.notificationsEnabled.collectLatest {
+                _notificationsOn.value = it
+            }
+        }
+    }
+
+    private fun listenForLocaleChange() {
+        viewModelScope.launch {
+            settingsDataStore.locale.collectLatest { type ->
+                LocaleType.values().firstOrNull { it.id == type }?.let { locale ->
+                    _currentLocaleType.value = locale
+                    currentLocale = LocaleHelper.getLocale(locale)
+                    val newList = _prayerTimesItems.value.toMutableList()
+                    newList.forEachIndexed { index, item ->
+                        newList[index] = item.copy(
+                            name = getPrayerNameByLocaleUseCase.getPrayerNameByLocale(
+                                item.prayer,
+                                currentLocale
+                            )
+                        )
+                    }
+                    _prayerTimesItems.value = newList
+                }
+            }
+        }
     }
 
     private fun listenForShowPrayerTimesOnClick() {
@@ -832,6 +913,24 @@ class ConfigureWatchFaceViewModel(
             settingsDataStore.openPrayerTimesOnClick(boolean)
             sendToWatch {
                 it.putBoolean(ConfigKeys.SHOW_PRAYER_TIMES_ON_CLICK, boolean)
+            }
+        }
+    }
+
+    fun onLocaleClick(localeType: LocaleType) {
+        viewModelScope.launch {
+            settingsDataStore.setLocale(localeType.id)
+            sendToWatch {
+                it.putInt(ConfigKeys.LOCALE_TYPE, localeType.id)
+            }
+        }
+    }
+
+    fun onNotificationsChecked(boolean: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.setNotificationsEnabled(boolean)
+            sendToWatch {
+                it.putBoolean(ConfigKeys.NOTIFICATIONS_ENABLED, boolean)
             }
         }
     }

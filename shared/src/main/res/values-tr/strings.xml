@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calculation_method">hesaplama yöntemi</string>
+    <string name="location_updated">Konu güncellenmiştir</string>
+    <string name="update_location">Konu güncelleme</string>
+    <string name="asr_calculation_method">İkindi namaz hesaplamanın yöntemi</string>
+    <string name="dubai">Dubai</string>
+    <string name="egyptian_method">Mühendislik alanı genel müdürlüğün</string>
+    <string name="karachi">Karachi</string>
+    <string name="kuwait">Kuwait</string>
+    <string name="muslim_world_league">Muslim World League</string>
+    <string name="qatar">Katar</string>
+    <string name="singapore">Singapur</string>
+    <string name="umm_alqura">Ummulkura</string>
+    <string name="moon_sigthing_comittee">Hilal kurumu</string>
+    <string name="isna">Kuzey Amerika\'ya müslüman kurumu</string>
+    <string name="shafi">Şafii</string>
+    <string name="hanafi">Hanefî</string>
+    <string name="missing_permissions">Konu girmeye izin verilmesu</string>
+    <string name="fajr">Sabah</string>
+    <string name="dhuhr">Öğle</string>
+    <string name="shurooq">Güneş</string>
+    <string name="asr">Ikindi</string>
+    <string name="maghrib">Akşam</string>
+    <string name="ishaa">Yetisi</string>
+    <string name="elapsed">Geçen vakit</string>
+    <string name="remaining">Kalan süre</string>
+
+</resources>

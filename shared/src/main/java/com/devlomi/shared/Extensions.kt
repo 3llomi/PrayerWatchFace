@@ -1,6 +1,7 @@
 package com.devlomi.shared
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.TypedValue
@@ -9,6 +10,7 @@ import com.batoulapps.adhan.PrayerTimes
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.wearable.DataMap
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -72,4 +74,14 @@ fun PrayerTimes.previousPrayer(): Prayer {
         Prayer.MAGHRIB -> Prayer.ASR
         Prayer.ISHA -> Prayer.MAGHRIB
     }
+}
+
+fun Context.getLocaleStringResource(
+    locale: Locale,
+    resourceId: Int,
+): String {
+    val config = Configuration(resources.configuration)
+    config.setLocale(locale)
+
+    return createConfigurationContext(config).getText(resourceId).toString()
 }

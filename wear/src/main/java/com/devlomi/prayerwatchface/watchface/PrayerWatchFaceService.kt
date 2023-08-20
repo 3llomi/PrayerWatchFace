@@ -12,6 +12,7 @@ import com.devlomi.prayerwatchface.ui.configure.WatchFaceConfigureActivity
 import com.devlomi.prayerwatchface.ui.prayer_times.PrayerTimesActivity
 import com.devlomi.shared.SettingsDataStore
 import com.devlomi.shared.WatchFacePainter
+import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,8 +24,11 @@ class PrayerWatchFaceService : WatchFaceService() {
     private val settingsDataStore: SettingsDataStore by lazy {
         (this.application as PrayerApp).appContainer.settingsDataStore
     }
+    private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase by lazy {
+        GetPrayerNameByLocaleUseCase(applicationContext)
+    }
     private val watchFacePainter: WatchFacePainter by lazy {
-        WatchFacePainter(applicationContext, settingsDataStore)
+        WatchFacePainter(applicationContext, settingsDataStore,getPrayerNameByLocaleUseCase)
     }
 
     private val scope: CoroutineScope =

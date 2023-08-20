@@ -9,14 +9,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.batoulapps.adhan.CalculationMethod
-import com.batoulapps.adhan.Coordinates
 import com.batoulapps.adhan.Madhab
 import com.batoulapps.adhan.Prayer
-import com.batoulapps.adhan.PrayerTimes
 import com.batoulapps.adhan.data.DateComponents
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
-import com.devlomi.prayerwatchface.ui.configure.ConfigureWatchFaceViewModel
+import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
+import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
+import com.devlomi.shared.locale.LocaleHelper
+import com.devlomi.shared.locale.LocaleType
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -26,7 +27,9 @@ import java.util.Locale
 
 class PrayerTimesViewModel(
     private val appContext: Context,
-    private val settingsDataStore: SettingsDataStoreImp
+    private val settingsDataStore: SettingsDataStoreImp,
+    private val getPrayerTimesWithConfigUseCase: GetPrayerTimesWithConfigUseCase,
+    private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase,
 ) : ViewModel() {
 
     init {
@@ -45,8 +48,11 @@ class PrayerTimesViewModel(
 
                 PrayerTimesViewModel(
                     baseApplication,
-                    settingsDataStore
-                )
+                    settingsDataStore,
+                    GetPrayerTimesWithConfigUseCase(settingsDataStore),
+                    GetPrayerNameByLocaleUseCase(baseApplication),
+
+                    )
             }
         }
 
@@ -55,82 +61,54 @@ class PrayerTimesViewModel(
     private val _prayerItems = mutableStateOf(listOf<PrayerItem>())
     val prayerItems: State<List<PrayerItem>> get() = _prayerItems
 
-    fun getPrayerTimes() {
+    private fun getPrayerTimes() {
         viewModelScope.launch {
 
-            val array = combine(
-                settingsDataStore.fajrOffset,
-                settingsDataStore.shurooqOffset,
-                settingsDataStore.dhuhrOffset,
-                settingsDataStore.asrOffset,
-                settingsDataStore.maghribOffset,
-                settingsDataStore.ishaaOffset,
-                settingsDataStore.daylightSavingTimeOffset
-            ) {
-                return@combine it
-            }.first()
-
-            val madhabStr = settingsDataStore.madhab.first() ?: Madhab.SHAFI.name
-            val madhab = Madhab.valueOf(madhabStr)
-            val calculationMethodStr =
-                settingsDataStore.calculationMethod.first() ?: CalculationMethod.UMM_AL_QURA.name
-            val lat = settingsDataStore.lat.first() ?: 0.0
-            val lng = settingsDataStore.lng.first() ?: 0.0
-            val daylightOffset = settingsDataStore.daylightSavingTimeOffset.first()
-            val is24Hours = settingsDataStore.is24Hours.first()
-
             val date = Date()
-            val dateComponents = DateComponents.from(date)
-            val calculationMethod = CalculationMethod.valueOf(calculationMethodStr)
-            val prayerTimesParams = calculationMethod.parameters.also {
-                it.madhab = madhab
-                it.adjustments.apply {
-                    fajr = array[0] + (daylightOffset * 60)
-                    sunrise = array[1] + (daylightOffset * 60)
-                    dhuhr = array[2] + (daylightOffset * 60)
-                    asr = array[3] + (daylightOffset * 60)
-                    maghrib = array[4] + (daylightOffset * 60)
-                    isha = array[5] + (daylightOffset * 60)
-                }
-            }
-            val prayerTimes = PrayerTimes(Coordinates(lat, lng), dateComponents, prayerTimesParams)
+            val prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(date)
             val nextPrayer = prayerTimes.nextPrayer(date)
+            val is24Hours = settingsDataStore.is24Hours.first()
 
             val pattern = if (is24Hours) "HH:mm" else "hh:mm"
             val timeFormat = SimpleDateFormat(pattern, Locale.US)
 
+            val localeType =
+                LocaleType.values().firstOrNull { it.id == settingsDataStore.locale.first() }
+                    ?: LocaleType.ENGLISH
+
+            val locale = LocaleHelper.getLocale(localeType)
 
             val prayerItems = listOf<PrayerItem>(
 
                 PrayerItem(
-                    appContext.getString(com.devlomi.shared.R.string.fajr),
+                    getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.FAJR,locale),
                     timeFormat.format(prayerTimes.timeForPrayer(Prayer.FAJR)),
                     nextPrayer == Prayer.FAJR
                 ),
 
                 PrayerItem(
-                    appContext.getString(com.devlomi.shared.R.string.shurooq),
+                    getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.SUNRISE,locale),
                     timeFormat.format(prayerTimes.timeForPrayer(Prayer.SUNRISE)),
                     nextPrayer == Prayer.SUNRISE
                 ),
 
                 PrayerItem(
-                    appContext.getString(com.devlomi.shared.R.string.dhuhr),
+                    getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.DHUHR,locale),
                     timeFormat.format(prayerTimes.timeForPrayer(Prayer.DHUHR)),
                     nextPrayer == Prayer.DHUHR
                 ),
                 PrayerItem(
-                    appContext.getString(com.devlomi.shared.R.string.asr),
+                    getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.ASR,locale),
                     timeFormat.format(prayerTimes.timeForPrayer(Prayer.ASR)),
                     nextPrayer == Prayer.ASR
                 ),
                 PrayerItem(
-                    appContext.getString(com.devlomi.shared.R.string.maghrib),
+                    getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.MAGHRIB,locale),
                     timeFormat.format(prayerTimes.timeForPrayer(Prayer.MAGHRIB)),
                     nextPrayer == Prayer.MAGHRIB
                 ),
                 PrayerItem(
-                    appContext.getString(com.devlomi.shared.R.string.ishaa),
+                    getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.ISHA,locale),
                     timeFormat.format(prayerTimes.timeForPrayer(Prayer.ISHA)),
                     nextPrayer == Prayer.ISHA
                 )

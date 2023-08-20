@@ -2,17 +2,20 @@ package com.devlomi.prayerwatchface
 
 import android.util.Log
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
+import com.devlomi.prayerwatchface.receivers.PrayerTimeReceiver
 import com.devlomi.shared.ConfigKeys
+import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.getBooleanOrNull
 import com.devlomi.shared.getDoubleOrNull
 import com.devlomi.shared.getIntOrNull
+import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
-import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.WearableListenerService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class DataListenerService : WearableListenerService() {
@@ -20,12 +23,26 @@ class DataListenerService : WearableListenerService() {
     private val settingsDatStore: SettingsDataStoreImp by lazy {
         (this.application as PrayerApp).appContainer.settingsDataStore
     }
+    private val schedulePrayerNotification: SchedulePrayerNotification by lazy {
+        SchedulePrayerNotification(
+            settingsDatStore, GetPrayerTimesWithConfigUseCase(settingsDatStore),
+            GetPrayerNameByLocaleUseCase(this)
+        )
+    }
 
     override fun onCreate() {
         super.onCreate()
 
     }
 
+
+    private fun checkAndRescheduleNotifications() {
+        scope.launch {
+            if (settingsDatStore.notificationsEnabled.first()) {
+                schedulePrayerNotification.schedule(this@DataListenerService)
+            }
+        }
+    }
 
     override fun onDataChanged(p0: DataEventBuffer) {
         super.onDataChanged(p0)
@@ -37,11 +54,21 @@ class DataListenerService : WearableListenerService() {
                     dataMap.getString(ConfigKeys.CALCULATION_METHOD)
                         ?.let {
                             settingsDatStore.setCalculationMethod(it)
+                            checkAndRescheduleNotifications()
                         }
                     dataMap.getString(ConfigKeys.ASR_CALC_MADHAB)
-                        ?.let { settingsDatStore.setMadhab(it) }
-                    dataMap.getDoubleOrNull(ConfigKeys.LAT)?.let { settingsDatStore.setLat(it) }
-                    dataMap.getDoubleOrNull(ConfigKeys.LNG)?.let { settingsDatStore.setLng(it) }
+                        ?.let {
+                            settingsDatStore.setMadhab(it)
+                            checkAndRescheduleNotifications()
+                        }
+                    dataMap.getDoubleOrNull(ConfigKeys.LAT)?.let {
+                        settingsDatStore.setLat(it)
+                        checkAndRescheduleNotifications()
+                    }
+                    dataMap.getDoubleOrNull(ConfigKeys.LNG)?.let {
+                        settingsDatStore.setLng(it)
+                        checkAndRescheduleNotifications()
+                    }
                     dataMap.getString(ConfigKeys.BACKGROUND_COLOR)
                         ?.let {
                             settingsDatStore.setBackgroundColor(it)
@@ -68,24 +95,31 @@ class DataListenerService : WearableListenerService() {
 
                     dataMap.getIntOrNull(ConfigKeys.FAJR_OFFSET)?.let {
                         settingsDatStore.setFajrOffset(it)
+                        checkAndRescheduleNotifications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.SHUROOQ_OFFSET)?.let {
                         settingsDatStore.setShurooqOffset(it)
+                        checkAndRescheduleNotifications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.DHUHR_OFFSET)?.let {
                         settingsDatStore.setDhuhrOffset(it)
+                        checkAndRescheduleNotifications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.ASR_OFFSET)?.let {
                         settingsDatStore.setAsrOffset(it)
+                        checkAndRescheduleNotifications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.MAGHRIB_OFFSET)?.let {
                         settingsDatStore.setMaghribOffset(it)
+                        checkAndRescheduleNotifications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.ISHA_OFFSET)?.let {
                         settingsDatStore.setIshaaOffset(it)
+                        checkAndRescheduleNotifications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.DAYLIGHT_SAVING_OFFSET)?.let {
                         settingsDatStore.setDaylightSavingTimeOffset(it)
+                        checkAndRescheduleNotifications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.ELAPSED_TIME_MINUTES)?.let {
                         settingsDatStore.setElapsedTimeMinutes(it)
@@ -96,15 +130,36 @@ class DataListenerService : WearableListenerService() {
                     dataMap.getBooleanOrNull(ConfigKeys.SHOW_PRAYER_TIMES_ON_CLICK)?.let {
                         settingsDatStore.openPrayerTimesOnClick(it)
                     }
+                    dataMap.getIntOrNull(ConfigKeys.LOCALE_TYPE)?.let {
+                        settingsDatStore.setLocale(it)
+                        checkAndRescheduleNotifications()
+                    }
+                    dataMap.getBooleanOrNull(ConfigKeys.NOTIFICATIONS_ENABLED)?.let {
+                        settingsDatStore.setNotificationsEnabled(it)
+                        onNotificationsChange(it)
+                    }
                 } catch (e: Exception) {
-
                 }
             }
         }
     }
 
+    private fun onNotificationsChange(boolean: Boolean) {
+        if (boolean) {
+            scope.launch {
+                try {
+
+                schedulePrayerNotification.schedule(this@DataListenerService)
+                }catch (e:Exception){
+                }
+            }
+        } else {
+            PrayerTimeReceiver.cancel(this)
+        }
+    }
+
     override fun onDestroy() {
-        scope.cancel()
+        //scope.cancel()
         super.onDestroy()
     }
 }

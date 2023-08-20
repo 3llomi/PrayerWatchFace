@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">PrayerWatchFace</string>
     <string name="please_enable_gps">يرجى تفعيل خدمات الموقع</string>
     <string name="enable_watch_location">تفعيل الموقع الخاص بالساعة</string>
+    <string name="prayer_time">وقت الصلاة</string>
+    <string name="time_for_prayer">حان موعد صلاة %s</string>
+
 </resources>

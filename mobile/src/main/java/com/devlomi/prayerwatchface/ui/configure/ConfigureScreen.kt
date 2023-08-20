@@ -42,6 +42,8 @@ import com.devlomi.prayerwatchface.common.Status
 import com.devlomi.prayerwatchface.common.isLoading
 import com.devlomi.prayerwatchface.ui.PreviewWatchFaceComposable
 import com.devlomi.prayerwatchface.ui.Screen
+import com.devlomi.prayerwatchface.ui.configure.locale.LocaleItem
+import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.WatchFacePainter
 import com.devlomi.shared.calculationmethod.CalculationMethodItem
 import com.devlomi.shared.madhab.MadhabItem
@@ -109,13 +111,25 @@ fun ConfigureScreen(
         skipHalfExpanded = true
     )
 
+    val localesSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
+    )
+
     val currentCalculationMethod by viewModel.currentCalculationMethod
     val currentMadhabMethod by viewModel.currentMadhab
     val openAppLinkOnWatchState = viewModel.openAppLinkResult.collectAsState()
-    BackHandler(calculationMethodsSheetState.isVisible || backgroundColorSheetState.isVisible) {
+    BackHandler(
+        calculationMethodsSheetState.isVisible
+                || backgroundColorSheetState.isVisible
+                || madhabMethodsSheetState.isVisible
+                || localesSheetState.isVisible
+    ) {
         coroutineScope.launch { calculationMethodsSheetState.hide() }
         coroutineScope.launch { madhabMethodsSheetState.hide() }
         coroutineScope.launch { backgroundColorSheetState.hide() }
+        coroutineScope.launch { localesSheetState.hide() }
     }
 
 
@@ -217,9 +231,11 @@ fun ConfigureScreen(
                                         calculationMethodsSheetState.show()
                                     }
                                 }
+
                                 1 -> coroutineScope.launch {
                                     madhabMethodsSheetState.show()
                                 }
+
                                 2 -> {
                                     if (hasGivenLocationPermissions(context)) {
                                         coroutineScope.launch {
@@ -241,6 +257,7 @@ fun ConfigureScreen(
                                                         CoLocation.SettingsResult.Satisfied -> requestLocation(
                                                             coLocation
                                                         )
+
                                                         is CoLocation.SettingsResult.Resolvable -> {
                                                             openLocationSettingsRequest.launch(
                                                                 IntentSenderRequest.Builder(it.exception.resolution.intentSender)
@@ -358,6 +375,32 @@ fun ConfigureScreen(
                 }
 
                 item {
+                    ConfigureItemCard(
+                        title = stringResource(R.string.locale),
+                        icon = R.drawable.ic_language,
+                        subtitle = null,
+                        onClick = {
+                            coroutineScope.launch {
+                                localesSheetState.show()
+                            }
+                        }
+                    )
+                }
+
+                item {
+                    ConfigureItemCardToggle(
+                        title = stringResource(R.string.notifications),
+                        icon = R.drawable.ic_notifications,
+                        subtitle = stringResource(R.string.show_notifications_desc),
+                        checked = viewModel.notificationsOn.value,
+                        onCheckedChange = {
+                            viewModel.onNotificationsChecked(it)
+                        },
+                        onClick = {}
+                    )
+                }
+
+                item {
                     Text(
                         modifier = Modifier.padding(
                             start = 4.dp,
@@ -431,6 +474,22 @@ fun ConfigureScreen(
             modifier = Modifier.fillMaxSize()
         ) {}
 
+        ModalBottomSheetLayout(
+            sheetState = localesSheetState,
+            sheetContent = {
+                LocaleBottomSheet(
+                    viewModel.localeItems.value,
+                    current = viewModel.currentLocaleType.value,
+                    onClick = {
+                        viewModel.onLocaleClick(it)
+                        coroutineScope.launch {
+                            localesSheetState.hide()
+                        }
+                    })
+            },
+            modifier = Modifier.fillMaxSize()
+        ) {}
+
         showProgress = openAppLinkOnWatchState.value.status.isLoading()
         when (openAppLinkOnWatchState.value.status) {
             Status.SUCCESS -> {
@@ -457,6 +516,7 @@ fun ConfigureScreen(
                     },
                 )
             }
+
             Status.ERROR -> {
                 AlertDialog(
                     onDismissRequest = {
@@ -475,6 +535,7 @@ fun ConfigureScreen(
                     },
                 )
             }
+
             else -> {}
         }
 
@@ -591,6 +652,31 @@ fun MadhabMethodsBottomSheet(
             ) {
                 RadioButton(selected = item.type == current, onClick = { onClick(item) })
                 Text(text = item.title)
+            }
+        }
+    }
+}
+
+@Composable
+fun LocaleBottomSheet(
+    itemList: List<LocaleItem>,
+    current: LocaleType,
+    onClick: (item: LocaleType) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier.padding(all = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        items(itemList) { item ->
+            Row(
+                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                    .clickable {
+                        onClick(item.type)
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                RadioButton(selected = item.type == current, onClick = { onClick(item.type) })
+                Text(text = item.text)
             }
         }
     }

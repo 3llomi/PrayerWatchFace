@@ -3,11 +3,13 @@ package com.devlomi.shared
 import android.content.Context
 import android.graphics.*
 import android.text.TextPaint
-import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.withTranslation
 import com.batoulapps.adhan.*
 import com.batoulapps.adhan.data.DateComponents
+import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
+import com.devlomi.shared.locale.LocaleHelper
+import com.devlomi.shared.locale.LocaleType
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -23,14 +25,15 @@ import java.util.concurrent.TimeUnit
 
 class WatchFacePainter(
     private val context: Context,
-    private val settingsDataStore: SettingsDataStore
+    private val settingsDataStore: SettingsDataStore,
+    private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase
 ) {
     private lateinit var hijriDate: HijrahDate
 
     private lateinit var timeFormat: SimpleDateFormat
     private var amPmFormat: SimpleDateFormat
-    private var dayMonthFormat: SimpleDateFormat
-    private var dayNameFormat: SimpleDateFormat
+    private lateinit var dayMonthFormat: SimpleDateFormat
+    private lateinit var dayNameFormat: SimpleDateFormat
     private lateinit var prayerTimes: PrayerTimes
 
 
@@ -55,7 +58,7 @@ class WatchFacePainter(
     private var ambientForegroundColor = -1
     private var greyTextColor = -1
 
-    private var hijriDateFormatter: DateTimeFormatter
+    private lateinit var hijriDateFormatter: DateTimeFormatter
 
     private var mAmbient: Boolean = false
     private var currentDate = ""
@@ -83,10 +86,13 @@ class WatchFacePainter(
     private var hijriOffset = 0
     private var elapsedTimeEnabled = false
     private var elapsedTimeMinutes = 0
+    private var localeType = LocaleType.ENGLISH
+    private var locale: Locale = Locale.US
 
 
     init {
 
+        listenForLocale()
         listenForBackgroundColor()
         listenForPrayerConfig()
         listenForPrayerOffset()
@@ -94,14 +100,32 @@ class WatchFacePainter(
 
         initializeTimeFormat(is24Hours)
         amPmFormat = SimpleDateFormat("a", Locale.US)
-        dayMonthFormat = SimpleDateFormat("dd MMM", Locale.US)
-        dayNameFormat = SimpleDateFormat("EEE", Locale.US)
-
-        hijriDateFormatter = DateTimeFormatter.ofPattern("dd MMM", Locale.US)
+        initializeDateFormatters()
 
 
         initializeColors()
         initializePaint()
+    }
+
+    private fun initializeDateFormatters() {
+
+        dayMonthFormat = SimpleDateFormat("dd MMM", locale)
+        dayNameFormat = SimpleDateFormat("EEE", locale)
+
+        hijriDateFormatter = DateTimeFormatter.ofPattern("dd MMM", locale)
+    }
+
+    private fun listenForLocale() {
+        scope.launch {
+            settingsDataStore.locale.collectLatest { type ->
+                LocaleType.values().firstOrNull { it.id == type }?.let { locale ->
+                    localeType = locale
+                    this@WatchFacePainter.locale = LocaleHelper.getLocale(localeType)
+                    initializeDateFormatters()
+                    _changeState.emit(Unit)
+                }
+            }
+        }
     }
 
     private fun listenForPrayerConfig() {
@@ -454,7 +478,8 @@ class WatchFacePainter(
         val width = timeLeftTextPaint.measureText(time)
         val height = time.getBounds(timeLeftTextPaint).height()
 
-        val remainingText = "REMAINING"
+
+        val remainingText = context.getLocaleStringResource(locale, R.string.remaining)
         val remainingWidth = remainingTextPaint.measureText(remainingText)
         val remainingHeight = remainingText.getBounds(remainingTextPaint).height()
         val remainingX = this.width / 2 - remainingWidth - dpToPx(8f, context)
@@ -499,7 +524,11 @@ class WatchFacePainter(
         val width = timeLeftTextPaint.measureText(time)
         val height = time.getBounds(timeLeftTextPaint).height()
 
-        val remainingText = "ELAPSED"
+        val remainingText =
+            context.getLocaleStringResource(
+                locale,
+                R.string.elapsed
+            )
         val remainingWidth = remainingTextPaint.measureText(remainingText)
         val remainingHeight = remainingText.getBounds(remainingTextPaint).height()
         val remainingX = this.width / 2 - remainingWidth - dpToPx(8f, context)
@@ -540,7 +569,10 @@ class WatchFacePainter(
     private fun drawCurrentPrayerForElapsedTime(canvas: Canvas) {
         val previousPrayer = prayerTimes.previousPrayer()
 
-        val prayerName = previousPrayer.name
+        val prayerName = getPrayerNameByLocaleUseCase.getPrayerNameByLocale(
+            previousPrayer,
+            locale
+        )
 
         val prayerNameWidth = prayerNameTextPaint.measureText(prayerName)
 
@@ -569,7 +601,10 @@ class WatchFacePainter(
             return
         }
 
-        val prayerName = nextPrayer.name
+        val prayerName = getPrayerNameByLocaleUseCase.getPrayerNameByLocale(
+            nextPrayer,
+            locale
+        )
 
         val prayerNameWidth = prayerNameTextPaint.measureText(prayerName)
 

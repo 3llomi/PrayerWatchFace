@@ -13,19 +13,24 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.R
+import com.devlomi.prayerwatchface.SchedulePrayerNotification
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.ui.sendToMobile
 import com.devlomi.shared.ConfigKeys
+import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.calculationmethod.CalculationMethodDataSource
+import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.madhab.MadhabMethodsDataSource
 import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class ConfigureWatchFaceViewModel(
     private val appContext: Context,
-    private val settingsDataStore: SettingsDataStoreImp
+    private val settingsDataStore: SettingsDataStoreImp,
+    private val schedulePrayerNotification: SchedulePrayerNotification
 ) : ViewModel() {
     private val dataClient by lazy { Wearable.getDataClient(appContext) }
 
@@ -41,9 +46,16 @@ class ConfigureWatchFaceViewModel(
                 val settingsDataStore =
                     baseApplication.appContainer.settingsDataStore
 
+                val schedulePrayerNotification =
+                    SchedulePrayerNotification(
+                        settingsDataStore, GetPrayerTimesWithConfigUseCase(settingsDataStore),
+                        GetPrayerNameByLocaleUseCase(baseApplication)
+                    )
+
                 ConfigureWatchFaceViewModel(
                     baseApplication,
-                    settingsDataStore
+                    settingsDataStore,
+                    schedulePrayerNotification
                 )
             }
         }
@@ -104,6 +116,8 @@ class ConfigureWatchFaceViewModel(
             }
         }
 
+        scheduleNotifications()
+
     }
 
     private fun latLngFlow() = settingsDataStore.lat.combine(settingsDataStore.lng) { lat, lng ->
@@ -134,5 +148,14 @@ class ConfigureWatchFaceViewModel(
         }
     }
 
+    private fun scheduleNotifications() {
+        //Schedule for the first time if enabled.
+        viewModelScope.launch {
+            val notificationsEnabled = settingsDataStore.notificationsEnabled.first()
+            if (notificationsEnabled) {
+                schedulePrayerNotification.schedule(appContext)
+            }
+        }
+    }
 
 }

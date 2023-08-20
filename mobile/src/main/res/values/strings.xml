@@ -20,4 +20,11 @@
     <string name="elapsed_time_desc">If enabled, elapsed time will show up after the prayer time for the selected minutes.</string>
     <string name="show_prayer_times_on_click">Show Prayer Times on click</string>
     <string name="show_prayer_times_on_click_desc">Show all prayer times when clicking on the Watch Face.</string>
+    <string name="locale">Locale</string>
+    <string name="arabic">Arabic</string>
+    <string name="english_default">English(Default)</string>
+    <string name="turkish">Turkish</string>
+    <string name="locale_device">Device\'s Locale</string>
+    <string name="notifications">Notifications</string>
+    <string name="show_notifications_desc">Show a Notification when it\'s time for Prayer.</string>
 </resources>

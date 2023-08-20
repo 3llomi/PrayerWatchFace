@@ -1,0 +1,29 @@
+<resources>
+    <string name="sync_change_notice">Ayarları değiştirdikten sonra saatine senkronize edilecektir</string>
+    <string name="install_watch_app">akıllı saatta uygulaması yükle/indir</string>
+    <string name="no_connected_watches">Bağlı saat bulunamadı. Lütfen saatinizin bağlı olduğundan emin olun.</string>
+    <string name="couldnt_send_app_to_watch">Uygulama saatine gönderilemedi. Saatinizin telefonunuzla eşleştiğinden ve bağlı olduğundan emin olun.</string>
+    <string name="watch_app_sent">Bir bildirim saatine gönderildi\n%s\nGoogle Play üzerinden yüklemek için.</string>
+    <string name="ok">Tamam</string>
+    <string name="background_color">Arka Plan Rengi</string>
+    <string name="bottom_part_background_color">Alt Kısım Arka Plan Rengi</string>
+    <string name="foreground_color">Ön Plan Rengi</string>
+    <string name="foreground_color_bottom_part">Alt Kısım Ön Plan Rengi</string>
+    <string name="colors">Renkler</string>
+    <string name="twenty_four_hours">24 saat</string>
+    <string name="hijri_offset">Hicri Ayar</string>
+    <string name="prayer_times">Namaz Vakitleri</string>
+    <string name="daylight_saving_time">Yaz Saati</string>
+    <string name="daylight_type">(Saat)</string>
+    <string name="elapsed_time">Geçen Zaman</string>
+    <string name="elapsed_time_desc">Etkinleştirildiğinde, belirtilen dakika sonra namaz vaktinden sonraki geçen süre görüntülenecektir.</string>
+    <string name="show_prayer_times_on_click">Bastığınızda namaz vakti göster</string>
+    <string name="show_prayer_times_on_click_desc">Saat yüzüne tıklandığında tüm namaz vakitlerini göster.</string>
+    <string name="locale">Dil</string>
+    <string name="arabic">Arapça</string>
+    <string name="english_default">İngilizce (Varsayılan)</string>
+    <string name="turkish">Türkçe</string>
+    <string name="locale_device">Cihazın Dili</string>
+    <string name="notifications">Bildirimler\n</string>
+    <string name="show_notifications_desc">Namaz vakti geldiğinde bildirimleri göster.</string>
+</resources>

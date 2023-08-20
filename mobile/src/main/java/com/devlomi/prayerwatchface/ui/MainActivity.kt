@@ -34,8 +34,13 @@ class MainActivity : ComponentActivity() {
     private val settingsDatStore: SettingsDataStoreImp by lazy {
         (application as PrayerApp).appContainer.settingsDataStore
     }
+
+    private val getPrayerNameByLocaleUseCase: com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase by lazy {
+        com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase(this)
+    }
+
     private val watchFacePainter: com.devlomi.shared.WatchFacePainter by lazy {
-        com.devlomi.shared.WatchFacePainter(this, settingsDatStore)
+        com.devlomi.shared.WatchFacePainter(this, settingsDatStore,getPrayerNameByLocaleUseCase)
     }
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

@@ -23,4 +23,7 @@
     <string name="asr">العصر</string>
     <string name="maghrib">المغرب</string>
     <string name="ishaa">العشاء</string>
+    <string name="elapsed">مَضى</string>
+    <string name="remaining">المتبقي</string>
+
 </resources>

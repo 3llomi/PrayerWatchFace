@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.SettingsDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -155,6 +156,11 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     private val _openPrayerTimesOnClick =
         booleanPreferencesKey("open_prayer_times_on_click")
 
+    private val _locale = intPreferencesKey("locale")
+
+    private val _notificationsEnabled =
+        booleanPreferencesKey("notificationsEnabled")
+
     override val fajrOffset: Flow<Int> = context.dataStore.data
         .map { preferences ->
             preferences[_fajrOffset] ?: 0
@@ -261,6 +267,26 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     override suspend fun openPrayerTimesOnClick(boolean: Boolean) {
         context.dataStore.edit { data ->
             data[_openPrayerTimesOnClick] = boolean
+        }
+    }
+
+    override val locale: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[_locale] ?: LocaleType.ENGLISH.id
+    }
+
+    override suspend fun setLocale(type: Int) {
+        context.dataStore.edit { data ->
+            data[_locale] = type
+        }
+    }
+
+    override val notificationsEnabled: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[_notificationsEnabled] ?: true
+    }
+
+    override suspend fun setNotificationsEnabled(boolean: Boolean) {
+        context.dataStore.edit {data ->
+            data[_notificationsEnabled] = boolean
         }
     }
 }

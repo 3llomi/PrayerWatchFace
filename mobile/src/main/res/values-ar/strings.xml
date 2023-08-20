@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Prayer WatchFace</string>
     <string name="sync_change_notice">سيتم مزامنة الإعدادات مع الساعة بعد تغيير الإعدادات</string>
     <string name="install_watch_app">تثبيت التطبيق على الساعة الذكية</string>
     <string name="no_connected_watches">لاتوجد ساعات ذكية متصلة. تأكد أن ساعتك متصلة.</string>
@@ -17,4 +16,15 @@
     <string name="prayer_times">أوقات الصلاة</string>
     <string name="daylight_saving_time">التوقيت الصيفي/الشتوي</string>
     <string name="daylight_type">(ساعة)</string>
+    <string name="elapsed_time">الوقت الذي مَضى</string>
+    <string name="elapsed_time_desc">عندما يتم تفعيل هذا الخيار, سيتم إظهار الوقت الذي مَضى على الصلاة</string>
+    <string name="show_prayer_times_on_click">إظهار أوقات الصلاة عند الضغط</string>
+    <string name="show_prayer_times_on_click_desc">إظهار أوقات الصلاة عند الضغط على الساعة</string>
+    <string name="locale">اللغة/المنطقة</string>
+    <string name="arabic">العربية</string>
+    <string name="english_default">الإنجليزية (الإفتراضي)</string>
+    <string name="turkish">التركية</string>
+    <string name="locale_device">لغة/منطقة الجهاز</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="show_notifications_desc">إظهار إشعار عندما يحين وقت الصلاة</string>
 </resources>

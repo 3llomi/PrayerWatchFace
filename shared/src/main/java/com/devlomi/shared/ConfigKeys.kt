@@ -21,6 +21,8 @@ object ConfigKeys {
     const val ELAPSED_TIME_ENABLED = "elapsedTimeEnabled"
     const val ELAPSED_TIME_MINUTES = "elapsedMinutes"
     const val SHOW_PRAYER_TIMES_ON_CLICK = "showPrayerTimesOnClick"
+    const val LOCALE_TYPE = "localeType"
+    const val NOTIFICATIONS_ENABLED = "notificationsEnabled"
 
 
 }
