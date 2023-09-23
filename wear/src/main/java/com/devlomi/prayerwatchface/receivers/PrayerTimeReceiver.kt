@@ -30,22 +30,19 @@ class PrayerTimeReceiver : BroadcastReceiver() {
     companion object {
         private const val REQUEST_CODE = 0
         fun schedule(context: Context, timestamp: Long, prayerName: String) {
-            val  sdf = SimpleDateFormat("hh:mm")
             val date = Date()
             date.time = timestamp
-            val scheduledAt = sdf.format(timestamp)
 
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(context, PrayerTimeReceiver::class.java)
             intent.putExtra("prayerName", prayerName)
-            intent.putExtra("scheduledAt", scheduledAt)
 
             val pendingIntent =
                 PendingIntent.getBroadcast(
                     context,
                     REQUEST_CODE,
                     intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(timestamp,pendingIntent),pendingIntent)
 
@@ -59,7 +56,7 @@ class PrayerTimeReceiver : BroadcastReceiver() {
                     context,
                     REQUEST_CODE,
                     intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
             alarmManager.cancel(pendingIntent)
         }
@@ -67,10 +64,8 @@ class PrayerTimeReceiver : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        //TODO HANDLE Time change
         val prayerName = intent.getStringExtra("prayerName") ?: ""
-        val scheduledAt = intent.getStringExtra("scheduledAt") ?: ""
-        fireNotification(context, prayerName,scheduledAt)
+        fireNotification(context, prayerName)
         scope.launch {
             val settingsDataStore =
                 (context.applicationContext as PrayerApp).appContainer.settingsDataStore
@@ -89,8 +84,7 @@ class PrayerTimeReceiver : BroadcastReceiver() {
         }
     }
 
-    //TODO REMOVE SCHEDULED AT
-    private fun fireNotification(context: Context, prayerName: String, scheduledAt: String) {
+    private fun fireNotification(context: Context, prayerName: String) {
         // Build the notification
         val channelId = "PrayerTimeNotification"
         val notificationChannel = NotificationChannel(
