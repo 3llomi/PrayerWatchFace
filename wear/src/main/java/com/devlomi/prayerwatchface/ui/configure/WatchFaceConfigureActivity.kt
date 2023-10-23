@@ -12,6 +12,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.SchedulePrayerNotification
@@ -31,6 +32,7 @@ class WatchFaceConfigureActivity : ComponentActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         if (Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(

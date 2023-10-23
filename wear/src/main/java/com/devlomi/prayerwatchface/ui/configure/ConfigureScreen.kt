@@ -13,6 +13,9 @@ import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -21,14 +24,29 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.input.rotary.onRotaryScrollEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.location.LocationManagerCompat
+import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.navigation.NavController
-import androidx.wear.compose.material.*
+import androidx.wear.compose.foundation.ExperimentalWearFoundationApi
+import androidx.wear.compose.foundation.lazy.AutoCenteringParams
+import androidx.wear.compose.foundation.lazy.ScalingLazyColumn
+import androidx.wear.compose.foundation.lazy.itemsIndexed
+import androidx.wear.compose.foundation.lazy.rememberScalingLazyListState
+import androidx.wear.compose.foundation.rememberActiveFocusRequester
+import androidx.wear.compose.material.Button
+import androidx.wear.compose.material.CircularProgressIndicator
+import androidx.wear.compose.material.Icon
+import androidx.wear.compose.material.MaterialTheme
+import androidx.wear.compose.material.PositionIndicator
+import androidx.wear.compose.material.Scaffold
+import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.dialog.Alert
 import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.ui.Screen
@@ -37,10 +55,14 @@ import com.patloew.colocation.CoLocation
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalWearFoundationApi::class)
 @Composable
 fun ConfigureScreen(viewModel: ConfigureWatchFaceViewModel, navController: NavController) {
     val items by viewModel.items
     val coroutineScope = rememberCoroutineScope()
+    val listState = rememberScalingLazyListState()
+    val focusRequester = rememberActiveFocusRequester()
+
     val context = LocalContext.current
 
     val coLocation = remember {
@@ -82,45 +104,62 @@ fun ConfigureScreen(viewModel: ConfigureWatchFaceViewModel, navController: NavCo
     }
 
 
-    ScalingLazyColumn {
-        itemsIndexed(items) { index, item ->
+    Scaffold(
+        positionIndicator = {
+            PositionIndicator(scalingLazyListState = listState)
+        }
+    ) {
+        ScalingLazyColumn(
+            modifier = Modifier
+                .onRotaryScrollEvent {
+                    coroutineScope.launch {
+                        listState.scrollBy(it.verticalScrollPixels)
+                    }
+                    true
+                }
+                .focusRequester(focusRequester)
+                .focusable(),
+            autoCentering = AutoCenteringParams(0),
+            state = listState)
+        {
+            itemsIndexed(items) { index, item ->
 
-            ConfigureItemChip(
-                item.title,
-                item.subtitle,
-                item.icon,
-                onClick = { clicked ->
-                    when (index) {
-                        0 -> navController.navigate(route = Screen.CalculationMethods.route)
-                        1 -> navController.navigate(route = Screen.MadhabMethods.route)
-                        2 -> {
-                            if (hasGivenLocationPermissions(context)) {
+                ConfigureItemChip(
+                    item.title,
+                    item.subtitle,
+                    item.icon,
+                    onClick = { clicked ->
+                        when (index) {
+                            0 -> navController.navigate(route = Screen.CalculationMethods.route)
+                            1 -> navController.navigate(route = Screen.MadhabMethods.route)
+                            2 -> {
+                                if (hasGivenLocationPermissions(context)) {
 
-                                coroutineScope.launch {
-                                    if (isLocationEnabled(context)) {
-                                        showProgress = true
-                                        requestLocation(coLocation)?.let { location ->
-                                            showProgress = false
+                                    coroutineScope.launch {
+                                        if (isLocationEnabled(context)) {
+                                            showProgress = true
+                                            requestLocation(coLocation)?.let { location ->
+                                                showProgress = false
 
-                                            Toast.makeText(
-                                                context,
-                                                com.devlomi.shared.R.string.location_updated,
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            viewModel.setLocation(location)
+                                                Toast.makeText(
+                                                    context,
+                                                    com.devlomi.shared.R.string.location_updated,
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                                viewModel.setLocation(location)
+                                            }
+                                        } else {
+                                            showLocationDialog = true
                                         }
-                                    } else {
-                                        showLocationDialog = true
                                     }
+                                } else {
+                                    checkPermissions(getPermission)
                                 }
-                            } else {
-                                checkPermissions(getPermission)
                             }
                         }
-                    }
-                })
+                    })
+            }
         }
-
     }
     if (showLocationDialog) {
         Alert(

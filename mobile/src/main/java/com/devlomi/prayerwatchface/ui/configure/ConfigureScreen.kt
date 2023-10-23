@@ -43,9 +43,9 @@ import com.devlomi.prayerwatchface.common.isLoading
 import com.devlomi.prayerwatchface.ui.PreviewWatchFaceComposable
 import com.devlomi.prayerwatchface.ui.Screen
 import com.devlomi.prayerwatchface.ui.configure.locale.LocaleItem
-import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.WatchFacePainter
 import com.devlomi.shared.calculationmethod.CalculationMethodItem
+import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.madhab.MadhabItem
 import com.devlomi.shared.toHexColor
 import com.godaddy.android.colorpicker.ClassicColorPicker
@@ -394,6 +394,9 @@ fun ConfigureScreen(
                         subtitle = stringResource(R.string.show_notifications_desc),
                         checked = viewModel.notificationsOn.value,
                         onCheckedChange = {
+                            if(it){
+
+                            }
                             viewModel.onNotificationsChecked(it)
                         },
                         onClick = {}
@@ -490,6 +493,29 @@ fun ConfigureScreen(
             modifier = Modifier.fillMaxSize()
         ) {}
 
+
+        if(viewModel.showDialogWhenEnablingNotifications.value){
+            AlertDialog(
+                onDismissRequest = {
+                    viewModel.onDismissingDialogWhenNotificationEnabled()
+                },
+                text = {
+                    Text(
+                        stringResource(
+                            R.string.enable_notifications_notice,
+                        )
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            viewModel.onDismissingDialogWhenNotificationEnabled()
+                        }) {
+                        Text(stringResource(R.string.ok))
+                    }
+                },
+            )
+        }
         showProgress = openAppLinkOnWatchState.value.status.isLoading()
         when (openAppLinkOnWatchState.value.status) {
             Status.SUCCESS -> {

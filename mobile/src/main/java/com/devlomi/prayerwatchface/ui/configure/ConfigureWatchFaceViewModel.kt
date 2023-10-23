@@ -124,6 +124,10 @@ class ConfigureWatchFaceViewModel(
     private val _openAppLinkResult = MutableStateFlow<Resource<List<String>>>(Resource.initial())
     val openAppLinkResult: StateFlow<Resource<List<String>>> get() = _openAppLinkResult
 
+    private val _showDialogWhenEnablingNotifications = mutableStateOf(false)
+    val showDialogWhenEnablingNotifications: State<Boolean> get() = _showDialogWhenEnablingNotifications
+
+
     private val _hijriOffset: MutableState<Int> =
         mutableStateOf(0)
     val hijriOffset: State<Int>
@@ -926,7 +930,14 @@ class ConfigureWatchFaceViewModel(
         }
     }
 
+    fun onDismissingDialogWhenNotificationEnabled() {
+        _showDialogWhenEnablingNotifications.value = false
+    }
+
     fun onNotificationsChecked(boolean: Boolean) {
+        if (boolean) {
+            _showDialogWhenEnablingNotifications.value = true
+        }
         viewModelScope.launch {
             settingsDataStore.setNotificationsEnabled(boolean)
             sendToWatch {
