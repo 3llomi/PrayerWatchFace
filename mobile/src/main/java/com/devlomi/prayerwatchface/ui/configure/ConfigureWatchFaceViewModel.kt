@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.location.Location
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -20,12 +21,14 @@ import com.batoulapps.adhan.data.DateComponents
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.common.Resource
+import com.devlomi.prayerwatchface.common.sendToWatch
 import com.devlomi.prayerwatchface.data.LocaleDataSource
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.ui.configure.locale.LocaleItem
 import com.devlomi.prayerwatchface.ui.configure.prayer_times_adjustment.PrayerItem
 import com.devlomi.shared.BackgroundColorSettingsItem
 import com.devlomi.shared.ConfigKeys
+import com.devlomi.shared.FontSize
 import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.PrayerConfigItem
 import com.devlomi.shared.await
@@ -33,8 +36,6 @@ import com.devlomi.shared.calculationmethod.CalculationMethodDataSource
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.locale.LocaleHelper
 import com.devlomi.shared.madhab.MadhabMethodsDataSource
-import com.google.android.gms.wearable.DataMap
-import com.google.android.gms.wearable.PutDataMapRequest
 import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.guava.await
@@ -181,6 +182,18 @@ class ConfigureWatchFaceViewModel(
     val notificationsOn: State<Boolean>
         get() = _notificationsOn
 
+    private val _removeBottomPart: MutableState<Boolean> =
+        mutableStateOf(true)
+    val removeBottomPart: State<Boolean>
+        get() = _removeBottomPart
+
+    //used to debounce events while changing
+    private val fontSizeSliderFlow = MutableStateFlow<Float>(-1f)
+
+    private val _fontSizeSliderState: MutableState<Float> = mutableStateOf(0f)
+    val fontSizeSliderState: State<Float>
+        get() = _fontSizeSliderState
+
     private lateinit var timeFormat: SimpleDateFormat
 
 
@@ -285,7 +298,47 @@ class ConfigureWatchFaceViewModel(
         listenForShowPrayerTimesOnClick()
         listenForLocaleChange()
         listenForNotifications()
+        listenForRemoveBottomPart()
         scheduleNotifications()
+        listenForFontSize()
+    }
+
+    private fun listenForFontSize() {
+        viewModelScope.launch {
+            settingsDataStore.getFontSizeConfig.first().let {
+
+                val sliderValue:Float = when (it) {
+                    FontSize.MEDIUM -> 100f / 3
+                    FontSize.LARGE -> 100f /1.5f
+                    FontSize.EXTRA_LARGE -> 100f
+                    else -> 0f
+                }
+                _fontSizeSliderState.value = sliderValue
+                listenForFontSizeSlideChange()
+            }
+        }
+    }
+
+    private fun listenForFontSizeSlideChange() {
+        viewModelScope.launch {
+            fontSizeSliderFlow.debounce(200).distinctUntilChanged().filter { it != -1f }.collectLatest {
+                viewModelScope.launch {
+                    val fontSize = getFontSizeConfigBySliderValue(it)
+                    settingsDataStore.setFontSizeConfig(fontSize)
+                    dataClient.sendToWatch {
+                        it.putInt(ConfigKeys.FONT_SIZE, fontSize)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun listenForRemoveBottomPart() {
+        viewModelScope.launch {
+            settingsDataStore.isBottomPartRemoved.collectLatest {
+                _removeBottomPart.value = it
+            }
+        }
     }
 
     private fun scheduleNotifications() {
@@ -293,7 +346,7 @@ class ConfigureWatchFaceViewModel(
         viewModelScope.launch {
             val notificationsEnabled = settingsDataStore.notificationsEnabled.first()
             if (notificationsEnabled) {
-                sendToWatch {
+                dataClient.sendToWatch {
                     it.putBoolean(ConfigKeys.NOTIFICATIONS_ENABLED, true)
                 }
             }
@@ -583,7 +636,7 @@ class ConfigureWatchFaceViewModel(
         viewModelScope.launch {
             settingsDataStore.setLat(currentLocation.latitude)
             settingsDataStore.setLng(currentLocation.longitude)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putDouble(ConfigKeys.LAT, currentLocation.latitude)
                 it.putDouble(ConfigKeys.LNG, currentLocation.longitude)
             }
@@ -593,7 +646,7 @@ class ConfigureWatchFaceViewModel(
     fun calculationMethodPicked(calculationMethod: CalculationMethod) {
         viewModelScope.launch {
             settingsDataStore.setCalculationMethod(calculationMethod.name)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putString(ConfigKeys.CALCULATION_METHOD, calculationMethod.name)
             }
         }
@@ -602,31 +655,12 @@ class ConfigureWatchFaceViewModel(
     fun madhabMethodPicked(madhab: Madhab) {
         viewModelScope.launch {
             settingsDataStore.setMadhab(madhab.name)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putString(ConfigKeys.ASR_CALC_MADHAB, madhab.name)
             }
         }
     }
 
-
-    suspend fun sendToWatch(callback: (DataMap) -> Unit) {
-        /*
-        If we were sending the same keys to the watch, it may not be sent since it may be the same
-        That's why we're adding the 'time' to force update
-         */
-
-        try {
-            val request = PutDataMapRequest.create("/config").apply {
-                callback(this.dataMap)
-                //used to force update
-                this.dataMap.putLong("time", System.currentTimeMillis())
-            }.setUrgent().asPutDataRequest()
-            dataClient.putDataItem(request).await()
-
-        } catch (e: Exception) {
-
-        }
-    }
 
     fun sendAppToWatch() {
         val appLink = "https://play.google.com/store/apps/details?id=com.devlomi.prayerwatchface"
@@ -675,7 +709,7 @@ class ConfigureWatchFaceViewModel(
     fun setBackgroundColor(color: String) {
         viewModelScope.launch {
             settingsDataStore.setBackgroundColor(color)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putString(ConfigKeys.BACKGROUND_COLOR, color)
             }
         }
@@ -684,7 +718,7 @@ class ConfigureWatchFaceViewModel(
     fun setBackgroundColorBottomPart(color: String) {
         viewModelScope.launch {
             settingsDataStore.setBackgroundBottomPart(color)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putString(ConfigKeys.BACKGROUND_COLOR_BOTTOM_PART, color)
             }
         }
@@ -693,7 +727,7 @@ class ConfigureWatchFaceViewModel(
     fun setForegroundColor(color: String) {
         viewModelScope.launch {
             settingsDataStore.setForegroundColor(color)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putString(ConfigKeys.FOREGROUND_COLOR, color)
             }
         }
@@ -702,7 +736,7 @@ class ConfigureWatchFaceViewModel(
     fun setForegroundColorBottomPart(color: String) {
         viewModelScope.launch {
             settingsDataStore.setForegroundBottomPart(color)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putString(ConfigKeys.FOREGROUND_COLOR_BOTTOM_PART, color)
             }
         }
@@ -712,7 +746,7 @@ class ConfigureWatchFaceViewModel(
     fun set24Hours(value: Boolean) {
         viewModelScope.launch {
             settingsDataStore.set24Hours(value)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putBoolean(ConfigKeys.TWENTY_FOUR_HOURS, value)
             }
         }
@@ -736,7 +770,7 @@ class ConfigureWatchFaceViewModel(
         offset: Int
     ) {
         settingsDataStore.setHijriOffset(offset)
-        sendToWatch {
+        dataClient.sendToWatch {
             it.putInt(ConfigKeys.HIJRI_OFFSET, offset)
         }
     }
@@ -851,7 +885,7 @@ class ConfigureWatchFaceViewModel(
     }
 
     private suspend fun sendPrayerTimeOffsetToWatch(key: String, offset: Int) {
-        sendToWatch {
+        dataClient.sendToWatch {
             it.putInt(key, offset)
         }
     }
@@ -859,7 +893,7 @@ class ConfigureWatchFaceViewModel(
     private fun setDaylightSavingOffset(offset: Int) {
         viewModelScope.launch {
             settingsDataStore.setDaylightSavingTimeOffset(offset)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putInt(ConfigKeys.DAYLIGHT_SAVING_OFFSET, offset)
             }
         }
@@ -883,7 +917,7 @@ class ConfigureWatchFaceViewModel(
 
         viewModelScope.launch {
             settingsDataStore.setElapsedTimeMinutes(newMinutes)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putInt(ConfigKeys.ELAPSED_TIME_MINUTES, newMinutes)
             }
         }
@@ -897,7 +931,7 @@ class ConfigureWatchFaceViewModel(
 
         viewModelScope.launch {
             settingsDataStore.setElapsedTimeMinutes(newMinutes)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putInt(ConfigKeys.ELAPSED_TIME_MINUTES, newMinutes)
             }
         }
@@ -906,7 +940,7 @@ class ConfigureWatchFaceViewModel(
     fun onElapsedTimeSwitchChange(boolean: Boolean) {
         viewModelScope.launch {
             settingsDataStore.setElapsedTimeEnabled(boolean)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putBoolean(ConfigKeys.ELAPSED_TIME_ENABLED, boolean)
             }
         }
@@ -915,7 +949,7 @@ class ConfigureWatchFaceViewModel(
     fun onShowPrayerTimesSwitchChange(boolean: Boolean) {
         viewModelScope.launch {
             settingsDataStore.openPrayerTimesOnClick(boolean)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putBoolean(ConfigKeys.SHOW_PRAYER_TIMES_ON_CLICK, boolean)
             }
         }
@@ -924,7 +958,7 @@ class ConfigureWatchFaceViewModel(
     fun onLocaleClick(localeType: LocaleType) {
         viewModelScope.launch {
             settingsDataStore.setLocale(localeType.id)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putInt(ConfigKeys.LOCALE_TYPE, localeType.id)
             }
         }
@@ -940,8 +974,34 @@ class ConfigureWatchFaceViewModel(
         }
         viewModelScope.launch {
             settingsDataStore.setNotificationsEnabled(boolean)
-            sendToWatch {
+            dataClient.sendToWatch {
                 it.putBoolean(ConfigKeys.NOTIFICATIONS_ENABLED, boolean)
+            }
+        }
+    }
+
+
+    fun fontSizeSliderChanged(sliderValue: Float) {
+        _fontSizeSliderState.value = sliderValue
+        viewModelScope.launch {
+            fontSizeSliderFlow.emit(sliderValue)
+        }
+    }
+
+    private fun getFontSizeConfigBySliderValue(sliderValue: Float): Int {
+        return when (sliderValue.toInt()) {
+            33 -> FontSize.MEDIUM
+            66 -> FontSize.LARGE
+            100 -> FontSize.EXTRA_LARGE
+            else -> FontSize.DEFAULT
+        }
+    }
+
+    fun onBottomPartRemoveChange(boolean: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.removeBottomPart(boolean)
+            dataClient.sendToWatch {
+                it.putBoolean(ConfigKeys.REMOVE_BOTTOM_PART, boolean)
             }
         }
     }

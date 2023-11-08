@@ -10,6 +10,9 @@ import com.batoulapps.adhan.PrayerTimes
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.wearable.DataMap
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.io.File
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -84,4 +87,18 @@ fun Context.getLocaleStringResource(
     config.setLocale(locale)
 
     return createConfigurationContext(config).getText(resourceId).toString()
+}
+
+fun InputStream.writeToFile(file: File) {
+    this.use { inputStream ->
+        file.outputStream().use { inputStream.copyTo(it) }
+    }
+}
+
+fun OutputStream.writeFromFile(file: File) {
+    this.use { outputStream ->
+        file.inputStream().use { inputStream ->
+            inputStream.copyTo(outputStream)
+        }
+    }
 }

@@ -22,6 +22,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.TextFields
+import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material.icons.sharp.Watch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -394,12 +397,117 @@ fun ConfigureScreen(
                         subtitle = stringResource(R.string.show_notifications_desc),
                         checked = viewModel.notificationsOn.value,
                         onCheckedChange = {
-                            if(it){
+                            if (it) {
 
                             }
                             viewModel.onNotificationsChecked(it)
                         },
                         onClick = {}
+                    )
+                }
+
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                            .wrapContentHeight(),
+                        shape = RoundedCornerShape(2.dp),
+                        elevation = 4.dp,
+
+                        ) {
+                        Column(
+                            modifier = Modifier.padding(
+                                top = 12.dp,
+                                bottom = 12.dp,
+                                start = 4.dp,
+                                end = 4.dp
+                            )
+                                .defaultMinSize(minHeight = 40.dp),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Row() {
+
+                                Icon(
+                                    Icons.Default.TextFields,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(30.dp)
+                                        .align(Alignment.CenterVertically)
+                                        .padding(start = 4.dp),
+                                    tint = colorResource(R.color.primary_variant)
+                                )
+                                Spacer(modifier = Modifier.size(8.dp))
+                                Text(text = stringResource(R.string.font_size))
+
+                            }
+
+                            Column(
+                                modifier = Modifier.fillMaxWidth()
+                                    .padding(start = 16.dp, end = 16.dp)
+                            ) {
+                                val sliderValue = viewModel.fontSizeSliderState.value
+                                Slider(
+                                    value = sliderValue,
+                                    onValueChange = {
+                                        viewModel.fontSizeSliderChanged(it)
+                                    },
+                                    colors = SliderDefaults.colors(
+                                        thumbColor = colorResource(R.color.primary_variant),
+                                        activeTrackColor = colorResource(R.color.primary_color),
+                                        inactiveTrackColor = Color.Gray,
+                                    ),
+                                    steps = 2,
+                                    valueRange = 0f..100f
+                                )
+                            }
+
+                        }
+                    }
+                }
+
+                item {
+                    Card(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                            .wrapContentHeight(),
+                        shape = RoundedCornerShape(2.dp),
+                        elevation = 4.dp,
+                        onClick = {
+                            navController.navigate(route = Screen.Wallpaper.route)
+                        }
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(
+                                top = 12.dp,
+                                bottom = 12.dp,
+                                start = 4.dp,
+                                end = 4.dp
+                            )
+                                .defaultMinSize(minHeight = 40.dp),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Row() {
+                                Icon(
+                                    Icons.Default.Wallpaper,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(30.dp)
+                                        .align(Alignment.CenterVertically)
+                                        .padding(start = 4.dp),
+                                    tint = colorResource(R.color.primary_variant)
+                                )
+                                Spacer(modifier = Modifier.size(8.dp))
+                                Text(text = stringResource(R.string.wallpaper))
+                            }
+                        }
+                    }
+                }
+                item {
+                    ConfigureItemCardToggle(
+                        title = stringResource(R.string.remove_bottom_part),
+                        subtitle = stringResource(R.string.remove_bottom_part_background),
+                        icon = R.drawable.ic_wallpaper,
+                        onClick = {},
+                        checked = viewModel.removeBottomPart.value,
+                        onCheckedChange = { viewModel.onBottomPartRemoveChange(it) }
                     )
                 }
 
@@ -494,7 +602,7 @@ fun ConfigureScreen(
         ) {}
 
 
-        if(viewModel.showDialogWhenEnablingNotifications.value){
+        if (viewModel.showDialogWhenEnablingNotifications.value) {
             AlertDialog(
                 onDismissRequest = {
                     viewModel.onDismissingDialogWhenNotificationEnabled()
@@ -582,7 +690,7 @@ fun WatchPreviewComposable(
         viewModel.updatePreviewState.value
         PreviewWatchFaceComposable(
             modifier = Modifier.align(Alignment.Center).size(200.dp)
-                .background(color = Color(viewModel.backgroundColor.value)),
+                .background(color = Color.White),
             watchFacePainter
         )
     }

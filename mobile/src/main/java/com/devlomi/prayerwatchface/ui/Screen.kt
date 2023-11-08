@@ -6,6 +6,7 @@ sealed class Screen(
     object Main : Screen("main")
     object Colors : Screen("colors")
     object PrayerTimes : Screen("prayer_times")
+    object Wallpaper : Screen("wallpaper")
 
 
 }

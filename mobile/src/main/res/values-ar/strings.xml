@@ -28,4 +28,11 @@
     <string name="notifications">الإشعارات</string>
     <string name="show_notifications_desc">إظهار إشعار عندما يحين وقت الصلاة</string>
     <string name="enable_notifications_notice">يرجى فتح التطبيق على الساعة ومنح الصلاحيات المطلوبة إذا تم طلبها.\\nبعض الساعات تحتوي على تطبيق إدارة خاص بالساعة,يجب عليك تفعيل الإشعارات من هذا التطبيق أيضاً</string>
+    <string name="font_size">حجم الخط</string>
+    <string name="wallpaper">الخلفية</string>
+    <string name="use_custom_wallpaper">استخدام خلفية مخصصة</string>
+    <string name="use_image_as_background">استخدام صورة كخلفية</string>
+    <string name="remove_bottom_part">إزالة الجزء السفلي</string>
+    <string name="remove_bottom_part_background">إزالة خلفية الجزء السفلي</string>
+    <string name="pick_image_from_gallery">إختر صورة من المعرض</string>
 </resources>

@@ -27,10 +27,13 @@ import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.ui.configure.*
 import com.devlomi.prayerwatchface.ui.configure.color_settings.ColorSettingsScreen
 import com.devlomi.prayerwatchface.ui.configure.prayer_times_adjustment.PrayerTimeAdjustmentScreen
+import com.devlomi.prayerwatchface.ui.configure.wallpaper.WallpaperSettingsScreen
+import com.devlomi.prayerwatchface.ui.configure.wallpaper.WallpaperSettingsViewModel
 
 
 class MainActivity : ComponentActivity() {
     private val viewModel: ConfigureWatchFaceViewModel by viewModels { ConfigureWatchFaceViewModel.Factory }
+    private val wallpaperSettingsViewModel: WallpaperSettingsViewModel by viewModels { WallpaperSettingsViewModel.Factory }
     private val settingsDatStore: SettingsDataStoreImp by lazy {
         (application as PrayerApp).appContainer.settingsDataStore
     }
@@ -98,6 +101,9 @@ class MainActivity : ComponentActivity() {
                                 PrayerTimeAdjustmentScreen(
                                     viewModel,
                                 )
+                            }
+                            composable(route = Screen.Wallpaper.route) {
+                                WallpaperSettingsScreen(wallpaperSettingsViewModel)
                             }
                         }
                     }

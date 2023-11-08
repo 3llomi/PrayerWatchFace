@@ -72,4 +72,16 @@ interface SettingsDataStore {
 
     val notificationsEnabled: Flow<Boolean>
     suspend fun setNotificationsEnabled(boolean: Boolean)
+
+    val getFontSizeConfig: Flow<Int>
+    suspend fun setFontSizeConfig(config: Int)
+    suspend fun setWallpaperName(wallpaperName: String)
+    val getWallpaperName: Flow<String?>
+
+    suspend fun setCustomWallpaperEnabled(boolean: Boolean)
+    val isCustomWallpaperEnabled: Flow<Boolean>
+
+    suspend fun removeBottomPart(boolean: Boolean)
+    val isBottomPartRemoved: Flow<Boolean>
+
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.Log
 import android.view.SurfaceHolder
+import androidx.core.content.ContextCompat
 import androidx.wear.watchface.*
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import com.devlomi.shared.WatchFacePainter
@@ -69,8 +70,8 @@ class PrayerWatchFaceRenderer(
         sharedAssets: PrayerSharedAssets
     ) {
         val isAmbient = renderParameters.drawMode == DrawMode.AMBIENT
-
-        watchFacePainter.drawBackground(canvas)
+        //Clear the canvas to prevent previous background bitmap shadow to show up.
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.MULTIPLY)
         watchFacePainter.draw(
             canvas,
             zonedDateTime,

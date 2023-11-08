@@ -23,6 +23,9 @@ object ConfigKeys {
     const val SHOW_PRAYER_TIMES_ON_CLICK = "showPrayerTimesOnClick"
     const val LOCALE_TYPE = "localeType"
     const val NOTIFICATIONS_ENABLED = "notificationsEnabled"
-
+    const val WALLPAPER = "wallpaper"
+    const val REMOVE_BOTTOM_PART = "remove-bpart"
+    const val FONT_SIZE = "font-size"
+    const val CUSTOM_WALLPAPER_ENABLED = "custom-wpper-enabled"
 
 }

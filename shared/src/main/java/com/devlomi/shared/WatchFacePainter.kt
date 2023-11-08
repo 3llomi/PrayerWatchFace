@@ -2,7 +2,9 @@ package com.devlomi.shared
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.fonts.Font
 import android.text.TextPaint
+import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.withTranslation
 import com.batoulapps.adhan.*
@@ -12,6 +14,7 @@ import com.devlomi.shared.locale.LocaleHelper
 import com.devlomi.shared.locale.LocaleType
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import java.io.File
 
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -37,6 +40,7 @@ class WatchFacePainter(
     private lateinit var prayerTimes: PrayerTimes
 
 
+    private lateinit var ambientBackgroundPaint: Paint
     private lateinit var mBackgroundPaint: Paint
     private lateinit var timePaint: TextPaint
     private lateinit var amPmPaint: TextPaint
@@ -88,23 +92,85 @@ class WatchFacePainter(
     private var elapsedTimeMinutes = 0
     private var localeType = LocaleType.ENGLISH
     private var locale: Locale = Locale.US
-
+    private var wallpaperBitmap: Bitmap? = null
+    private var removeBottomPart = false
 
     init {
+
+        initializeColors()
+        initializePaint()
 
         listenForLocale()
         listenForBackgroundColor()
         listenForPrayerConfig()
         listenForPrayerOffset()
         listenForElapsedTime()
-
+        listenForFontSize()
+        listenForWallpaper()
+        listenForBottomPart()
         initializeTimeFormat(is24Hours)
         amPmFormat = SimpleDateFormat("a", Locale.US)
         initializeDateFormatters()
 
+    }
 
-        initializeColors()
-        initializePaint()
+    private fun listenForBottomPart() {
+        scope.launch {
+            settingsDataStore.isBottomPartRemoved.collectLatest {
+                removeBottomPart = it
+                scope.launch {
+                    _changeState.emit(Unit)
+                }
+            }
+        }
+    }
+
+    private fun listenForWallpaper() {
+        scope.launch {
+            combine(
+                settingsDataStore.isCustomWallpaperEnabled.filterNotNull(),
+                settingsDataStore.getWallpaperName
+            ) { isCustomWallpaperEnabled, wallpaperName ->
+                return@combine Pair(isCustomWallpaperEnabled, wallpaperName)
+            }.collectLatest {
+                val (customWallpaperEnabled, wallpaperName) = it
+                if (!customWallpaperEnabled) {
+                    wallpaperBitmap = null
+                } else {
+                    try {
+                        val wallpaperFile =
+                            File(File(context.filesDir, "wallpapers_current"), wallpaperName)
+                        if (wallpaperFile.exists()) {
+                            wallpaperBitmap = BitmapFactory.decodeFile(wallpaperFile.path)
+                        }
+                    } catch (e: Exception) {
+
+                    }
+                }
+                scope.launch {
+                    _changeState.emit(Unit)
+                }
+            }
+        }
+    }
+
+    private fun getFontSizeAccu(fontSizeConfig: Int): Int {
+        val fontSizePixels = when (fontSizeConfig) {
+            FontSize.MEDIUM -> 2
+            FontSize.LARGE -> 4
+            FontSize.EXTRA_LARGE -> 6
+            else -> 0
+        }
+
+        return spToPx(fontSizePixels.toFloat(), context)
+    }
+
+    private fun listenForFontSize() {
+        scope.launch {
+            settingsDataStore.getFontSizeConfig.collectLatest {
+                updateFontSizes(getFontSizeAccu(it))
+            }
+        }
     }
 
     private fun initializeDateFormatters() {
@@ -349,6 +415,20 @@ class WatchFacePainter(
 
     }
 
+    private fun updateFontSizes(accu: Int) {
+        dayPaint.textSize = dayPaint.textSize + accu
+        timePaint.textSize = timePaint.textSize + accu
+        amPmPaint.textSize = amPmPaint.textSize + accu
+
+        dateTextPaint.textSize = dateTextPaint.textSize + accu
+        hijriTextPaint.textSize = hijriTextPaint.textSize + accu
+
+        prayerNameTextPaint.textSize = prayerNameTextPaint.textSize + accu
+        prayerTimeTextPaint.textSize = prayerTimeTextPaint.textSize + accu
+        remainingTextPaint.textSize = remainingTextPaint.textSize + accu
+        timeLeftTextPaint.textSize = timeLeftTextPaint.textSize + accu
+    }
+
     private fun setAntiAlias(bool: Boolean) {
         timePaint.isAntiAlias = bool
         amPmPaint.isAntiAlias = bool
@@ -374,6 +454,7 @@ class WatchFacePainter(
         this.width = width
         this.height = height
         mAmbient = isAmbient
+        drawBackground(canvas, width.toInt(), height.toInt())
 
 
         val date = Date.from(zonedDateTime.toInstant())
@@ -393,7 +474,7 @@ class WatchFacePainter(
             val date = Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))
             initPrayerTimes(date)
         }
-        if (!isAmbient) {
+        if (!isAmbient && !removeBottomPart) {
             drawBottomArc(canvas)
         }
         if (shouldDrawElapsedTime(date)) {
@@ -421,11 +502,24 @@ class WatchFacePainter(
     }
 
 
-    fun drawBackground(canvas: Canvas) {
+    private fun drawBackground(canvas: Canvas, width: Int, height: Int) {
         if (mAmbient) {
-            canvas.drawColor(Color.BLACK)
+            canvas.drawRect(Rect(0, 0, width, height), ambientBackgroundPaint)
         } else {
-            canvas.drawColor(mBackgroundPaint.color)
+            if (wallpaperBitmap != null) {
+                canvas.drawBitmap(
+                    wallpaperBitmap!!,
+                    null,
+                    Rect(0, 0, width, height),
+                    null
+                )
+                mBackgroundPaint.color = Color.BLACK
+                mBackgroundPaint.alpha = 179
+                canvas.drawRect(Rect(0, 0, width, height), mBackgroundPaint)
+            } else {
+                canvas.drawRect(Rect(0, 0, width, height), mBackgroundPaint)
+            }
+
         }
     }
 
@@ -741,6 +835,10 @@ class WatchFacePainter(
     private fun initializePaint() {
         mBackgroundPaint = Paint().apply {
             color = backgroundColor
+        }
+
+        ambientBackgroundPaint = Paint().apply {
+            color = Color.BLACK
         }
 
         bottomArcPaint = Paint().apply {

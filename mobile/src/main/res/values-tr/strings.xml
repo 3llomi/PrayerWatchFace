@@ -26,4 +26,13 @@
     <string name="locale_device">Cihazın Dili</string>
     <string name="notifications">Bildirimler\n</string>
     <string name="show_notifications_desc">Namaz vakti geldiğinde bildirimleri göster.</string>
+    <string name="enable_notifications_notice">Lütfen uygulamayı saat cihazınızda açtığınızdan ve Bildirim İzinlerini onayladığınızdan emin olun.\nBazı saatlerde, Bildirimleri etkinleştirmek için Saat Yöneticisi uygulamasını kullanmanız gerekebilir.</string>
+    <string name="font_size">Yazı Tipi Boyutu</string>
+    <string name="wallpaper">Duvar Kağıdı</string>
+    <string name="use_custom_wallpaper">Özel Duvar Kağıdı Kullan</string>
+    <string name="use_image_as_background">Arka plan olarak resim kullan</string>
+    <string name="remove_bottom_part">Alt Kısmı Kaldır</string>
+    <string name="remove_bottom_part_background">Alt Kısım Arka Planını Kaldır</string>
+    <string name="pick_image_from_gallery">Galeriden resim seç</string>
+
 </resources>

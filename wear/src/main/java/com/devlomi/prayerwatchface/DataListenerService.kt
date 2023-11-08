@@ -1,22 +1,32 @@
 package com.devlomi.prayerwatchface
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.receivers.PrayerTimeReceiver
 import com.devlomi.shared.ConfigKeys
 import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
+import com.devlomi.shared.await
 import com.devlomi.shared.getBooleanOrNull
 import com.devlomi.shared.getDoubleOrNull
 import com.devlomi.shared.getIntOrNull
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
+import com.devlomi.shared.writeToFile
+import com.google.android.gms.tasks.Tasks
+import com.google.android.gms.wearable.Asset
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
+import com.google.android.gms.wearable.Wearable
 import com.google.android.gms.wearable.WearableListenerService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.InputStream
+import java.util.UUID
 
 class DataListenerService : WearableListenerService() {
     private val scope = CoroutineScope(Dispatchers.Main)
@@ -138,19 +148,47 @@ class DataListenerService : WearableListenerService() {
                         settingsDatStore.setNotificationsEnabled(it)
                         onNotificationsChange(it)
                     }
+                    dataMap.getBooleanOrNull(ConfigKeys.CUSTOM_WALLPAPER_ENABLED)?.let {
+                        settingsDatStore.setCustomWallpaperEnabled(it)
+                    }
+                    dataMap.getIntOrNull(ConfigKeys.FONT_SIZE)?.let {
+                        settingsDatStore.setFontSizeConfig(it)
+                    }
+                    dataMap.getBooleanOrNull(ConfigKeys.REMOVE_BOTTOM_PART)?.let {
+                        settingsDatStore.removeBottomPart(it)
+                    }
+                    dataMap.getAsset(ConfigKeys.WALLPAPER)?.let {
+                        handleWallpaperAsset(it)
+                    }
                 } catch (e: Exception) {
                 }
             }
         }
     }
 
+    private suspend fun handleWallpaperAsset(it: Asset) {
+        val fdForAsset =
+            Wearable.getDataClient(this@DataListenerService).getFdForAsset(it)
+                .await()
+
+        val assetInputStream = fdForAsset?.inputStream ?: return
+
+        val fileName = UUID.randomUUID().toString()
+        val wallpapersFolder = File(filesDir, "wallpapers_current")
+        val wallpaperFile = File(wallpapersFolder, fileName)
+        if (!wallpapersFolder.exists()) {
+            wallpapersFolder.mkdir()
+        }
+        assetInputStream.writeToFile(wallpaperFile)
+        settingsDatStore.setWallpaperName(fileName)
+    }
+
     private fun onNotificationsChange(boolean: Boolean) {
         if (boolean) {
             scope.launch {
                 try {
-
-                schedulePrayerNotification.schedule(this@DataListenerService)
-                }catch (e:Exception){
+                    schedulePrayerNotification.schedule(this@DataListenerService)
+                } catch (e: Exception) {
                 }
             }
         } else {

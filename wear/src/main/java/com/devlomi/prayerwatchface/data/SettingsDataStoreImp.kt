@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.devlomi.shared.FontSize
 import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.SettingsDataStore
 import kotlinx.coroutines.flow.Flow
@@ -161,6 +162,15 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     private val _notificationsEnabled =
         booleanPreferencesKey("notificationsEnabled")
 
+    private val _fontSizeConfig =
+        intPreferencesKey("fontSizeConfig")
+    private val _wallpaperName =
+        stringPreferencesKey("wallpaperName")
+    private val _customWallpaperEnabled =
+        booleanPreferencesKey("customWallpaperEnabled")
+    private val _removeBottomPart =
+        booleanPreferencesKey("removeBottomPart")
+
     override val fajrOffset: Flow<Int> = context.dataStore.data
         .map { preferences ->
             preferences[_fajrOffset] ?: 0
@@ -289,4 +299,44 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
             data[_notificationsEnabled] = boolean
         }
     }
+    override val getFontSizeConfig: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[_fontSizeConfig] ?: FontSize.DEFAULT
+    }
+
+    override suspend fun setFontSizeConfig(config: Int) {
+        context.dataStore.edit { data ->
+            data[_fontSizeConfig] = config
+        }
+    }
+
+    override suspend fun setWallpaperName(wallpaperName: String) {
+        context.dataStore.edit { data ->
+            data[_wallpaperName] = wallpaperName
+        }
+    }
+
+    override val getWallpaperName: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[_wallpaperName]
+    }
+
+    override suspend fun setCustomWallpaperEnabled(boolean: Boolean) {
+        context.dataStore.edit {
+            it[_customWallpaperEnabled] = boolean
+        }
+    }
+
+    override val isCustomWallpaperEnabled: Flow<Boolean> = context.dataStore.data.map {
+        it[_customWallpaperEnabled] ?: false
+    }
+
+    override suspend fun removeBottomPart(boolean: Boolean) {
+        context.dataStore.edit {
+            it[_removeBottomPart] = boolean
+        }
+    }
+
+    override val isBottomPartRemoved: Flow<Boolean> = context.dataStore.data.map {
+        it[_removeBottomPart] ?: false
+    }
+
 }

@@ -45,7 +45,6 @@ class PrayerTimeReceiver : BroadcastReceiver() {
                 )
             alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(timestamp,pendingIntent),pendingIntent)
 
-            Log.d("3llomi","scheduled notification at $timestamp prayer: $prayerName")
         }
 
         fun cancel(context: Context) {
@@ -65,7 +64,6 @@ class PrayerTimeReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val prayerName = intent.getStringExtra("prayerName") ?: ""
-        Log.d("3llomi","onReceive prayer: $prayerName")
 
         fireNotification(context, prayerName)
         scope.launch {
@@ -87,9 +85,6 @@ class PrayerTimeReceiver : BroadcastReceiver() {
     }
 
     private fun fireNotification(context: Context, prayerName: String) {
-        // Build the notification
-        Log.d("3llomi","firing notification: $prayerName")
-
         val channelId = "PrayerTimeNotification"
         val notificationChannel = NotificationChannel(
             channelId,
@@ -111,10 +106,6 @@ class PrayerTimeReceiver : BroadcastReceiver() {
 
 
         notificationManager.notify(1, builder.build())
-        Log.d("3llomi","notification fired: $prayerName")
     }
-    //TODO REMOVE IF NOT NEEDED.
-    private fun generateNotificationId():Int{
-        return Random.nextInt(1, 90001)
-    }
+
 }
