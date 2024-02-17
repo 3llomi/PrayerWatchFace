@@ -32,7 +32,7 @@ Watch Face either using the Companion app on your phone or using your watch.
 10. ~~Add support for Arabic & Turkish Languages~~
 
 ## Preview Images By
-(Rahmat Raditya)[https://rahmatraditya.github.io]
+[Rahmat Raditya](https://rahmatraditya.github.io)
 
 ## Author
 
