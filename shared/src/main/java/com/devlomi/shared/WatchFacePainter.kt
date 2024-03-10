@@ -465,22 +465,26 @@ class WatchFacePainter(
             initHijriDate(date)
             currentDate = todayName
         }
-        val nextPrayer = prayerTimes.nextPrayer()
 
 
         drawCurrentTime(canvas, date)
 
-        if (nextPrayer == Prayer.NONE) {
-            val date = Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))
-            initPrayerTimes(date)
-        }
         if (!isAmbient && !removeBottomPart) {
             drawBottomArc(canvas)
         }
-        if (shouldDrawElapsedTime(date)) {
-            drawElapsedTime(canvas, date)
-            drawCurrentPrayerForElapsedTime(canvas)
+
+
+        val noNextPrayerToday = prayerTimes.nextPrayer() == Prayer.NONE
+        val previousPrayer = if (noNextPrayerToday) Prayer.ISHA else prayerTimes.previousPrayer()
+
+        if (shouldDrawElapsedTime(date, previousPrayer)) {
+            drawElapsedTime(canvas, date, previousPrayer)
+            drawCurrentPrayerForElapsedTime(canvas, previousPrayer)
         } else {
+            if (noNextPrayerToday) {
+                val nextDayDate = Date.from(zonedDateTime.toInstant().plus(1, ChronoUnit.DAYS))
+                initPrayerTimes(nextDayDate)
+            }
             drawTimeLeftForNextPrayer(canvas, date)
             drawPrayer(canvas)
         }
@@ -596,9 +600,7 @@ class WatchFacePainter(
     }
 
 
-    private fun drawElapsedTime(canvas: Canvas, date: Date) {
-        val previousPrayer = prayerTimes.previousPrayer()
-
+    private fun drawElapsedTime(canvas: Canvas, date: Date, previousPrayer: Prayer) {
 
         val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
         val diff = date.time - timeForPrayer.time
@@ -644,9 +646,8 @@ class WatchFacePainter(
 
     }
 
-    private fun shouldDrawElapsedTime(date: Date): Boolean {
+    private fun shouldDrawElapsedTime(date: Date, previousPrayer: Prayer): Boolean {
         if (elapsedTimeEnabled) {
-            val previousPrayer = prayerTimes.previousPrayer()
             val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
 
             val diff = date.time - timeForPrayer.time
@@ -660,9 +661,7 @@ class WatchFacePainter(
         return false
     }
 
-    private fun drawCurrentPrayerForElapsedTime(canvas: Canvas) {
-        val previousPrayer = prayerTimes.previousPrayer()
-
+    private fun drawCurrentPrayerForElapsedTime(canvas: Canvas, previousPrayer: Prayer) {
         val prayerName = getPrayerNameByLocaleUseCase.getPrayerNameByLocale(
             previousPrayer,
             locale
