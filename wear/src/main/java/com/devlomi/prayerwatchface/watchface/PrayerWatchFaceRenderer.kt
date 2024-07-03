@@ -2,16 +2,13 @@ package com.devlomi.prayerwatchface.watchface
 
 import android.content.Context
 import android.graphics.*
-import android.util.Log
 import android.view.SurfaceHolder
-import androidx.core.content.ContextCompat
 import androidx.wear.watchface.*
 import androidx.wear.watchface.style.CurrentUserStyleRepository
-import com.devlomi.shared.WatchFacePainter
+import com.devlomi.shared.digital.DigitalWatchFacePainter
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import java.time.ZonedDateTime
-import java.util.*
 
 
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 30000L
@@ -22,8 +19,9 @@ class PrayerWatchFaceRenderer(
     surfaceHolder: SurfaceHolder,
     watchState: WatchState,
     currentUserStyleRepository: CurrentUserStyleRepository,
+    private val complicationSlotsManager: ComplicationSlotsManager,
     canvasType: Int,
-    private val watchFacePainter: WatchFacePainter
+    private val digitalWatchFacePainter: DigitalWatchFacePainter
 ) : Renderer.CanvasRenderer2<PrayerWatchFaceRenderer.PrayerSharedAssets>(
     surfaceHolder,
     currentUserStyleRepository,
@@ -50,7 +48,7 @@ class PrayerWatchFaceRenderer(
 
     init {
         scope.launch {
-            watchFacePainter.changeState.collectLatest {
+            digitalWatchFacePainter.changeState.collectLatest {
                 invalidate()
             }
         }
@@ -60,7 +58,7 @@ class PrayerWatchFaceRenderer(
     override fun onRenderParametersChanged(renderParameters: RenderParameters) {
         super.onRenderParametersChanged(renderParameters)
         val isAmbient = renderParameters.drawMode == DrawMode.AMBIENT
-        watchFacePainter.updateAmbient(isAmbient)
+        digitalWatchFacePainter.updateAmbient(isAmbient)
     }
 
     override fun render(
@@ -72,14 +70,29 @@ class PrayerWatchFaceRenderer(
         val isAmbient = renderParameters.drawMode == DrawMode.AMBIENT
         //Clear the canvas to prevent previous background bitmap shadow to show up.
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.MULTIPLY)
-        watchFacePainter.draw(
+        digitalWatchFacePainter.draw(
             canvas,
             zonedDateTime,
             isAmbient,
             canvas.width.toFloat(),
             canvas.height.toFloat()
-        )
+        ) { complicationsIds ->
+            drawComplications(complicationsIds, canvas, zonedDateTime)
+        }
 
+
+    }
+
+    private fun drawComplications(
+        complicationsIds: List<Int>,
+        canvas: Canvas,
+        zonedDateTime: ZonedDateTime
+    ) {
+        for ((id, complication) in complicationSlotsManager.complicationSlots) {
+            if (complication.enabled && complicationsIds.contains(id)) {
+                complication.render(canvas, zonedDateTime, renderParameters)
+            }
+        }
     }
 
     override fun renderHighlightLayer(
@@ -88,15 +101,20 @@ class PrayerWatchFaceRenderer(
         zonedDateTime: ZonedDateTime,
         sharedAssets: PrayerSharedAssets
     ) {
+        canvas.drawColor(renderParameters.highlightLayer!!.backgroundTint)
 
-
+        for ((_, complication) in complicationSlotsManager.complicationSlots) {
+            if (complication.enabled) {
+                complication.renderHighlightLayer(canvas, zonedDateTime, renderParameters)
+            }
+        }
     }
 
 
     override fun onDestroy() {
 
         scope.cancel("scope clear() request")
-        watchFacePainter.onDestroy()
+        digitalWatchFacePainter.onDestroy()
         super.onDestroy()
     }
 

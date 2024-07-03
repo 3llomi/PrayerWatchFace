@@ -3,4 +3,6 @@
     <string name="enable_watch_location">Saat Konumunu Etkinleştir</string>
     <string name="prayer_time">Namaz Vakti</string>
     <string name="time_for_prayer">%s vakti geldi</string>
+    <string name="configure_note_dialog_msg">Daha fazla özelleştirme seçeneği için Uygulamayı telefonunuza indirmeniz önerilir.</string>
+    <string name="ok">tamam</string>
 </resources>

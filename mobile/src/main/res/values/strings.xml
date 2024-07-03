@@ -3,7 +3,7 @@
     <string name="sync_change_notice">After changing the settings, it will be synced to your watch</string>
     <string name="install_watch_app">Install the Watch App</string>
     <string name="no_connected_watches">No connected watches available. Please make sure that your watch is connected.</string>
-    <string name="couldnt_send_app_to_watch">Couldn\'t send app to watch. make sure that your watch is connected and paired with your phone.</string>
+    <string name="couldnt_send_app_to_watch">Couldn\'t send app to watch. make sure that your WearOS watch is connected and paired with your phone.</string>
     <string name="watch_app_sent">A Notification has been sent to your Watch\n %s\nto install it via Google Play.</string>
     <string name="ok">OK</string>
     <string name="background_color">Background Color</string>
@@ -35,4 +35,20 @@
     <string name="remove_bottom_part">Remove Bottom Part</string>
     <string name="remove_bottom_part_background">Remove Bottom Part Background</string>
     <string name="pick_image_from_gallery">Pick image from Gallery</string>
+    <string name="complications">Complications</string>
+    <string name="show_extra_customizable_info">Show extra customizable info like Battery, Step Count, etc..</string>
+    <string name="progress">Progress</string>
+    <string name="progress_info">Show progress for the remaining time</string>
+    <string name="progress_color">Progress Color</string>
+    <string name="primary_hand_color">Primary Hand Color</string>
+    <string name="secondary_hand_color">Secondary Hand Color</string>
+    <string name="hour_marker_color">Hour Marker Color</string>
+    <string name="left_complication">Left Complication</string>
+    <string name="right_complication">Right Complication</string>
+    <string name="opacity">Opacity</string>
+    <string name="single_click">Single Click</string>
+    <string name="double_click">Double Click</string>
+    <string name="recommended_when_having_complications_enabled">Recommended when having complications enabled</string>
+    <string name="enable_complications_notice">You can configure complications on the Watch by long clicking on the watch face and clicking on the edit button</string>
+    <string name="disable_complications_notice"><![CDATA[To prevent clicking complications while it\'s disabled, on your watch, long click on the watch face > click on the edit button > choose complication > choose \'Empty\' Complication]]></string>
 </resources>

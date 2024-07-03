@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/form_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:overScrollMode="ifContentScrolls"
+    android:paddingStart="@dimen/activity_config_padding"
+    android:paddingTop="@dimen/activity_config_padding"
+    android:paddingEnd="@dimen/activity_config_padding"
+    android:paddingBottom="@dimen/activity_config_padding"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical">
+
+    <include
+        android:id="@+id/preview"
+        layout="@layout/watch_face_and_complications_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

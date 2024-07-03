@@ -1,10 +1,11 @@
-package com.devlomi.shared
+package com.devlomi.shared.usecase
 
 import com.batoulapps.adhan.CalculationMethod
 import com.batoulapps.adhan.Coordinates
 import com.batoulapps.adhan.Madhab
 import com.batoulapps.adhan.PrayerTimes
 import com.batoulapps.adhan.data.DateComponents
+import com.devlomi.shared.config.SettingsDataStore
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import java.util.Date

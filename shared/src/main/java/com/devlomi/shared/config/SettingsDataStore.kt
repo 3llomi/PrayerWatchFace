@@ -1,4 +1,4 @@
-package com.devlomi.shared
+package com.devlomi.shared.config
 
 import kotlinx.coroutines.flow.Flow
 
@@ -83,5 +83,38 @@ interface SettingsDataStore {
 
     suspend fun removeBottomPart(boolean: Boolean)
     val isBottomPartRemoved: Flow<Boolean>
+
+    suspend fun setComplicationsEnabled(boolean: Boolean)
+    val isComplicationsEnabled: Flow<Boolean>
+
+    suspend fun setLeftComplicationEnabled(boolean: Boolean)
+    val isLeftComplicationEnabled: Flow<Boolean>
+
+    suspend fun setRightComplicationEnabled(boolean: Boolean)
+    val isRightComplicationEnabled: Flow<Boolean>
+
+    suspend fun setProgressEnabled(boolean: Boolean)
+    val isProgressEnabled: Flow<Boolean>
+
+    suspend fun setProgressColor(color: String)
+    val progressColor: Flow<String?>
+    suspend fun setTapType(tapType: String)
+    val getTapType: Flow<String>
+
+    suspend fun setWallpaperOpacity(value: Int)
+    val getWallpaperOpacity: Flow<Int>
+
+    suspend fun setPrimaryHandAnalogColor(color: String)
+    val getPrimaryHandAnalogColor: Flow<String?>
+
+    suspend fun setSecondaryHandAnalogColor(color: String)
+    val getSecondaryHandAnalogColor: Flow<String?>
+
+    suspend fun setHourMarkerColor(color: String)
+    val getHourMarkerColor: Flow<String?>
+
+    suspend fun setCurrentWatchFaceId(id: String)
+    val getCurrentWatchFaceId: Flow<String>
+
 
 }

@@ -3,7 +3,6 @@ package com.devlomi.prayerwatchface.ui.configure.wallpaper
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -16,11 +15,16 @@ import com.canhub.cropper.CropImageView
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.common.sendToWatch
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
-import com.devlomi.shared.ConfigKeys
-import com.devlomi.shared.writeToFile
+import com.devlomi.shared.constants.ConfigKeys
+import com.devlomi.shared.common.writeToFile
 import com.google.android.gms.wearable.Asset
 import com.google.android.gms.wearable.Wearable
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.UUID
@@ -41,6 +45,13 @@ class WallpaperSettingsViewModel(
         get() = _isCustomWallpaperEnabled
 
 
+    private val _wallpaperOpacity: MutableState<Int> = mutableStateOf(0)
+    val wallpaperOpacity: State<Int>
+        get() = _wallpaperOpacity
+
+    private val opacityFlow = MutableStateFlow<Float>(-1f)
+
+
     init {
         copyPrebuiltImages()
         _wallpapers.value = getWallpapers()
@@ -49,6 +60,12 @@ class WallpaperSettingsViewModel(
                 _isCustomWallpaperEnabled.value = it
             }
         }
+        viewModelScope.launch {
+            settingsDataStore.getWallpaperOpacity.first().let {
+                _wallpaperOpacity.value = it
+            }
+        }
+        listenForOpacitySlider()
     }
 
     private fun copyPrebuiltImages() {
@@ -122,6 +139,29 @@ class WallpaperSettingsViewModel(
             dataClient.sendToWatch {
                 it.putBoolean(ConfigKeys.CUSTOM_WALLPAPER_ENABLED, boolean)
             }
+        }
+    }
+
+    fun onWallpaperOpacityChange(value: Int) {
+        _wallpaperOpacity.value = value
+        viewModelScope.launch {
+            opacityFlow.emit(value.toFloat())
+        }
+    }
+
+    //used to debounce events while changing
+    private fun listenForOpacitySlider() {
+        viewModelScope.launch {
+            opacityFlow.debounce(200).distinctUntilChanged().filter { it != -1f }
+                .collectLatest {
+                    val value = it.toInt()
+                    viewModelScope.launch {
+                        settingsDataStore.setWallpaperOpacity(value)
+                        dataClient.sendToWatch {
+                            it.putInt(ConfigKeys.WALLPAPER_OPACITY, value)
+                        }
+                    }
+                }
         }
     }
 }

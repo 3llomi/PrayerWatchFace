@@ -35,6 +35,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat
 import androidx.navigation.NavHostController
@@ -46,11 +47,12 @@ import com.devlomi.prayerwatchface.common.isLoading
 import com.devlomi.prayerwatchface.ui.PreviewWatchFaceComposable
 import com.devlomi.prayerwatchface.ui.Screen
 import com.devlomi.prayerwatchface.ui.configure.locale.LocaleItem
+import com.devlomi.shared.SimpleTapType
 import com.devlomi.shared.WatchFacePainter
 import com.devlomi.shared.calculationmethod.CalculationMethodItem
 import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.madhab.MadhabItem
-import com.devlomi.shared.toHexColor
+import com.devlomi.shared.common.toHexColor
 import com.godaddy.android.colorpicker.ClassicColorPicker
 import com.godaddy.android.colorpicker.HsvColor
 import com.google.android.gms.location.LocationRequest
@@ -66,35 +68,18 @@ fun ConfigureScreen(
     navController: NavHostController
 ) {
 
+    val state by viewModel.state.collectAsState()
     val items by viewModel.items
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    val calculationMethods = remember {
-        viewModel.calculationMethods
-    }
-    val madhabMethods = remember {
-        viewModel.madhabMethods
-    }
 
     val coLocation = remember {
         CoLocation.from(context)
     }
 
-    val is24Hours = remember {
-        viewModel.is24Hours
-    }
-    val hijriOffset = remember {
-        viewModel.hijriOffset
-    }
-    val hijriDate = remember {
-        viewModel.hijriDate
-    }
     var showProgress by remember { mutableStateOf(false) }
 
-    val daylightOffset = remember {
-        viewModel.daylightSavingOffset
-    }
 
     val calculationMethodsSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -120,8 +105,8 @@ fun ConfigureScreen(
         skipHalfExpanded = true
     )
 
-    val currentCalculationMethod by viewModel.currentCalculationMethod
-    val currentMadhabMethod by viewModel.currentMadhab
+    val currentCalculationMethod = state.calculationMethod
+    val currentMadhabMethod = state.madhab
     val openAppLinkOnWatchState = viewModel.openAppLinkResult.collectAsState()
     BackHandler(
         calculationMethodsSheetState.isVisible
@@ -290,9 +275,9 @@ fun ConfigureScreen(
                     ConfigureItemCardToggle(
                         title = stringResource(R.string.twenty_four_hours),
                         icon = R.drawable.ic_time,
-                        checked = is24Hours.value,
+                        checked = state.twentyFourHours,
                         onClick = {
-                            viewModel.set24Hours(!is24Hours.value)
+                            viewModel.set24Hours(!state.twentyFourHours)
                         },
                         onCheckedChange = {
                             viewModel.set24Hours(it)
@@ -303,8 +288,8 @@ fun ConfigureScreen(
                     ConfigureItemCardOffset(
                         title = stringResource(R.string.hijri_offset),
                         icon = R.drawable.ic_date,
-                        subtitle = hijriDate.value,
-                        offset = hijriOffset.value,
+                        subtitle = viewModel.hijriDate.value,
+                        offset = state.hijriOffset,
                         isEditingEnabled = true,
                         onValueChange = {
                             viewModel.onHijriOffsetChangeText(it)
@@ -330,7 +315,7 @@ fun ConfigureScreen(
                         title = stringResource(R.string.daylight_saving_time),
                         icon = R.drawable.ic_daylight,
                         subtitle = stringResource(R.string.daylight_type),
-                        offset = daylightOffset.value,
+                        offset = state.daylightSavingOffset,
                         isEditingEnabled = false,
                         onValueChange = {},
                         onMinusClick = {
@@ -347,7 +332,7 @@ fun ConfigureScreen(
                         title = stringResource(R.string.elapsed_time),
                         icon = R.drawable.ic_timelapse,
                         subtitle = stringResource(R.string.elapsed_time_desc),
-                        offset = viewModel.elapsedTimeMinutes.value,
+                        offset = state.elapsedTimeMinutes,
                         isEditingEnabled = false,
                         onValueChange = {},
                         onMinusClick = {
@@ -356,7 +341,7 @@ fun ConfigureScreen(
                         onPlusClick = {
                             viewModel.incrementElapsedTime()
                         },
-                        checked = viewModel.elapsedTimeEnabled.value,
+                        checked = state.elapsedTimeEnabled,
                         onCheckedChange = {
                             viewModel.onElapsedTimeSwitchChange(it)
                         }
@@ -369,12 +354,38 @@ fun ConfigureScreen(
                         title = stringResource(R.string.show_prayer_times_on_click),
                         icon = R.drawable.ic_touch,
                         subtitle = stringResource(R.string.show_prayer_times_on_click_desc),
-                        checked = viewModel.showPrayerTimesOnClick.value,
+                        checked = state.showPrayerTimesOnClick,
                         onCheckedChange = {
                             viewModel.onShowPrayerTimesSwitchChange(it)
                         },
                         onClick = {}
-                    )
+                    ) {
+                        if (state.showPrayerTimesOnClick) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(
+                                    selected = state.tapType == SimpleTapType.SINGLE_TAP,
+                                    onClick = {
+                                        viewModel.onTapTypeChange(SimpleTapType.SINGLE_TAP)
+                                    })
+                                Text(stringResource(R.string.single_click))
+                            }
+
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                RadioButton(
+                                    selected = state.tapType == SimpleTapType.DOUBLE_TAP,
+                                    onClick = {
+                                        viewModel.onTapTypeChange(SimpleTapType.DOUBLE_TAP)
+                                    })
+                                Text(stringResource(R.string.double_click))
+                            }
+                            Text(
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                                text = stringResource(R.string.recommended_when_having_complications_enabled),
+                                color = Color.Gray,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
                 }
 
                 item {
@@ -395,11 +406,8 @@ fun ConfigureScreen(
                         title = stringResource(R.string.notifications),
                         icon = R.drawable.ic_notifications,
                         subtitle = stringResource(R.string.show_notifications_desc),
-                        checked = viewModel.notificationsOn.value,
+                        checked = state.notificationsEnabled,
                         onCheckedChange = {
-                            if (it) {
-
-                            }
                             viewModel.onNotificationsChecked(it)
                         },
                         onClick = {}
@@ -506,9 +514,61 @@ fun ConfigureScreen(
                         subtitle = stringResource(R.string.remove_bottom_part_background),
                         icon = R.drawable.ic_wallpaper,
                         onClick = {},
-                        checked = viewModel.removeBottomPart.value,
+                        checked = state.removeBottomPart,
                         onCheckedChange = { viewModel.onBottomPartRemoveChange(it) }
                     )
+                }
+
+                item {
+                    ConfigureItemCardToggle(
+                        title = stringResource(R.string.progress),
+                        subtitle = stringResource(R.string.progress_info),
+                        icon = R.drawable.ic_progress,
+                        onClick = {},
+                        checked = state.progressEnabled,
+                        onCheckedChange = { viewModel.onProgressEnabledChange(it) }
+                    )
+                }
+
+                item {
+                    ConfigureItemCardToggle(
+                        title = stringResource(R.string.complications),
+                        subtitle = stringResource(R.string.show_extra_customizable_info),
+                        icon = R.drawable.ic_complications,
+                        onClick = {},
+                        checked = state.complicationsEnabled,
+                        onCheckedChange = { viewModel.onComplicationsEnabledChange(it) }
+                    ) {
+                        if (state.complicationsEnabled) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = stringResource(R.string.left_complication),
+                                    modifier = Modifier.weight(1f)
+                                )
+
+                                Switch(
+                                    checked = state.leftComplicationEnabled,
+                                    onCheckedChange = { viewModel.onLeftComplicationEnabledChange(it) }
+                                )
+                            }
+
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = stringResource(R.string.right_complication),
+                                    modifier = Modifier.weight(1f)
+                                )
+                                Switch(
+                                    checked = state.rightComplicationEnabled,
+                                    onCheckedChange = {
+                                        viewModel.onRightComplicationEnabledChange(
+                                            it
+                                        )
+                                    }
+                                )
+                            }
+                        }
+
+                    }
                 }
 
                 item {
@@ -541,7 +601,7 @@ fun ConfigureScreen(
             sheetState = calculationMethodsSheetState,
             sheetContent = {
                 CalculationMethodsBottomSheet(
-                    calculationMethods,
+                    viewModel.calculationMethods,
                     current = currentCalculationMethod,
                     onClick = {
                         viewModel.calculationMethodPicked(it.type)
@@ -557,7 +617,7 @@ fun ConfigureScreen(
             sheetState = madhabMethodsSheetState,
             sheetContent = {
                 MadhabMethodsBottomSheet(
-                    madhabMethods,
+                    viewModel.madhabMethods,
                     current = currentMadhabMethod,
                     onClick = {
                         viewModel.madhabMethodPicked(it.type)
@@ -590,7 +650,7 @@ fun ConfigureScreen(
             sheetContent = {
                 LocaleBottomSheet(
                     viewModel.localeItems.value,
-                    current = viewModel.currentLocaleType.value,
+                    current = state.localeType,
                     onClick = {
                         viewModel.onLocaleClick(it)
                         coroutineScope.launch {
@@ -624,6 +684,52 @@ fun ConfigureScreen(
                 },
             )
         }
+        if (viewModel.showDialogWhenEnablingComplications.value) {
+            AlertDialog(
+                onDismissRequest = {
+                    viewModel.onDismissingDialogWhenComplicationsEnabled()
+                },
+                text = {
+                    Text(
+                        stringResource(
+                            R.string.enable_complications_notice,
+                        )
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            viewModel.onDismissingDialogWhenComplicationsEnabled()
+                        }) {
+                        Text(stringResource(R.string.ok))
+                    }
+                },
+            )
+        }
+
+        if (viewModel.showDialogWhenDisablingComplications.value) {
+            AlertDialog(
+                onDismissRequest = {
+                    viewModel.onDismissingDialogWhenComplicationsDisabled()
+                },
+                text = {
+                    Text(
+                        stringResource(
+                            R.string.disable_complications_notice,
+                        )
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            viewModel.onDismissingDialogWhenComplicationsDisabled()
+                        }) {
+                        Text(stringResource(R.string.ok))
+                    }
+                },
+            )
+        }
+
         showProgress = openAppLinkOnWatchState.value.status.isLoading()
         when (openAppLinkOnWatchState.value.status) {
             Status.SUCCESS -> {

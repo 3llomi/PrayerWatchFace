@@ -4,9 +4,9 @@
     <value>
       <entry key="mobile">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
@@ -14,24 +14,24 @@
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-12T17:13:00.139020Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-03-09T21:31:07.833457Z" />
         </State>
       </entry>
       <entry key="wear">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Wear_OS_Large_Round_API_33.avd" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_4_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-12T17:13:10.878808Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-06-12T20:39:09.448225Z" />
         </State>
       </entry>
     </value>

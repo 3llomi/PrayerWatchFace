@@ -7,19 +7,17 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.SchedulePrayerNotification
-import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
+import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.Date
-import kotlin.random.Random
 
 
 class PrayerTimeReceiver : BroadcastReceiver() {

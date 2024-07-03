@@ -20,16 +20,9 @@ Watch Face either using the Companion app on your phone or using your watch.
 
 ## TODOs
 
-1. Support API 21+ on Mobile
-2. ~~Add Hijri Offset~~
-3. Add Analog watch face
-4. Add Walkthrough Tutorial on how to add a Watch Face
-5. ~~Add Manual Prayer times adjustments~~
-6. Check for Google Play Services On Mobile.
-7. ~~Add Arabic Support to the Watch Face~~
-8. ~~Add Elapsed Time after the Prayer~~
-9. ~~Notifications for Prayers~~
-10. ~~Add support for Arabic & Turkish Languages~~
+1. Add Prayer Sound Notification.
+2. Figure out a way to prevent clicking complications while it's hidden
+3. Hindi Digits option
 
 ## Preview Images By
 [Rahmat Raditya](https://rahmatraditya.github.io)

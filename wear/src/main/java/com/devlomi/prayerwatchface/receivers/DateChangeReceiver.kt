@@ -3,10 +3,9 @@ package com.devlomi.prayerwatchface.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.SchedulePrayerNotification
-import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
+import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -2,17 +2,24 @@ package com.devlomi.prayerwatchface.watchface
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.util.Log
 import android.view.SurfaceHolder
-import androidx.wear.watchface.*
+import androidx.wear.watchface.CanvasType
+import androidx.wear.watchface.ComplicationSlotsManager
+import androidx.wear.watchface.WatchFace
+import androidx.wear.watchface.WatchFaceService
+import androidx.wear.watchface.WatchFaceType
+import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import com.devlomi.prayerwatchface.PrayerApp
-import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
-import com.devlomi.prayerwatchface.ui.configure.WatchFaceConfigureActivity
 import com.devlomi.prayerwatchface.ui.prayer_times.PrayerTimesActivity
-import com.devlomi.shared.SettingsDataStore
-import com.devlomi.shared.WatchFacePainter
+import com.devlomi.prayerwatchface.ui.sendToMobile
+import com.devlomi.shared.constants.ConfigKeys
+import com.devlomi.shared.config.SettingsDataStore
+import com.devlomi.shared.SimpleTapType
+import com.devlomi.shared.digital.DigitalWatchFacePainter
+import com.devlomi.shared.constants.WatchFacesIds
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
+import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -27,12 +34,25 @@ class PrayerWatchFaceService : WatchFaceService() {
     private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase by lazy {
         GetPrayerNameByLocaleUseCase(applicationContext)
     }
-    private val watchFacePainter: WatchFacePainter by lazy {
-        WatchFacePainter(applicationContext, settingsDataStore,getPrayerNameByLocaleUseCase)
+    private val digitalWatchFacePainter: DigitalWatchFacePainter by lazy {
+        DigitalWatchFacePainter(applicationContext, settingsDataStore, getPrayerNameByLocaleUseCase)
     }
 
     private val scope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+    private val dataClient by lazy { Wearable.getDataClient(applicationContext) }
+
+    override fun createComplicationSlotsManager(currentUserStyleRepository: CurrentUserStyleRepository): ComplicationSlotsManager {
+        return createComplicationSlotManager(
+            context = applicationContext,
+            currentUserStyleRepository = currentUserStyleRepository,
+            topBound = LEFT_AND_RIGHT_COMPLICATIONS_TOP_BOUND,
+            bottomBound = LEFT_AND_RIGHT_COMPLICATIONS_BOTTOM_BOUND
+        )
+
+    }
+
 
     override suspend fun createWatchFace(
         surfaceHolder: SurfaceHolder,
@@ -41,14 +61,23 @@ class PrayerWatchFaceService : WatchFaceService() {
         currentUserStyleRepository: CurrentUserStyleRepository
     ): WatchFace {
 
+        scope.launch {
+            runCatching {
+                settingsDataStore.setCurrentWatchFaceId(WatchFacesIds.DIGITAL_OG)
+                sendToMobile(dataClient) {
+                    it.putString(ConfigKeys.CURRENT_WATCHFACE_ID, WatchFacesIds.DIGITAL_OG)
+                }
+            }
+        }
         // Creates class that renders the watch face.
         val renderer = PrayerWatchFaceRenderer(
             context = applicationContext,
             surfaceHolder = surfaceHolder,
             watchState = watchState,
             currentUserStyleRepository = currentUserStyleRepository,
+            complicationSlotsManager = complicationSlotsManager,
             canvasType = CanvasType.HARDWARE,
-            watchFacePainter = watchFacePainter
+            digitalWatchFacePainter = digitalWatchFacePainter
         )
 
         // Creates the watch face.
@@ -56,23 +85,19 @@ class PrayerWatchFaceService : WatchFaceService() {
             watchFaceType = WatchFaceType.DIGITAL,
             renderer = renderer
         )
-        watchFace.setTapListener(object : WatchFace.TapListener {
-            override fun onTapEvent(
-                tapType: Int,
-                tapEvent: TapEvent,
-                complicationSlot: ComplicationSlot?
-            ) {
-                if (tapType == TapType.UP) {
-                    scope.launch {
-                        val shouldShowPrayerTimesOnClick =
-                            settingsDataStore.openPrayerTimesOnClick.first()
-                        if (shouldShowPrayerTimesOnClick) {
-                            val intent =
-                                Intent(this@PrayerWatchFaceService, PrayerTimesActivity::class.java)
-                            intent.flags = FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
-                        }
-                    }
+        watchFace.setTapListener(SimpleWatchFaceTapListener { simpleTapType ->
+            scope.launch {
+                val shouldShowPrayerTimesOnClick =
+                    settingsDataStore.openPrayerTimesOnClick.first()
+                val tapTypeStr = settingsDataStore.getTapType.first()
+                val savedTapType = SimpleTapType.values().firstOrNull { it.name == tapTypeStr }
+                    ?: SimpleTapType.SINGLE_TAP
+
+                if (shouldShowPrayerTimesOnClick && savedTapType == simpleTapType) {
+                    val intent =
+                        Intent(this@PrayerWatchFaceService, PrayerTimesActivity::class.java)
+                    intent.flags = FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
                 }
             }
         })
@@ -82,5 +107,11 @@ class PrayerWatchFaceService : WatchFaceService() {
     override fun onDestroy() {
         super.onDestroy()
         scope.cancel()
+    }
+
+    companion object {
+        private const val LEFT_AND_RIGHT_COMPLICATIONS_TOP_BOUND = 0.51f
+        private const val LEFT_AND_RIGHT_COMPLICATIONS_BOTTOM_BOUND = 0.71f
+
     }
 }

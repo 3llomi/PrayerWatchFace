@@ -1,4 +1,4 @@
-package com.devlomi.shared
+package com.devlomi.shared.config
 
  data class PrayerConfigItem(
     val calculationMethod: String?,

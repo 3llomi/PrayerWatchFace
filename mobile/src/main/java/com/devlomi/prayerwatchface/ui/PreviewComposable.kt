@@ -29,7 +29,9 @@ fun PreviewWatchFaceComposable(
                 false,
                 size.width,
                 size.height
-            )
+            ){
+                //No Op for drawing complications.
+            }
         }
     })
 

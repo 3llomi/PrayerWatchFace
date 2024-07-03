@@ -1,6 +1,6 @@
 package com.devlomi.prayerwatchface.ui
 
-import com.devlomi.shared.await
+import com.devlomi.shared.common.await
 import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.DataMap
 import com.google.android.gms.wearable.PutDataMapRequest

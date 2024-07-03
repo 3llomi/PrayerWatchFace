@@ -3,7 +3,7 @@ package com.devlomi.shared.locale
 import android.content.Context
 import com.batoulapps.adhan.Prayer
 import com.devlomi.shared.R
-import com.devlomi.shared.getLocaleStringResource
+import com.devlomi.shared.common.getLocaleStringResource
 import java.util.Locale
 
 class GetPrayerNameByLocaleUseCase(private val context: Context) {

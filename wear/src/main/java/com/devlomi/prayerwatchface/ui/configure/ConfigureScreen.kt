@@ -188,11 +188,26 @@ fun ConfigureScreen(viewModel: ConfigureWatchFaceViewModel, navController: NavCo
         }
     }
 
+    if (viewModel.showConfigureNoteAlert.value) {
+        Alert(
+            title = { Text("") },
+            message = {
+                Text(stringResource(R.string.configure_note_dialog_msg))
+            }) {
+            item {
+                Button(onClick = {
+                    viewModel.onDismissConfigureAlert()
+                }) {
+                    Text(stringResource(R.string.ok))
+                }
+            }
+        }
+    }
+
     if (showProgress) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
-
     }
 
 

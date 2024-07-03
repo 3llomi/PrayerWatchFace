@@ -153,6 +153,7 @@ fun ConfigureItemCardToggle(
     checked: Boolean,
     onClick: (String) -> Unit,
     onCheckedChange: (Boolean) -> Unit,
+    content: (@Composable () -> Unit)? = null
 ) {
     Card(
         modifier = modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
@@ -193,6 +194,9 @@ fun ConfigureItemCardToggle(
 
 
                 }
+            }
+            if (content != null) {
+                content()
             }
         }
     }

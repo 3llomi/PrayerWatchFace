@@ -1,11 +1,10 @@
 package com.devlomi.prayerwatchface
 
 import android.content.Context
-import android.util.Log
 import com.batoulapps.adhan.Prayer
 import com.devlomi.prayerwatchface.receivers.PrayerTimeReceiver
-import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
-import com.devlomi.shared.SettingsDataStore
+import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
+import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.locale.LocaleHelper
 import com.devlomi.shared.locale.LocaleType

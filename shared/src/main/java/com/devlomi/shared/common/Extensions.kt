@@ -1,18 +1,22 @@
-package com.devlomi.shared
+package com.devlomi.shared.common
 
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.TypedValue
+import com.batoulapps.adhan.CalculationParameters
+import com.batoulapps.adhan.Coordinates
 import com.batoulapps.adhan.Prayer
 import com.batoulapps.adhan.PrayerTimes
+import com.batoulapps.adhan.data.DateComponents
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.wearable.DataMap
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.Calendar
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -77,6 +81,22 @@ fun PrayerTimes.previousPrayer(): Prayer {
         Prayer.MAGHRIB -> Prayer.ASR
         Prayer.ISHA -> Prayer.MAGHRIB
     }
+}
+
+
+fun getIshaaTimePreviousDay(
+    time: Long,
+    coordinates: Coordinates,
+    prayerTimesParams: CalculationParameters
+): Long {
+    val cal = Calendar.getInstance()
+    cal.timeInMillis = time
+    cal.add(Calendar.DATE, -1)
+    return PrayerTimes(
+        coordinates,
+        DateComponents.from(cal.time),
+        prayerTimesParams
+    ).timeForPrayer(Prayer.ISHA).time
 }
 
 fun Context.getLocaleStringResource(

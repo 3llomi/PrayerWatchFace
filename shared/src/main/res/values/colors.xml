@@ -6,4 +6,8 @@
     <color name="wf_bottom_bg">#D4E1FB</color>
     <color name="wf_fg">#FFFFFF</color>
     <color name="wf_bottom_fg">@color/black</color>
+    <color name="wf_progress_color">#0DA7FE</color>
+    <color name="clock_hand">#0DA7FE</color>
+    <color name="seconds_hand">#8043B5F5</color>
+    <color name="hour_marker">#AFAFAF</color>
 </resources>

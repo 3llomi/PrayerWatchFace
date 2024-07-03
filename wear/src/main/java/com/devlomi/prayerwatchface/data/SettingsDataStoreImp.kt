@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
-import com.devlomi.shared.FontSize
+import com.devlomi.shared.constants.FontSize
 import com.devlomi.shared.locale.LocaleType
-import com.devlomi.shared.SettingsDataStore
+import com.devlomi.shared.config.SettingsDataStore
+import com.devlomi.shared.SimpleTapType
+import com.devlomi.shared.constants.WatchFacesIds
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -339,4 +341,142 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
         it[_removeBottomPart] ?: false
     }
 
+    private val _isComplicationsEnabled = booleanPreferencesKey("complicationsEnabled")
+    override suspend fun setComplicationsEnabled(boolean: Boolean) {
+        context.dataStore.edit {
+            it[_isComplicationsEnabled] = boolean
+        }
+    }
+
+    override val isComplicationsEnabled: Flow<Boolean> =
+        context.dataStore.data.map {
+            it[_isComplicationsEnabled] ?: false
+        }
+
+    private val _leftComplicationEnabled = booleanPreferencesKey("leftComplicationEnabled")
+    override suspend fun setLeftComplicationEnabled(boolean: Boolean) {
+        context.dataStore.edit {
+            it[_leftComplicationEnabled] = boolean
+        }
+    }
+
+    override val isLeftComplicationEnabled: Flow<Boolean> = context.dataStore.data.map {
+        it[_leftComplicationEnabled] ?: true
+    }
+
+    private val _rightComplicationEnabled = booleanPreferencesKey("rightComplicationEnabled")
+
+    override suspend fun setRightComplicationEnabled(boolean: Boolean) {
+        context.dataStore.edit {
+            it[_rightComplicationEnabled] = boolean
+        }
+    }
+
+    override val isRightComplicationEnabled: Flow<Boolean> = context.dataStore.data.map {
+        it[_rightComplicationEnabled] ?: true
+    }
+
+
+    private val _progressEnabled = booleanPreferencesKey("progressEnabled")
+
+    override suspend fun setProgressEnabled(boolean: Boolean) {
+        context.dataStore.edit {
+            it[_progressEnabled] = boolean
+        }
+    }
+
+    override val isProgressEnabled: Flow<Boolean> = context.dataStore.data.map {
+        it[_progressEnabled] ?: false
+    }
+
+    private val _progressColor = stringPreferencesKey("progressColor")
+
+    override suspend fun setProgressColor(color: String) {
+        context.dataStore.edit {
+            it[_progressColor] = color
+        }
+    }
+
+    override val progressColor: Flow<String?> = context.dataStore.data.map {
+        it[_progressColor]
+    }
+
+    private val _tapType = stringPreferencesKey("tapType")
+    override suspend fun setTapType(tapType: String) {
+        context.dataStore.edit {
+            it[_tapType] = tapType
+        }
+    }
+
+    override val getTapType: Flow<String> = context.dataStore.data.map {
+        it[_tapType] ?: SimpleTapType.SINGLE_TAP.name
+    }
+
+    private val _wallpaperOpacity = intPreferencesKey("wallpaperOpacity")
+    override suspend fun setWallpaperOpacity(value: Int) {
+        context.dataStore.edit {
+            it[_wallpaperOpacity] = value
+        }
+    }
+
+    override val getWallpaperOpacity: Flow<Int> = context.dataStore.data.map {
+        it[_wallpaperOpacity] ?: 179
+    }
+
+    private val _primaryHandColor = stringPreferencesKey("primaryHandColor")
+
+    override suspend fun setPrimaryHandAnalogColor(color: String) {
+        context.dataStore.edit {
+            it[_primaryHandColor] = color
+        }
+    }
+
+    override val getPrimaryHandAnalogColor: Flow<String?> = context.dataStore.data.map {
+        it[_primaryHandColor]
+    }
+
+    private val _secondaryHandColor = stringPreferencesKey("secondaryHandColor")
+
+    override suspend fun setSecondaryHandAnalogColor(color: String) {
+        context.dataStore.edit {
+            it[_secondaryHandColor] = color
+        }
+    }
+
+    override val getSecondaryHandAnalogColor: Flow<String?> = context.dataStore.data.map {
+        it[_secondaryHandColor]
+    }
+
+    private val _markerColor = stringPreferencesKey("markerColor")
+
+    override suspend fun setHourMarkerColor(color: String) {
+        context.dataStore.edit {
+            it[_markerColor] = color
+        }
+    }
+
+    override val getHourMarkerColor: Flow<String?> = context.dataStore.data.map {
+        it[_markerColor]
+    }
+
+    private val _currentWatchFaceId = stringPreferencesKey("currentWatchFaceId")
+    override suspend fun setCurrentWatchFaceId(id: String) {
+        context.dataStore.edit {
+            it[_currentWatchFaceId] = id
+        }
+    }
+
+    override val getCurrentWatchFaceId: Flow<String> = context.dataStore.data.map {
+        it[_currentWatchFaceId] ?: WatchFacesIds.DIGITAL_OG
+    }
+
+    private val _configureNoteShown = booleanPreferencesKey("configureNoteShown")
+     suspend fun setConfigureNoteShown(boolean: Boolean) {
+        context.dataStore.edit {
+            it[_configureNoteShown] = boolean
+        }
+    }
+    val configureNoteShown: Flow<Boolean> = context.dataStore.data.map {
+        it[_configureNoteShown] ?: false
+    }
 }

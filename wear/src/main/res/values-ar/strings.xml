@@ -3,5 +3,7 @@
     <string name="enable_watch_location">تفعيل الموقع الخاص بالساعة</string>
     <string name="prayer_time">وقت الصلاة</string>
     <string name="time_for_prayer">حان موعد صلاة %s</string>
+    <string name="configure_note_dialog_msg">من الأفضل أن يتم تحميل التطبيق على هاتفك للحصول على المزيد من التخصيص</string>
+    <string name="ok">حسناً</string>
 
 </resources>

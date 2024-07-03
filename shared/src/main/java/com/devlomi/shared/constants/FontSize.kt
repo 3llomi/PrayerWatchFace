@@ -1,4 +1,4 @@
-package com.devlomi.shared
+package com.devlomi.shared.constants
 
 object FontSize {
     const val DEFAULT = 0

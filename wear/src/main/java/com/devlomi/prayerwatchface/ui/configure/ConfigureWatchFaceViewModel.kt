@@ -2,7 +2,6 @@ package com.devlomi.prayerwatchface.ui.configure
 
 import android.content.Context
 import android.location.Location
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -12,12 +11,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.devlomi.prayerwatchface.PrayerApp
-import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.SchedulePrayerNotification
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.ui.sendToMobile
-import com.devlomi.shared.ConfigKeys
-import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
+import com.devlomi.shared.constants.ConfigKeys
+import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.calculationmethod.CalculationMethodDataSource
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.madhab.MadhabMethodsDataSource
@@ -33,6 +31,12 @@ class ConfigureWatchFaceViewModel(
     private val schedulePrayerNotification: SchedulePrayerNotification
 ) : ViewModel() {
     private val dataClient by lazy { Wearable.getDataClient(appContext) }
+
+    //show configure note alert dialog boolean state
+    private val _showConfigureNoteAlert = mutableStateOf(false)
+    val showConfigureNoteAlert: State<Boolean>
+        get() = _showConfigureNoteAlert
+
 
     companion object {
 
@@ -116,6 +120,12 @@ class ConfigureWatchFaceViewModel(
             }
         }
 
+        viewModelScope.launch {
+            settingsDataStore.configureNoteShown.first().let {
+                _showConfigureNoteAlert.value = !it
+            }
+        }
+
         scheduleNotifications()
 
     }
@@ -155,6 +165,13 @@ class ConfigureWatchFaceViewModel(
             if (notificationsEnabled) {
                 schedulePrayerNotification.schedule(appContext)
             }
+        }
+    }
+
+    fun onDismissConfigureAlert() {
+        viewModelScope.launch {
+            _showConfigureNoteAlert.value = false
+            settingsDataStore.setConfigureNoteShown(true)
         }
     }
 

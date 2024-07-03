@@ -1,11 +1,9 @@
 package com.devlomi.prayerwatchface
 
-import android.util.Log
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
-import com.devlomi.shared.ConfigKeys
-import com.devlomi.shared.getBooleanOrNull
-import com.devlomi.shared.getDoubleOrNull
-import com.devlomi.shared.getIntOrNull
+import com.devlomi.shared.constants.ConfigKeys
+import com.devlomi.shared.common.getBooleanOrNull
+import com.devlomi.shared.common.getDoubleOrNull
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.WearableListenerService
@@ -60,6 +58,9 @@ class DataListenerService : WearableListenerService() {
                         }
                     dataMap.getBooleanOrNull(ConfigKeys.TWENTY_FOUR_HOURS)?.let {
                         settingsDatStore.set24Hours(it)
+                    }
+                    dataMap.getString(ConfigKeys.CURRENT_WATCHFACE_ID)?.let {
+                        settingsDatStore.setCurrentWatchFaceId(it)
                     }
                 } catch (e: Exception) {
 

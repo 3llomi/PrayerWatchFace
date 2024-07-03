@@ -1,4 +1,4 @@
-package com.devlomi.shared
+package com.devlomi.shared.constants
 
 object ConfigKeys {
     const val CALCULATION_METHOD = "calc-method"
@@ -27,5 +27,16 @@ object ConfigKeys {
     const val REMOVE_BOTTOM_PART = "remove-bpart"
     const val FONT_SIZE = "font-size"
     const val CUSTOM_WALLPAPER_ENABLED = "custom-wpper-enabled"
+    const val WALLPAPER_OPACITY = "wallpaperOpacity"
+    const val COMPLICATIONS_ENABLED = "complicationsEnabled"
+    const val LEFT_COMPLICATION_ENABLED = "leftComplicationEnabled"
+    const val RIGHT_COMPLICATION_ENABLED = "rightComplicationEnabled"
+    const val PROGRESS_ENABLED = "progressEnabled"
+    const val PROGRESS_COLOR = "progressColor"
+    const val HAND_PRIMARY_COLOR = "handPrimaryColor"
+    const val HAND_SECONDARY_COLOR = "handSecondaryColor"
+    const val HOUR_MARKER_COLOR = "hourMarkerColor"
+    const val TAP_TYPE = "tapType"
+    const val CURRENT_WATCHFACE_ID = "currentWatchFaceId"
 
 }

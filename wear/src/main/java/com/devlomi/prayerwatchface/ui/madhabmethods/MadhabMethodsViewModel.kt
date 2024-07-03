@@ -1,7 +1,6 @@
 package com.devlomi.prayerwatchface.ui.madhabmethods
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +13,7 @@ import com.batoulapps.adhan.Madhab
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.ui.sendToMobile
-import com.devlomi.shared.ConfigKeys
+import com.devlomi.shared.constants.ConfigKeys
 import com.devlomi.shared.madhab.MadhabItem
 import com.devlomi.shared.madhab.MadhabMethodsDataSource
 import com.google.android.gms.wearable.Wearable

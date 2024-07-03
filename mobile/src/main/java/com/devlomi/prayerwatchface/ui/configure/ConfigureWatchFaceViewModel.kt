@@ -2,10 +2,8 @@ package com.devlomi.prayerwatchface.ui.configure
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.location.Location
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -26,12 +24,13 @@ import com.devlomi.prayerwatchface.data.LocaleDataSource
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.ui.configure.locale.LocaleItem
 import com.devlomi.prayerwatchface.ui.configure.prayer_times_adjustment.PrayerItem
-import com.devlomi.shared.BackgroundColorSettingsItem
-import com.devlomi.shared.ConfigKeys
-import com.devlomi.shared.FontSize
+import com.devlomi.shared.constants.ConfigKeys
+import com.devlomi.shared.constants.FontSize
+import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.locale.LocaleType
-import com.devlomi.shared.PrayerConfigItem
-import com.devlomi.shared.await
+import com.devlomi.shared.config.PrayerConfigState
+import com.devlomi.shared.SimpleTapType
+import com.devlomi.shared.common.await
 import com.devlomi.shared.calculationmethod.CalculationMethodDataSource
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.locale.LocaleHelper
@@ -52,6 +51,7 @@ class ConfigureWatchFaceViewModel(
     private val appContext: Context,
     private val settingsDataStore: SettingsDataStoreImp,
     private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase,
+    private val getPrayerTimesWithConfigUseCase: GetPrayerTimesWithConfigUseCase,
 ) : ViewModel() {
     companion object {
 
@@ -65,10 +65,13 @@ class ConfigureWatchFaceViewModel(
                     baseApplication.appContainer.settingsDataStore
 
                 val getPrayerNameByLocaleUseCase = GetPrayerNameByLocaleUseCase(baseApplication)
+                val getPrayerTimesWithConfigUseCase =
+                    GetPrayerTimesWithConfigUseCase(settingsDataStore)
                 ConfigureWatchFaceViewModel(
                     baseApplication,
                     settingsDataStore,
-                    getPrayerNameByLocaleUseCase
+                    getPrayerNameByLocaleUseCase,
+                    getPrayerTimesWithConfigUseCase
                 )
             }
         }
@@ -78,47 +81,18 @@ class ConfigureWatchFaceViewModel(
 
     }
 
+    val watchFaceId: Flow<String> = settingsDataStore.getCurrentWatchFaceId
+
+    val state = PrayerConfigState(settingsDataStore, viewModelScope).state
 
     private val _items: MutableState<List<ConfigureItem>> = mutableStateOf(listOf())
     val items: State<List<ConfigureItem>>
         get() = _items
 
-    //TODO USE COLLECT AS STATE PERHAPS INSTEAD OF DEFINING NEW STATES?
-    private val _backgroundColor: MutableState<Int> =
-        mutableStateOf(appContext.getColor(com.devlomi.shared.R.color.wf_preview))
-    val backgroundColor: State<Int>
-        get() = _backgroundColor
-
-    private val _backgroundColorBottomPart: MutableState<Int> =
-        mutableStateOf(appContext.getColor(com.devlomi.shared.R.color.wf_bottom_bg))
-    val backgroundColorBottomPart: State<Int>
-        get() = _backgroundColorBottomPart
-
-
-    private val _foregroundColor: MutableState<Int> =
-        mutableStateOf(appContext.getColor(com.devlomi.shared.R.color.wf_fg))
-    val foregroundColor: State<Int>
-        get() = _foregroundColor
-
-    private val _foregroundColorBottomPart: MutableState<Int> =
-        mutableStateOf(appContext.getColor(com.devlomi.shared.R.color.wf_bottom_fg))
-    val foregroundColorBottomPart: State<Int>
-        get() = _foregroundColorBottomPart
-
-
-    private val _is24Hours: MutableState<Boolean> =
-        mutableStateOf(false)
-    val is24Hours: State<Boolean>
-        get() = _is24Hours
-
-    private val _currentCalculationMethod: MutableState<CalculationMethod> =
-        mutableStateOf(CalculationMethod.OTHER)
-    val currentCalculationMethod: State<CalculationMethod>
-        get() = _currentCalculationMethod
-
-    private val _currentMadhab: MutableState<Madhab> = mutableStateOf(Madhab.SHAFI)
-    val currentMadhab: State<Madhab>
-        get() = _currentMadhab
+    private val _hijriDate: MutableState<String> =
+        mutableStateOf("")
+    val hijriDate: State<String>
+        get() = _hijriDate
 
     private val dataClient by lazy { Wearable.getDataClient(appContext) }
 
@@ -129,63 +103,26 @@ class ConfigureWatchFaceViewModel(
     val showDialogWhenEnablingNotifications: State<Boolean> get() = _showDialogWhenEnablingNotifications
 
 
-    private val _hijriOffset: MutableState<Int> =
-        mutableStateOf(0)
-    val hijriOffset: State<Int>
-        get() = _hijriOffset
+    private val _showDialogWhenEnablingComplications = mutableStateOf(false)
+    val showDialogWhenEnablingComplications: State<Boolean> get() = _showDialogWhenEnablingComplications
+
+
+    private val _showDialogWhenDisablingComplications = mutableStateOf(false)
+    val showDialogWhenDisablingComplications: State<Boolean> get() = _showDialogWhenDisablingComplications
+
 
     private val _prayerTimesItems: MutableState<List<PrayerItem>> =
         mutableStateOf(listOf())
     val prayerTimesItems: State<List<PrayerItem>>
         get() = _prayerTimesItems
 
-    private val _hijriDate: MutableState<String> =
-        mutableStateOf("")
-    val hijriDate: State<String>
-        get() = _hijriDate
-
-    private val _daylightSavingOffset: MutableState<Int> =
-        mutableStateOf(0)
-    val daylightSavingOffset: State<Int>
-        get() = _daylightSavingOffset
-
-
-    private val _elapsedTimeEnabled: MutableState<Boolean> =
-        mutableStateOf(false)
-    val elapsedTimeEnabled: State<Boolean>
-        get() = _elapsedTimeEnabled
-
-    private val _elapsedTimeMinutes: MutableState<Int> =
-        mutableStateOf(0)
-    val elapsedTimeMinutes: State<Int>
-        get() = _elapsedTimeMinutes
-
-    private val _showPrayerTimesOnClick: MutableState<Boolean> =
-        mutableStateOf(false)
-    val showPrayerTimesOnClick: State<Boolean>
-        get() = _showPrayerTimesOnClick
-
     private val _localeItems: MutableState<List<LocaleItem>> =
         mutableStateOf(LocaleDataSource.getItems(appContext))
     val localeItems: State<List<LocaleItem>>
         get() = _localeItems
 
-    private val _currentLocaleType: MutableState<LocaleType> =
-        mutableStateOf(LocaleType.ENGLISH)
-    val currentLocaleType: State<LocaleType>
-        get() = _currentLocaleType
 
     private var currentLocale = Locale.US
-
-    private val _notificationsOn: MutableState<Boolean> =
-        mutableStateOf(true)
-    val notificationsOn: State<Boolean>
-        get() = _notificationsOn
-
-    private val _removeBottomPart: MutableState<Boolean> =
-        mutableStateOf(true)
-    val removeBottomPart: State<Boolean>
-        get() = _removeBottomPart
 
     //used to debounce events while changing
     private val fontSizeSliderFlow = MutableStateFlow<Float>(-1f)
@@ -220,14 +157,6 @@ class ConfigureWatchFaceViewModel(
 
 
     val updatePreviewState = mutableStateOf(0)
-
-    private var coordinates: Coordinates =
-        Coordinates(0.0, 0.0)
-    private var prayerTimesParams: CalculationParameters =
-        CalculationMethod.EGYPTIAN.parameters.also {
-            it.madhab = Madhab.SHAFI
-        }
-    private var madhab = Madhab.SHAFI
 
 
     init {
@@ -291,25 +220,49 @@ class ConfigureWatchFaceViewModel(
             ),
         )
 
-        listenForColors()
-        listenForPrayerConfig()
-        listenForPrayerOffset()
-        listenForElapsedTime()
-        listenForShowPrayerTimesOnClick()
-        listenForLocaleChange()
-        listenForNotifications()
-        listenForRemoveBottomPart()
         scheduleNotifications()
         listenForFontSize()
+
+        viewModelScope.launch {
+            state.collectLatest {
+                viewModelScope.launch {
+                    LocaleType.values().firstOrNull { it == state.value.localeType }?.let { locale ->
+                        currentLocale = LocaleHelper.getLocale(locale)
+                    }
+                    updateHijriDate()
+                    prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(date = Date())
+                    initTimeFormat()
+
+                    val calculationMethod = state.value.calculationMethod
+                    val calcMethodTitle = calculationMethod.let { calcMethod ->
+                        CalculationMethod.values().firstOrNull { it.name == calcMethod.name }
+                        return@let getCalculationMethodTitle(calcMethod.name)
+                    } ?: ""
+
+
+                    val madhab = state.value.madhab
+                    val madhabTitle = getMadhabTitle(madhab.name) ?: ""
+                    val latLngSubtitle = "${state.value.lat},${state.value.lng}"
+                    val newList = items.value.toMutableList()
+                    newList[0] = newList[0].copy(subtitle = calcMethodTitle)
+                    newList[1] = newList[1].copy(subtitle = madhabTitle)
+                    newList[2] = newList[2].copy(subtitle = latLngSubtitle)
+                    _items.value = newList.toList()
+
+                    updatePrayerList()
+                    updatePreview()
+                }
+            }
+        }
     }
 
     private fun listenForFontSize() {
         viewModelScope.launch {
             settingsDataStore.getFontSizeConfig.first().let {
 
-                val sliderValue:Float = when (it) {
+                val sliderValue: Float = when (it) {
                     FontSize.MEDIUM -> 100f / 3
-                    FontSize.LARGE -> 100f /1.5f
+                    FontSize.LARGE -> 100f / 1.5f
                     FontSize.EXTRA_LARGE -> 100f
                     else -> 0f
                 }
@@ -321,24 +274,25 @@ class ConfigureWatchFaceViewModel(
 
     private fun listenForFontSizeSlideChange() {
         viewModelScope.launch {
-            fontSizeSliderFlow.debounce(200).distinctUntilChanged().filter { it != -1f }.collectLatest {
-                viewModelScope.launch {
-                    val fontSize = getFontSizeConfigBySliderValue(it)
-                    settingsDataStore.setFontSizeConfig(fontSize)
-                    dataClient.sendToWatch {
-                        it.putInt(ConfigKeys.FONT_SIZE, fontSize)
+            fontSizeSliderFlow.debounce(200).distinctUntilChanged().filter { it != -1f }
+                .collectLatest {
+                    viewModelScope.launch {
+                        val fontSize = getFontSizeConfigBySliderValue(it)
+                        settingsDataStore.setFontSizeConfig(fontSize)
+                        dataClient.sendToWatch {
+                            it.putInt(ConfigKeys.FONT_SIZE, fontSize)
+                        }
                     }
                 }
-            }
         }
     }
 
-    private fun listenForRemoveBottomPart() {
-        viewModelScope.launch {
-            settingsDataStore.isBottomPartRemoved.collectLatest {
-                _removeBottomPart.value = it
-            }
-        }
+    private fun initPrayerTimes() {
+        prayerTimes = PrayerTimes(
+            Coordinates(0.0, 0.0),
+            DateComponents.from(Date()),
+            CalculationParameters(0.0, 0.0)
+        )
     }
 
     private fun scheduleNotifications() {
@@ -353,272 +307,46 @@ class ConfigureWatchFaceViewModel(
         }
     }
 
-    private fun listenForNotifications() {
-        viewModelScope.launch {
-            settingsDataStore.notificationsEnabled.collectLatest {
-                _notificationsOn.value = it
+
+    private fun updatePrayerList() {
+        val newList = _prayerTimesItems.value.toMutableList()
+
+        newList.forEachIndexed { index, item ->
+            val offset = when (item.prayer) {
+                Prayer.FAJR -> state.value.fajrOffset
+                Prayer.SUNRISE -> state.value.shurooqOffset
+                Prayer.DHUHR -> state.value.dhuhrOffset
+                Prayer.ASR -> state.value.asrOffset
+                Prayer.MAGHRIB -> state.value.maghribOffset
+                Prayer.ISHA -> state.value.ishaOffset
+                else -> 0
             }
+
+            newList[index] = item.copy(
+                name = getPrayerNameByLocaleUseCase.getPrayerNameByLocale(
+                    item.prayer,
+                    currentLocale
+                ),
+                offset = offset,
+                prayerTime = getPrayerTime(item.prayer)
+            )
         }
+        _prayerTimesItems.value = newList
     }
 
-    private fun listenForLocaleChange() {
-        viewModelScope.launch {
-            settingsDataStore.locale.collectLatest { type ->
-                LocaleType.values().firstOrNull { it.id == type }?.let { locale ->
-                    _currentLocaleType.value = locale
-                    currentLocale = LocaleHelper.getLocale(locale)
-                    val newList = _prayerTimesItems.value.toMutableList()
-                    newList.forEachIndexed { index, item ->
-                        newList[index] = item.copy(
-                            name = getPrayerNameByLocaleUseCase.getPrayerNameByLocale(
-                                item.prayer,
-                                currentLocale
-                            )
-                        )
-                    }
-                    _prayerTimesItems.value = newList
-                }
-            }
-        }
-    }
 
-    private fun listenForShowPrayerTimesOnClick() {
-        viewModelScope.launch {
-            settingsDataStore.openPrayerTimesOnClick.collectLatest {
-                _showPrayerTimesOnClick.value = it
-            }
-        }
-    }
-
-    private fun listenForColors() {
-        viewModelScope.launch {
-            combine(
-                settingsDataStore.backgroundColor,
-                settingsDataStore.backgroundBottomPart,
-                settingsDataStore.foregroundColor,
-                settingsDataStore.foregroundBottomPart,
-            ) { backgroundColor, backgroundBottomPart, foregroundColor, foregroundBottomPart ->
-                return@combine BackgroundColorSettingsItem(
-                    backgroundColor,
-                    backgroundBottomPart,
-                    foregroundColor,
-                    foregroundBottomPart
-                )
-            }.collectLatest { item ->
-
-                item.backgroundColor?.let {
-                    _backgroundColor.value = Color.parseColor(it)
-                }
-
-                item.backgroundColorBottomPart?.let {
-                    _backgroundColorBottomPart.value = Color.parseColor(it)
-                }
-
-
-                item.foregroundColor?.let {
-                    _foregroundColor.value = Color.parseColor(it)
-                }
-
-                item.foregroundColorBottomPart?.let {
-                    _foregroundColorBottomPart.value = Color.parseColor(it)
-                }
-            }
-        }
-    }
-
-    private fun listenForPrayerConfig() {
-        viewModelScope.launch {
-            combine(
-                settingsDataStore.calculationMethod,
-                settingsDataStore.madhab,
-                settingsDataStore.lat,
-                settingsDataStore.lng,
-
-                ) { calculationMethod, madhab, lat, lng ->
-                return@combine PrayerConfigItem(
-                    calculationMethod,
-                    madhab,
-                    lat,
-                    lng,
-
-                    )
-            }.collectLatest { prayerConfigItem ->
-
-                val calcMethodTitle = prayerConfigItem.calculationMethod?.let { calcMethod ->
-                    CalculationMethod.values().firstOrNull { it.name == calcMethod }
-                        ?.let { foundCalculationMethod ->
-                            _currentCalculationMethod.value = foundCalculationMethod
-                        }
-                    return@let getCalculationMethodTitle(calcMethod)
-                } ?: ""
-
-
-                val madhabTitle = prayerConfigItem.madhab?.let { madhab ->
-                    _currentMadhab.value = Madhab.valueOf(madhab)
-                    getMadhabTitle(madhab)
-                } ?: ""
-
-                val latLngSubtitle =
-                    if (prayerConfigItem.lat != null && prayerConfigItem.lng != null) {
-                        "${prayerConfigItem.lat},${prayerConfigItem.lng}"
-                    } else ""
-
-                val newList = items.value.toMutableList()
-                newList[0] = newList[0].copy(subtitle = calcMethodTitle)
-                newList[1] = newList[1].copy(subtitle = madhabTitle)
-                newList[2] = newList[2].copy(subtitle = latLngSubtitle)
-                _items.value = newList.toList()
-
-                madhab = Madhab.valueOf(prayerConfigItem.madhab ?: Madhab.SHAFI.name)
-                if (prayerConfigItem.lat != null && prayerConfigItem.lng != null) {
-                    coordinates = Coordinates(prayerConfigItem.lat!!, prayerConfigItem.lng!!)
-                }
-                prayerConfigItem.calculationMethod?.let { calcMethod ->
-                    CalculationMethod.valueOf(calcMethod)?.let { foundCalcMethod ->
-                        prayerTimesParams = foundCalcMethod.parameters.also { calcParams ->
-                            calcParams.madhab = madhab
-                        }
-
-                    }
-                }
-
-                initTimeFormat()
-                initPrayerTimes()
-
-                updatePreview()
-            }
-        }
-        viewModelScope.launch {
-            settingsDataStore.is24Hours.collectLatest {
-                _is24Hours.value = it
-                initTimeFormat()
-            }
-        }
-
-        viewModelScope.launch {
-            settingsDataStore.hijriOffset.collectLatest {
-                _hijriOffset.value = it
-                updateHijriDate()
-            }
-        }
-
-        viewModelScope.launch {
-            settingsDataStore.daylightSavingTimeOffset.collectLatest {
-                _daylightSavingOffset.value = it
-            }
-        }
-    }
-
-    private fun initPrayerTimes() {
-        prayerTimes = PrayerTimes(coordinates, DateComponents.from(Date()), prayerTimesParams)
+    private fun getPrayerTime(prayer: Prayer): String {
+        return timeFormat.format(prayerTimes.timeForPrayer(prayer))
     }
 
     private fun updatePreview() {
         updatePreviewState.value = updatePreviewState.value + 1
     }
 
-    private fun listenForPrayerOffset() {
-        viewModelScope.launch {
-            settingsDataStore.fajrOffset.collectLatest {
-                prayerTimesParams.adjustments.fajr = it
-                initPrayerTimes()
-                val newList = prayerTimesItems.value.toMutableList()
-                newList.getOrNull(0)?.copy(offset = it, prayerTime = getPrayerTime(Prayer.FAJR))
-                    .also {
-                        it?.let { newList[0] = it }
-                    }
-                _prayerTimesItems.value = newList.toList()
-            }
-        }
-
-        viewModelScope.launch {
-            settingsDataStore.shurooqOffset.collectLatest {
-                prayerTimesParams.adjustments.sunrise = it
-                initPrayerTimes()
-                val newList = prayerTimesItems.value.toMutableList()
-                newList.getOrNull(1)?.copy(offset = it, prayerTime = getPrayerTime(Prayer.SUNRISE))
-                    .also {
-                        it?.let { newList[1] = it }
-                    }
-                _prayerTimesItems.value = newList
-            }
-        }
-
-        viewModelScope.launch {
-            settingsDataStore.dhuhrOffset.collectLatest {
-                prayerTimesParams.adjustments.dhuhr = it
-                initPrayerTimes()
-                val newList = prayerTimesItems.value.toMutableList()
-                newList.getOrNull(2)?.copy(offset = it, prayerTime = getPrayerTime(Prayer.DHUHR))
-                    .also {
-                        it?.let { newList[2] = it }
-                    }
-                _prayerTimesItems.value = newList
-            }
-        }
-
-        viewModelScope.launch {
-            settingsDataStore.asrOffset.collectLatest {
-                prayerTimesParams.adjustments.asr = it
-                initPrayerTimes()
-                val newList = prayerTimesItems.value.toMutableList()
-                newList.getOrNull(3)?.copy(offset = it, prayerTime = getPrayerTime(Prayer.ASR))
-                    .also {
-                        it?.let { newList[3] = it }
-                    }
-                _prayerTimesItems.value = newList
-            }
-        }
-
-        viewModelScope.launch {
-            settingsDataStore.maghribOffset.collectLatest {
-                prayerTimesParams.adjustments.maghrib = it
-                initPrayerTimes()
-                val newList = prayerTimesItems.value.toMutableList()
-                newList.getOrNull(4)?.copy(offset = it, prayerTime = getPrayerTime(Prayer.MAGHRIB))
-                    .also {
-                        it?.let { newList[4] = it }
-                    }
-                _prayerTimesItems.value = newList
-            }
-        }
-
-        viewModelScope.launch {
-            settingsDataStore.ishaaOffset.collectLatest {
-                prayerTimesParams.adjustments.isha = it
-                initPrayerTimes()
-                val newList = prayerTimesItems.value.toMutableList()
-                newList.getOrNull(5)?.copy(offset = it, prayerTime = getPrayerTime(Prayer.ISHA))
-                    .also {
-                        it?.let { newList[5] = it }
-                    }
-                _prayerTimesItems.value = newList
-            }
-        }
-
-    }
-
-    private fun listenForElapsedTime() {
-        viewModelScope.launch {
-            settingsDataStore.elapsedTimeEnabled.collectLatest {
-                _elapsedTimeEnabled.value = it
-            }
-        }
-
-        viewModelScope.launch {
-            settingsDataStore.elapsedTimeMinutes.collectLatest {
-                _elapsedTimeMinutes.value = it
-            }
-        }
-    }
 
     private fun initTimeFormat() {
-        val pattern = if (is24Hours.value) "HH:mm" else "hh:mm"
+        val pattern = if (state.value.twentyFourHours) "HH:mm" else "hh:mm"
         timeFormat = SimpleDateFormat(pattern, Locale.US)
-    }
-
-    private fun getPrayerTime(prayer: Prayer): String {
-        return timeFormat.format(prayerTimes.timeForPrayer(prayer))
     }
 
 
@@ -777,18 +505,19 @@ class ConfigureWatchFaceViewModel(
 
     private fun updateHijriDate() {
         _hijriDate.value =
-            hijrahDate.plus(hijriOffset.value.toLong(), ChronoUnit.DAYS).format(hijriDateFormatter)
+            hijrahDate.plus(state.value.hijriOffset.toLong(), ChronoUnit.DAYS)
+                .format(hijriDateFormatter)
     }
 
     fun decrementHijriOffset() {
         viewModelScope.launch {
-            setHijriOffset(hijriOffset.value - 1)
+            setHijriOffset(state.value.hijriOffset - 1)
         }
     }
 
     fun incrementHijriOffset() {
         viewModelScope.launch {
-            setHijriOffset(hijriOffset.value + 1)
+            setHijriOffset(state.value.hijriOffset + 1)
         }
     }
 
@@ -900,17 +629,17 @@ class ConfigureWatchFaceViewModel(
     }
 
     fun decrementDaylightOffset() {
-        val offset = daylightSavingOffset.value - 1
+        val offset = state.value.daylightSavingOffset - 1
         setDaylightSavingOffset(offset)
     }
 
     fun incrementDaylightOffset() {
-        val offset = daylightSavingOffset.value + 1
+        val offset = state.value.daylightSavingOffset + 1
         setDaylightSavingOffset(offset)
     }
 
     fun decrementElapsedTime() {
-        val newMinutes = elapsedTimeMinutes.value - 1
+        val newMinutes = state.value.elapsedTimeMinutes - 1
         if (newMinutes < MIN_ELAPSED_TIME_MINUTES) {
             return
         }
@@ -924,7 +653,7 @@ class ConfigureWatchFaceViewModel(
     }
 
     fun incrementElapsedTime() {
-        val newMinutes = elapsedTimeMinutes.value + 1
+        val newMinutes = state.value.elapsedTimeMinutes + 1
         if (newMinutes > MAX_ELAPSED_TIME_MINUTES) {
             return
         }
@@ -967,6 +696,12 @@ class ConfigureWatchFaceViewModel(
     fun onDismissingDialogWhenNotificationEnabled() {
         _showDialogWhenEnablingNotifications.value = false
     }
+    fun onDismissingDialogWhenComplicationsEnabled() {
+        _showDialogWhenEnablingComplications.value = false
+    }
+    fun onDismissingDialogWhenComplicationsDisabled() {
+        _showDialogWhenDisablingComplications.value = false
+    }
 
     fun onNotificationsChecked(boolean: Boolean) {
         if (boolean) {
@@ -1002,6 +737,92 @@ class ConfigureWatchFaceViewModel(
             settingsDataStore.removeBottomPart(boolean)
             dataClient.sendToWatch {
                 it.putBoolean(ConfigKeys.REMOVE_BOTTOM_PART, boolean)
+            }
+        }
+    }
+
+    fun onProgressEnabledChange(boolean: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.setProgressEnabled(boolean)
+            dataClient.sendToWatch {
+                it.putBoolean(ConfigKeys.PROGRESS_ENABLED, boolean)
+            }
+        }
+    }
+
+    fun onProgressColorChange(color: String) {
+        viewModelScope.launch {
+            settingsDataStore.setProgressColor(color)
+            dataClient.sendToWatch {
+                it.putString(ConfigKeys.PROGRESS_COLOR, color)
+            }
+        }
+    }
+
+    fun onPrimaryHandAnalogColorChange(color: String) {
+        viewModelScope.launch {
+            settingsDataStore.setPrimaryHandAnalogColor(color)
+            dataClient.sendToWatch {
+                it.putString(ConfigKeys.HAND_PRIMARY_COLOR, color)
+            }
+        }
+    }
+
+    fun onSecondaryHandAnalogColorChange(color: String) {
+        viewModelScope.launch {
+            settingsDataStore.setSecondaryHandAnalogColor(color)
+            dataClient.sendToWatch {
+                it.putString(ConfigKeys.HAND_SECONDARY_COLOR, color)
+            }
+        }
+    }
+
+    fun onHourMarkerColorChange(color: String) {
+        viewModelScope.launch {
+            settingsDataStore.setHourMarkerColor(color)
+            dataClient.sendToWatch {
+                it.putString(ConfigKeys.HOUR_MARKER_COLOR, color)
+            }
+        }
+    }
+
+    fun onComplicationsEnabledChange(boolean: Boolean) {
+        if (boolean) {
+            _showDialogWhenEnablingComplications.value = true
+        }else{
+            _showDialogWhenDisablingComplications.value = true
+        }
+        viewModelScope.launch {
+            settingsDataStore.setComplicationsEnabled(boolean)
+            dataClient.sendToWatch {
+                it.putBoolean(ConfigKeys.COMPLICATIONS_ENABLED, boolean)
+            }
+        }
+    }
+
+    fun onLeftComplicationEnabledChange(boolean: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.setLeftComplicationEnabled(boolean)
+            dataClient.sendToWatch {
+                it.putBoolean(ConfigKeys.LEFT_COMPLICATION_ENABLED, boolean)
+            }
+        }
+    }
+
+    fun onRightComplicationEnabledChange(boolean: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.setRightComplicationEnabled(boolean)
+            dataClient.sendToWatch {
+                it.putBoolean(ConfigKeys.RIGHT_COMPLICATION_ENABLED, boolean)
+            }
+        }
+    }
+
+    fun onTapTypeChange(tapType: SimpleTapType) {
+        viewModelScope.launch {
+            settingsDataStore.setTapType(tapType.name)
+            dataClient.sendToWatch {
+                it.putString(ConfigKeys.TAP_TYPE, tapType.name)
             }
         }
     }

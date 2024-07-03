@@ -1,19 +1,15 @@
 package com.devlomi.prayerwatchface
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Log
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.receivers.PrayerTimeReceiver
-import com.devlomi.shared.ConfigKeys
-import com.devlomi.shared.GetPrayerTimesWithConfigUseCase
-import com.devlomi.shared.await
-import com.devlomi.shared.getBooleanOrNull
-import com.devlomi.shared.getDoubleOrNull
-import com.devlomi.shared.getIntOrNull
+import com.devlomi.shared.constants.ConfigKeys
+import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
+import com.devlomi.shared.common.await
+import com.devlomi.shared.common.getBooleanOrNull
+import com.devlomi.shared.common.getDoubleOrNull
+import com.devlomi.shared.common.getIntOrNull
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
-import com.devlomi.shared.writeToFile
-import com.google.android.gms.tasks.Tasks
+import com.devlomi.shared.common.writeToFile
 import com.google.android.gms.wearable.Asset
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
@@ -21,11 +17,9 @@ import com.google.android.gms.wearable.Wearable
 import com.google.android.gms.wearable.WearableListenerService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.InputStream
 import java.util.UUID
 
 class DataListenerService : WearableListenerService() {
@@ -160,6 +154,38 @@ class DataListenerService : WearableListenerService() {
                     dataMap.getAsset(ConfigKeys.WALLPAPER)?.let {
                         handleWallpaperAsset(it)
                     }
+                    dataMap.getBooleanOrNull(ConfigKeys.COMPLICATIONS_ENABLED)?.let {
+                        settingsDatStore.setComplicationsEnabled(it)
+                    }
+                    dataMap.getIntOrNull(ConfigKeys.WALLPAPER_OPACITY)?.let {
+                        settingsDatStore.setWallpaperOpacity(it)
+                    }
+                    dataMap.getBooleanOrNull(ConfigKeys.LEFT_COMPLICATION_ENABLED)?.let {
+                        settingsDatStore.setLeftComplicationEnabled(it)
+                    }
+                    dataMap.getBooleanOrNull(ConfigKeys.RIGHT_COMPLICATION_ENABLED)?.let {
+                        settingsDatStore.setRightComplicationEnabled(it)
+                    }
+                    dataMap.getBooleanOrNull(ConfigKeys.PROGRESS_ENABLED)?.let {
+                        settingsDatStore.setProgressEnabled(it)
+                    }
+                    dataMap.getString(ConfigKeys.PROGRESS_COLOR)?.let {
+                        settingsDatStore.setProgressColor(it)
+                    }
+                    dataMap.getString(ConfigKeys.HAND_PRIMARY_COLOR)?.let {
+                        settingsDatStore.setPrimaryHandAnalogColor(it)
+                    }
+                    dataMap.getString(ConfigKeys.HAND_SECONDARY_COLOR)?.let {
+                        settingsDatStore.setSecondaryHandAnalogColor(it)
+                    }
+                    dataMap.getString(ConfigKeys.HOUR_MARKER_COLOR)?.let {
+                        settingsDatStore.setHourMarkerColor(it)
+                    }
+                    dataMap.getString(ConfigKeys.TAP_TYPE)?.let {
+                        settingsDatStore.setTapType(it)
+                    }
+
+
                 } catch (e: Exception) {
                 }
             }

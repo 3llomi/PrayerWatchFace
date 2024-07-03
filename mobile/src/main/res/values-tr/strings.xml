@@ -1,7 +1,7 @@
 <resources>
     <string name="sync_change_notice">Ayarları değiştirdikten sonra saatine senkronize edilecektir</string>
     <string name="install_watch_app">akıllı saatta uygulaması yükle/indir</string>
-    <string name="no_connected_watches">Bağlı saat bulunamadı. Lütfen saatinizin bağlı olduğundan emin olun.</string>
+    <string name="no_connected_watches">Bağlı WearOS saat bulunamadı. Lütfen  güvendiğinize bağlı olduğunuzdan emin olun.</string>
     <string name="couldnt_send_app_to_watch">Uygulama saatine gönderilemedi. Saatinizin telefonunuzla eşleştiğinden ve bağlı olduğundan emin olun.</string>
     <string name="watch_app_sent">Bir bildirim saatine gönderildi\n%s\nGoogle Play üzerinden yüklemek için.</string>
     <string name="ok">Tamam</string>
@@ -34,5 +34,20 @@
     <string name="remove_bottom_part">Alt Kısmı Kaldır</string>
     <string name="remove_bottom_part_background">Alt Kısım Arka Planını Kaldır</string>
     <string name="pick_image_from_gallery">Galeriden resim seç</string>
+    <string name="complications">Bileşenler</string>
+    <string name="show_extra_customizable_info">Pil, Adım Sayısı vb. gibi ekstra özelleştirilebilir bilgileri göster</string>
+    <string name="progress">İlerleme</string>
+    <string name="progress_info">Kalan süre için ilerlemeyi göster</string>
+    <string name="progress_color">İlerleme Rengi</string>
+    <string name="primary_hand_color">Ana Akrep Rengi</string>
+    <string name="secondary_hand_color">İkincil Akrep Rengi</string>
+    <string name="hour_marker_color">Saat İşareti Rengi</string>
+    <string name="left_complication">Sol Bileşen</string>
+    <string name="right_complication">Sağ Bileşen</string>
+    <string name="opacity">Saydamlık</string>
+    <string name="single_click">Tek Tıklama</string>
+    <string name="double_click">Çift Tıklama</string>
+    <string name="recommended_when_having_complications_enabled">Bileşenler etkinleştirildiğinde önerilir</string>
+    <string name="enable_complications_notice">Bileşenleri yapılandırmak için saat kadranına uzun tıklayıp düzenle düğmesine tıklayabilirsiniz</string>
 
 </resources>

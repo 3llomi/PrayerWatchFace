@@ -11,8 +11,8 @@ android {
         applicationId "com.devlomi.prayerwatchface"
         minSdk 26
         targetSdk 33
-        versionCode 34
-        versionName "1.4.1w"
+        versionCode 35
+        versionName "2.0.0w"
 
     }
 
@@ -65,6 +65,9 @@ dependencies {
     implementation 'androidx.compose.material:material-icons-extended:1.2.1'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation project(path: ':shared')
+    implementation 'androidx.wear.watchface:watchface-complications-rendering:1.2.1'
+    implementation 'androidx.activity:activity:1.8.0'
+    implementation 'androidx.wear.watchface:watchface-editor:1.2.1'
 //    wearApp project(":wear")
 
 }
