@@ -149,6 +149,9 @@ class AnalogWatchFacePainter(
 
         scope.launch {
             state.collectLatest {
+                prayerTimesParams = it.calculationMethod.parameters.also { calcParams ->
+                    calcParams.madhab = it.madhab
+                }
                 prayerTimesParams.adjustments.dhuhr = it.offsetWithDaylight(Prayer.DHUHR)
                 prayerTimesParams.adjustments.asr = it.offsetWithDaylight(Prayer.ASR)
                 prayerTimesParams.adjustments.maghrib = it.offsetWithDaylight(Prayer.MAGHRIB)

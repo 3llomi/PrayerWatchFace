@@ -46,7 +46,6 @@ private const val LEFT_COMPLICATION_RIGHT_BOUND = 0.4f
 private const val RIGHT_COMPLICATION_LEFT_BOUND = 0.6f
 private const val RIGHT_COMPLICATION_RIGHT_BOUND = 0.8f
 
-private val DEFAULT_COMPLICATION_STYLE_DRAWABLE_ID = R.drawable.complication_white_style
 
 
 
@@ -89,7 +88,7 @@ fun createComplicationSlotManager(
 
 
             CanvasComplicationDrawable(
-                ComplicationDrawable.getDrawable(context, DEFAULT_COMPLICATION_STYLE_DRAWABLE_ID)!!,
+                ComplicationDrawable.getDrawable(context, R.drawable.complication_white_style)!!,
                 watchState,
                 listener
             )
@@ -102,7 +101,7 @@ fun createComplicationSlotManager(
         supportedTypes = ComplicationConfig.Left.supportedTypes,
         defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy(
             SystemDataSources.DATA_SOURCE_STEP_COUNT,
-            ComplicationType.EMPTY
+            ComplicationType.SHORT_TEXT
         ),
         bounds = ComplicationSlotBounds(
             RectF(
@@ -121,7 +120,7 @@ fun createComplicationSlotManager(
         supportedTypes = ComplicationConfig.Right.supportedTypes,
         defaultDataSourcePolicy = DefaultComplicationDataSourcePolicy(
             SystemDataSources.DATA_SOURCE_WATCH_BATTERY,
-            ComplicationType.EMPTY
+            ComplicationType.SHORT_TEXT
         ),
         bounds = ComplicationSlotBounds(
             RectF(

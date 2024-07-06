@@ -350,7 +350,7 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
 
     override val isComplicationsEnabled: Flow<Boolean> =
         context.dataStore.data.map {
-            it[_isComplicationsEnabled] ?: false
+            it[_isComplicationsEnabled] ?: true
         }
 
     private val _leftComplicationEnabled = booleanPreferencesKey("leftComplicationEnabled")

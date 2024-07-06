@@ -1,4 +1,4 @@
-package com.devlomi.prayerwatchface.watchface
+package com.devlomi.prayerwatchface.watchface.digital
 
 import android.content.Context
 import android.graphics.*
@@ -14,7 +14,7 @@ import java.time.ZonedDateTime
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 30000L
 
 
-class PrayerWatchFaceRenderer(
+class DigitalWatchFaceRenderer(
     private val context: Context,
     surfaceHolder: SurfaceHolder,
     watchState: WatchState,
@@ -22,7 +22,7 @@ class PrayerWatchFaceRenderer(
     private val complicationSlotsManager: ComplicationSlotsManager,
     canvasType: Int,
     private val digitalWatchFacePainter: DigitalWatchFacePainter
-) : Renderer.CanvasRenderer2<PrayerWatchFaceRenderer.PrayerSharedAssets>(
+) : Renderer.CanvasRenderer2<DigitalWatchFaceRenderer.PrayerSharedAssets>(
     surfaceHolder,
     currentUserStyleRepository,
     watchState,

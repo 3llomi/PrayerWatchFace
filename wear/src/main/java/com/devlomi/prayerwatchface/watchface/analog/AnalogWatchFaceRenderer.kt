@@ -25,10 +25,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 
 
-/**
- * Renders watch face via data in Room database. Also, updates watch face state based on setting
- * changes by user via [userStyleRepository.addUserStyleListener()].
- */
+
 private const val FRAME_PERIOD_MS_DEFAULT: Long = 16L
 
 class AnalogWatchFaceRenderer(

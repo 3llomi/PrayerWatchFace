@@ -1,4 +1,4 @@
-package com.devlomi.prayerwatchface.watchface
+package com.devlomi.prayerwatchface.watchface.digital
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
@@ -13,6 +13,8 @@ import androidx.wear.watchface.style.CurrentUserStyleRepository
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.ui.prayer_times.PrayerTimesActivity
 import com.devlomi.prayerwatchface.ui.sendToMobile
+import com.devlomi.prayerwatchface.watchface.SimpleWatchFaceTapListener
+import com.devlomi.prayerwatchface.watchface.createComplicationSlotManager
 import com.devlomi.shared.constants.ConfigKeys
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.SimpleTapType
@@ -27,9 +29,17 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+/*
+This should be renamed to 'DigitalWatchFaceService' to match the class name in the file.
+However since this may remove the watch face on the watch and the user must add it back,
+it may not be a good user experience.
+ */
 class PrayerWatchFaceService : WatchFaceService() {
+    /*
+    We used 'applicationContext' instead of 'application since it crashed on GW4 when entering Editor Activity
+     */
     private val settingsDataStore: SettingsDataStore by lazy {
-        (this.application as PrayerApp).appContainer.settingsDataStore
+        (this.applicationContext as PrayerApp).appContainer.settingsDataStore
     }
     private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase by lazy {
         GetPrayerNameByLocaleUseCase(applicationContext)
@@ -70,7 +80,7 @@ class PrayerWatchFaceService : WatchFaceService() {
             }
         }
         // Creates class that renders the watch face.
-        val renderer = PrayerWatchFaceRenderer(
+        val renderer = DigitalWatchFaceRenderer(
             context = applicationContext,
             surfaceHolder = surfaceHolder,
             watchState = watchState,

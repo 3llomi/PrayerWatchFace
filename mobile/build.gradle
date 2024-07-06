@@ -5,13 +5,13 @@ plugins {
 
 android {
     namespace 'com.devlomi.prayerwatchface'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.devlomi.prayerwatchface"
         minSdk 26
-        targetSdk 33
-        versionCode 32
+        targetSdk 34
+        versionCode 33
         versionName "2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

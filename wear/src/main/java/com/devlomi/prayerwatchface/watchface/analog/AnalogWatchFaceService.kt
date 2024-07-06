@@ -47,16 +47,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-/**
- * Handles much of the boilerplate needed to implement a watch face (minus rendering code; see
- * [AnalogWatchCanvasRenderer]) including the complications and settings (styles user can change on
- * the watch face).
- */
+
 class AnalogWatchFaceService : WatchFaceService() {
 
 
     private val settingsDataStore: SettingsDataStore by lazy {
-        (this.application as PrayerApp).appContainer.settingsDataStore
+        (this.applicationContext as PrayerApp).appContainer.settingsDataStore
     }
     private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase by lazy {
         GetPrayerNameByLocaleUseCase(applicationContext)
@@ -68,8 +64,6 @@ class AnalogWatchFaceService : WatchFaceService() {
     private val dataClient by lazy { Wearable.getDataClient(applicationContext) }
 
 
-    // Creates all complication user settings and adds them to the existing user settings
-    // repository.
     override fun createComplicationSlotsManager(
         currentUserStyleRepository: CurrentUserStyleRepository
     ): ComplicationSlotsManager =
