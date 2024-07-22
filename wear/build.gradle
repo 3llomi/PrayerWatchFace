@@ -11,8 +11,8 @@ android {
         applicationId "com.devlomi.prayerwatchface"
         minSdk 26
         targetSdk 33
-        versionCode 41
-        versionName "2.0.0w"
+        versionCode 42
+        versionName "2.0.1w"
 
     }
 
