@@ -62,6 +62,7 @@ dependencies {
     implementation 'androidx.wear:wear-remote-interactions:1.0.0'
     implementation 'com.godaddy.android.colorpicker:compose-color-picker-android:0.6.0'
     implementation("com.vanniktech:android-image-cropper:4.5.0")
+    implementation ("androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

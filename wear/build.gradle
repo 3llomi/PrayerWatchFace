@@ -68,6 +68,9 @@ dependencies {
     implementation 'androidx.wear.watchface:watchface-complications-rendering:1.2.1'
     implementation 'androidx.activity:activity:1.8.0'
     implementation 'androidx.wear.watchface:watchface-editor:1.2.1'
+    implementation "androidx.wear.watchface:watchface-complications-data-source:1.2.1"
+    implementation "androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1"
+
 //    wearApp project(":wear")
 
 }

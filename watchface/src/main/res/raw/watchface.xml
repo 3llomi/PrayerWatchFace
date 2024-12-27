@@ -1,0 +1,878 @@
+<!--
+  An example of using Complications in a watch face.
+
+  Demonstrates
+  - SHORT_TEXT
+  - MONOCHROMATIC_IMAGE
+  - SMALL_IMAGE
+  - RANGED_VALUE
+  - PHOTO_IMAGE
+  - LONG_TEXT
+
+  The other types are not demonstrated in this sample at this time.
+
+  For more guidance on using complications see:
+
+  https://developer.android.com/training/wearables/wff/complication/complication-slot
+  https://developer.android.com/training/wearables/wff/complication/complication
+-->
+<WatchFace
+    height="450"
+    width="450">
+    <Metadata
+        key="CLOCK_TYPE"
+        value="DIGITAL" />
+    <Metadata
+        key="PREVIEW_TIME"
+        value="10:08:32" />
+
+    <UserConfigurations>
+        <ColorConfiguration
+            defaultValue="0"
+            displayName="colors_label"
+            id="themeColor"
+            screenReaderText="colors_label">
+            <ColorOption
+                colors="#16697a #d6d5d4 #ffa62b #333333 #000000"
+                displayName="theme_one_label"
+                id="0" />
+            <ColorOption
+                colors="#16697a #d6d5d4 #33cd2b #333333 #000000"
+                displayName="theme_two_label"
+                id="1" />
+        </ColorConfiguration>
+    </UserConfigurations>
+
+    <Scene backgroundColor="#ff000000">
+
+        <Group
+            name="background"
+            height="450"
+            width="450"
+            x="0"
+            y="0">
+
+
+            <PartImage
+                height="450"
+                width="450"
+                x="0"
+                y="0">
+
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="0" />
+
+                <Image resource="wallpaper_1" />
+
+
+            </PartImage>
+            <PartDraw
+                alpha="179"
+                height="450"
+                width="450"
+                x="0"
+                y="0">
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="0" />
+                <Rectangle
+                    height="450"
+                    width="450"
+                    x="0"
+                    y="0">
+
+
+                    <Fill color="#ff000000" />
+                </Rectangle>
+
+
+            </PartDraw>
+        </Group>
+
+        <ComplicationSlot
+            height="450"
+            isCustomizable="false"
+            slotId="5"
+            supportedTypes="RANGED_VALUE"
+            width="450"
+            x="0"
+            y="0">
+
+            <DefaultProviderPolicy
+                defaultSystemProvider="STEP_COUNT"
+                defaultSystemProviderType="RANGED_VALUE"
+                primaryProvider="com.devlomi.prayerwatchface/com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftProgressComplicationService"
+                primaryProviderType="RANGED_VALUE" />
+
+            <BoundingOval
+                height="450"
+                outlinePadding="2"
+                width="450"
+                x="0"
+                y="0" />
+
+            <Complication type="RANGED_VALUE">
+
+                <Group
+                    name="progress"
+                    height="450"
+                    width="450"
+                    x="0"
+                    y="0">
+
+
+                    <PartDraw
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+                        <Arc
+                            centerX="225"
+                            centerY="225"
+                            direction="CLOCKWISE"
+                            endAngle="150"
+                            height="450"
+                            startAngle="0"
+                            width="450">
+                            <!--                        <Transform target="endAngle" value="[COMPLICATION.RANGED_VALUE_MAX] - [UTC_TIMESTAMP]" />-->
+                            <Transform
+                                target="endAngle"
+                                value="((([UTC_TIMESTAMP] - [COMPLICATION.RANGED_VALUE_MIN])/ ([COMPLICATION.RANGED_VALUE_MAX] - [COMPLICATION.RANGED_VALUE_MIN])) * 360)" />
+                            <Stroke
+                                cap="ROUND"
+                                color="#ffffff"
+                                thickness="10" />
+                        </Arc>
+                    </PartDraw>
+
+                    <PartDraw
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Arc
+                            centerX="225"
+                            centerY="225"
+                            direction="CLOCKWISE"
+                            endAngle="150"
+                            height="450"
+                            startAngle="0"
+                            width="450">
+                            <!--                        <Transform target="endAngle" value="[COMPLICATION.RANGED_VALUE_MAX] - [UTC_TIMESTAMP]" />-->
+                            <Transform
+                                target="endAngle"
+                                value="((([UTC_TIMESTAMP] - [COMPLICATION.RANGED_VALUE_MIN])/ ([COMPLICATION.RANGED_VALUE_MAX] - [COMPLICATION.RANGED_VALUE_MIN])) * 360)" />
+                            <Stroke
+                                cap="ROUND"
+                                color="[CONFIGURATION.themeColor.2]"
+                                thickness="10" />
+                        </Arc>
+                    </PartDraw>
+                </Group>
+
+            </Complication>
+
+        </ComplicationSlot>
+
+        <Group
+            name="day-name"
+            height="50"
+            width="50"
+            x="200"
+            y="20">
+
+
+            <PartText
+                alpha="0"
+                height="50"
+                width="50"
+                x="0"
+                y="0">
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="255" />
+                <Text align="CENTER">
+                    <Font
+                        color="#ffffff"
+                        family="cairo"
+                        size="18"
+                        slant="NORMAL"
+                        weight="NORMAL">
+                        <Upper>
+                            <Template>%s
+                                <Parameter expression="[DAY_OF_WEEK_S]" />
+                            </Template>
+                        </Upper>
+                    </Font>
+                </Text>
+            </PartText>
+
+            <PartText
+                alpha="255"
+                height="50"
+                width="50"
+                x="0"
+                y="0">
+
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="0" />
+
+                <Text align="CENTER">
+                    <Font
+                        color="[CONFIGURATION.themeColor.2]"
+                        family="cairo"
+                        size="18"
+                        slant="NORMAL"
+                        weight="NORMAL">
+                        <Upper>
+                            <Template>%s
+                                <Parameter expression="[DAY_OF_WEEK_S]" />
+                            </Template>
+                        </Upper>
+                    </Font>
+                </Text>
+            </PartText>
+        </Group>
+
+
+        <DigitalClock
+            height="450"
+            width="450"
+            x="0"
+            y="0">
+
+
+            <TimeText
+                align="CENTER"
+                alpha="0"
+                format="hh:mm"
+                height="130"
+                width="200"
+                x="120"
+                y="25">
+
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="255" />
+
+                <Font
+                    color="#ffffff"
+                    family="SYNC_TO_DEVICE"
+                    size="80"
+                    slant="NORMAL"
+                    weight="NORMAL" />
+            </TimeText>
+
+
+            <TimeText
+                align="CENTER"
+                alpha="255"
+                format="hh:mm"
+                height="130"
+                width="200"
+                x="120"
+                y="25">
+
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="0" />
+
+                <Font
+                    color="[CONFIGURATION.themeColor.2]"
+                    family="SYNC_TO_DEVICE"
+                    size="80"
+                    slant="NORMAL"
+                    weight="NORMAL" />
+            </TimeText>
+
+
+            <Group
+                name="am-pm"
+                height="50"
+                width="50"
+                x="262"
+                y="108">
+
+
+                <PartText
+                    align="CENTER"
+                    alpha="0"
+                    height="50"
+                    width="50"
+                    x="0"
+                    y="0">
+
+                    <Variant
+                        mode="AMBIENT"
+                        target="alpha"
+                        value="255" />
+
+
+                    <Font
+                        color="#ffffff"
+                        family="SYNC_TO_DEVICE"
+                        size="30"
+                        slant="NORMAL"
+                        weight="NORMAL">
+
+                        <Template>%s
+                            <Parameter expression="[AMPM_STRING]" />
+                        </Template>
+                    </Font>
+
+                </PartText>
+
+                <PartText
+                    align="CENTER"
+                    alpha="255"
+                    height="50"
+                    width="50"
+                    x="0"
+                    y="0">
+
+                    <Variant
+                        mode="AMBIENT"
+                        target="alpha"
+                        value="0" />
+
+                    <Font
+                        color="[CONFIGURATION.themeColor.2]"
+                        family="SYNC_TO_DEVICE"
+                        size="30"
+                        slant="NORMAL"
+                        weight="NORMAL">
+
+                        <Template>%s
+                            <Parameter expression="[AMPM_STRING]" />
+                        </Template>
+                    </Font>
+
+                </PartText>
+            </Group>
+
+
+        </DigitalClock>
+
+        <Group
+            name="date"
+            height="50"
+            width="100"
+            x="50"
+            y="170">
+
+            <PartText
+                alpha="0"
+                height="50"
+                width="100"
+                x="0"
+                y="0">
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="255" />
+                <Localization
+                    calendar="GREGORIAN"
+                    timeZone="SYNC_TO_DEVICE" />
+                <Text align="LEFT">
+                    <Font
+                        color="#ffffff"
+                        family="SYNC_TO_DEVICE"
+                        size="32"
+                        slant="NORMAL"
+                        weight="NORMAL">
+
+                        <Template>%s %s
+
+                            <Parameter expression="[DAY]" />
+                            <Parameter expression="[MONTH_S]" />
+                        </Template>
+
+                    </Font>
+                </Text>
+            </PartText>
+
+
+            <PartText
+                alpha="255"
+                height="50"
+                width="100"
+                x="0"
+                y="0">
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="0" />
+                <Localization
+                    calendar="GREGORIAN"
+                    timeZone="SYNC_TO_DEVICE" />
+                <Text align="LEFT">
+                    <Font
+                        color="[CONFIGURATION.themeColor.2]"
+                        family="SYNC_TO_DEVICE"
+                        size="32"
+                        slant="NORMAL"
+                        weight="NORMAL">
+
+                        <Template>%s %s
+
+                            <Parameter expression="[DAY]" />
+                            <Parameter expression="[MONTH_S]" />
+                        </Template>
+
+                    </Font>
+                </Text>
+            </PartText>
+        </Group>
+
+        <Group
+            name="hijri-date"
+            height="50"
+            width="150"
+            x="270"
+            y="170">
+
+
+            <PartText
+                alpha="0"
+                height="50"
+                width="150"
+                x="0"
+                y="0">
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="255" />
+                <Localization
+                    calendar="ISLAMIC_UMALQURA"
+                    timeZone="SYNC_TO_DEVICE" />
+
+                <Text align="LEFT">
+                    <Font
+                        color="#ffffff"
+                        family="SYNC_TO_DEVICE"
+                        size="32"
+                        slant="NORMAL"
+                        weight="NORMAL">
+
+                        <Template>%s %s
+                            <Parameter expression="[DAY]" />
+                            <Parameter expression="[MONTH_S]" />
+                        </Template>
+
+                    </Font>
+                </Text>
+            </PartText>
+
+            <PartText
+                alpha="255"
+                height="50"
+                width="150"
+                x="0"
+                y="0">
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="0" />
+                <Localization
+                    calendar="ISLAMIC_UMALQURA"
+                    timeZone="SYNC_TO_DEVICE" />
+
+                <Text align="LEFT">
+                    <Font
+                        color="[CONFIGURATION.themeColor.2]"
+                        family="SYNC_TO_DEVICE"
+                        size="32"
+                        slant="NORMAL"
+                        weight="NORMAL">
+
+                        <Template>%s %s
+                            <Parameter expression="[DAY]" />
+                            <Parameter expression="[MONTH_S]" />
+                        </Template>
+
+                    </Font>
+                </Text>
+            </PartText>
+        </Group>
+
+
+        <ComplicationSlot
+            height="450"
+            isCustomizable="false"
+            slotId="7"
+            supportedTypes="SHORT_TEXT"
+            width="450"
+            x="0"
+            y="0">
+
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT"
+                primaryProvider="com.devlomi.prayerwatchface/com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftComplicationService"
+                primaryProviderType="SHORT_TEXT" />
+
+            <BoundingOval
+                height="50"
+                outlinePadding="2"
+                width="100"
+                x="90"
+                y="340" />
+
+            <Complication type="SHORT_TEXT">
+
+                <Group
+                    name="prayer-left-title"
+                    height="50"
+                    width="150"
+                    x="90"
+                    y="317">
+
+                    <PartText
+                        alpha="0"
+                        height="50"
+                        width="150"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+                        <Text align="LEFT">
+                            <Font
+                                color="#ffffff"
+                                family="SYNC_TO_DEVICE"
+                                size="24"
+                                slant="NORMAL"
+                                weight="NORMAL">
+                                <Template>%s
+                                    <Parameter expression="[COMPLICATION.TITLE]" />
+                                </Template>
+                            </Font>
+                        </Text>
+                    </PartText>
+
+                    <PartText
+                        alpha="255"
+                        height="50"
+                        width="150"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Text align="LEFT">
+                            <Font
+                                color="[CONFIGURATION.themeColor.1]"
+                                family="SYNC_TO_DEVICE"
+                                size="24"
+                                slant="NORMAL"
+                                weight="NORMAL">
+                                <Template>%s
+                                    <Parameter expression="[COMPLICATION.TITLE]" />
+                                </Template>
+                            </Font>
+                        </Text>
+                    </PartText>
+                </Group>
+
+                <Group
+                    name="time-left"
+                    height="50"
+                    width="100"
+                    x="90"
+                    y="340">
+
+                    <PartText
+                        alpha="0"
+                        height="50"
+                        width="100"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+                        <Text align="LEFT">
+                            <Font
+                                color="#ffffff"
+                                family="SYNC_TO_DEVICE"
+                                size="24"
+                                slant="NORMAL"
+                                weight="NORMAL">
+                                <Template>%s
+                                    <Parameter expression="[COMPLICATION.TEXT]" />
+                                </Template>
+                            </Font>
+                        </Text>
+                    </PartText>
+
+                    <PartText
+                        alpha="255"
+                        height="50"
+                        width="100"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Text align="LEFT">
+                            <Font
+                                color="[CONFIGURATION.themeColor.1]"
+                                family="SYNC_TO_DEVICE"
+                                size="24"
+                                slant="NORMAL"
+                                weight="NORMAL">
+                                <Template>%s
+                                    <Parameter expression="[COMPLICATION.TEXT]" />
+                                </Template>
+                            </Font>
+                        </Text>
+                    </PartText>
+
+                </Group>
+
+
+            </Complication>
+
+        </ComplicationSlot>
+
+
+        <Group
+            name="line"
+            height="60"
+            width="20"
+            x="225"
+            y="330">
+
+            <PartDraw
+                alpha="0"
+                height="60"
+                width="20"
+                x="0"
+                y="0">
+
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="255" />
+
+                <Line
+                    endX="0"
+                    endY="60"
+                    startX="0"
+                    startY="0">
+                    <Stroke
+                        color="#ffffff"
+                        thickness="3" />
+                </Line>
+
+
+            </PartDraw>
+
+            <PartDraw
+                alpha="255"
+                height="60"
+                width="20"
+                x="0"
+                y="0">
+
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="0" />
+                <Line
+                    endX="0"
+                    endY="60"
+                    startX="0"
+                    startY="0">
+                    <Stroke
+                        color="[CONFIGURATION.themeColor.2]"
+                        thickness="3" />
+                </Line>
+
+
+            </PartDraw>
+
+        </Group>
+
+
+        <ComplicationSlot
+            height="450"
+            isCustomizable="false"
+            slotId="6"
+            supportedTypes="SHORT_TEXT"
+            width="450"
+            x="0"
+            y="0">
+
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT"
+                primaryProvider="com.devlomi.prayerwatchface/com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationService"
+                primaryProviderType="SHORT_TEXT" />
+
+            <BoundingOval
+                height="50"
+                outlinePadding="2"
+                width="100"
+                x="245"
+                y="320" />
+
+            <Complication type="SHORT_TEXT">
+
+                <Group
+                    name="prayer-title"
+                    height="50"
+                    width="100"
+                    x="245"
+                    y="320">
+
+
+                    <PartText
+                        alpha="0"
+                        height="50"
+                        width="100"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+                        <Text align="CENTER">
+                            <Font
+                                color="#ffffff"
+                                family="SYNC_TO_DEVICE"
+                                size="24"
+                                slant="NORMAL"
+                                weight="NORMAL">
+                                <Template>%s
+                                    <Parameter expression="[COMPLICATION.TITLE]" />
+                                </Template>
+                            </Font>
+                        </Text>
+                    </PartText>
+
+                    <PartText
+                        alpha="255"
+                        height="50"
+                        width="100"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Text align="CENTER">
+                            <Font
+                                color="[CONFIGURATION.themeColor.2]"
+                                family="SYNC_TO_DEVICE"
+                                size="24"
+                                slant="NORMAL"
+                                weight="NORMAL">
+                                <Template>%s
+                                    <Parameter expression="[COMPLICATION.TITLE]" />
+                                </Template>
+                            </Font>
+                        </Text>
+                    </PartText>
+                </Group>
+
+                <Group
+                    name="prayer-time"
+                    height="50"
+                    width="100"
+                    x="245"
+                    y="345">
+
+                    <PartText
+                        alpha="0"
+                        height="50"
+                        width="100"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+                        <Text align="CENTER">
+                            <Font
+                                color="#ffffff"
+                                family="SYNC_TO_DEVICE"
+                                size="24"
+                                slant="NORMAL"
+                                weight="NORMAL">
+                                <Template>%s
+                                    <Parameter expression="[COMPLICATION.TEXT]" />
+                                </Template>
+                            </Font>
+                        </Text>
+                    </PartText>
+
+                    <PartText
+                        alpha="255"
+                        height="50"
+                        width="100"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Text align="CENTER">
+                            <Font
+                                color="[CONFIGURATION.themeColor.2]"
+                                family="SYNC_TO_DEVICE"
+                                size="24"
+                                slant="NORMAL"
+                                weight="NORMAL">
+                                <Template>%s
+                                    <Parameter expression="[COMPLICATION.TEXT]" />
+                                </Template>
+                            </Font>
+                        </Text>
+                    </PartText>
+
+                </Group>
+
+            </Complication>
+
+        </ComplicationSlot>
+
+
+        <!--        <PartText-->
+        <!--            height="50"-->
+        <!--            width="100"-->
+        <!--            x="245"-->
+        <!--            y="345">-->
+        <!--            <Text align="CENTER">-->
+        <!--                <Font-->
+        <!--                    color="[CONFIGURATION.themeColor.2]"-->
+        <!--                    family="SYNC_TO_DEVICE"-->
+        <!--                    size="24"-->
+        <!--                    slant="NORMAL"-->
+        <!--                    weight="NORMAL">5:15AM-->
+        <!--                </Font>-->
+        <!--            </Text>-->
+        <!--        </PartText>-->
+
+
+    </Scene>
+</WatchFace>

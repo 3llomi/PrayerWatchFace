@@ -16,3 +16,4 @@ rootProject.name = "PrayerWatchFace2.0"
 include ':mobile'
 include ':wear'
 include ':shared'
+include ':watchface'

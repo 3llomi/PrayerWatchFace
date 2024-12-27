@@ -1,5 +1,8 @@
 package com.devlomi.prayerwatchface
 
+import android.content.ContentValues
+import android.net.Uri
+import android.util.Log
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.receivers.PrayerTimeReceiver
 import com.devlomi.shared.constants.ConfigKeys
@@ -185,8 +188,19 @@ class DataListenerService : WearableListenerService() {
                         settingsDatStore.setTapType(it)
                     }
 
+                    Log.d("3llomi","Data Changed on watch listener received")
+                    val uri = Uri.parse("content://com.devlomi.prayerwatchface.complication.provider/data")
+                    val values = ContentValues().apply {
+                        put("column_name1", "value1")
+                        put("column_name2", "value2")
+                    }
+
+
+                    val newUri: Int = contentResolver.update(uri, values,null,null)
+
 
                 } catch (e: Exception) {
+                    Log.d("3llomi","error on data changed on watch listener ${e.localizedMessage}")
                 }
             }
         }
