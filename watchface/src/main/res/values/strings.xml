@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">WatchFace</string>
+    <string name="wallpaper">Wallpaper</string>
+    <string name="wallpaper_dim">Wallpaper Dim</string>
+    <string name="foreground_color">Foreground</string>
+    <string name="foreground_color_bottom">Foreground Bottom</string>
+    <string name="am_pm">12 Hours</string>
 </resources>

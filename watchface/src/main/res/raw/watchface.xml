@@ -29,18 +29,335 @@
     <UserConfigurations>
         <ColorConfiguration
             defaultValue="0"
-            displayName="colors_label"
-            id="themeColor"
-            screenReaderText="colors_label">
+            displayName="foreground_color"
+            id="foreground_color"
+            screenReaderText="foreground_color">
             <ColorOption
-                colors="#16697a #d6d5d4 #ffa62b #333333 #000000"
-                displayName="theme_one_label"
+                colors="#ffffff"
+                displayName="white"
                 id="0" />
             <ColorOption
-                colors="#16697a #d6d5d4 #33cd2b #333333 #000000"
-                displayName="theme_two_label"
+                colors="#000000"
+                displayName="black"
                 id="1" />
+
+            <ColorOption
+                colors="#9B9B9B"
+                displayName="black"
+                id="2" />
+
+            <ColorOption
+                colors="#AF1A1A"
+                displayName="red"
+                id="3" />
+
+            <ColorOption
+                colors="#0D7102"
+                displayName="green"
+                id="4" />
+
+
+            <ColorOption
+                colors="#673AB7"
+                displayName="velvet"
+                id="5" />
+
+            <ColorOption
+                colors="#3F51B5"
+                displayName="velvet2"
+                id="6" />
+
+            <ColorOption
+                colors="#FF5722"
+                displayName="orange"
+                id="7" />
+
+            <ColorOption
+                colors="#009688"
+                displayName="green"
+                id="8" />
+
+            <ColorOption
+                colors="#4CAF50"
+                displayName="green"
+                id="9" />
+
+            <ColorOption
+                colors="#FFEB3B"
+                displayName="yellow"
+                id="10" />
+
+
+            <ColorOption
+                colors="#E91E63"
+                displayName="red"
+                id="11" />
+
         </ColorConfiguration>
+
+        <ColorConfiguration
+            defaultValue="1"
+            displayName="foreground_color_bottom"
+            id="foreground_color"
+            screenReaderText="foreground_color">
+            <ColorOption
+                colors="#ffffff"
+                displayName="white"
+                id="0" />
+            <ColorOption
+                colors="#000000"
+                displayName="black"
+                id="1" />
+
+            <ColorOption
+                colors="#9B9B9B"
+                displayName="black"
+                id="2" />
+
+            <ColorOption
+                colors="#AF1A1A"
+                displayName="red"
+                id="3" />
+
+            <ColorOption
+                colors="#0D7102"
+                displayName="green"
+                id="4" />
+
+
+            <ColorOption
+                colors="#673AB7"
+                displayName="velvet"
+                id="5" />
+
+            <ColorOption
+                colors="#3F51B5"
+                displayName="velvet2"
+                id="6" />
+
+            <ColorOption
+                colors="#FF5722"
+                displayName="orange"
+                id="7" />
+
+            <ColorOption
+                colors="#009688"
+                displayName="green"
+                id="8" />
+
+            <ColorOption
+                colors="#4CAF50"
+                displayName="green"
+                id="9" />
+
+            <ColorOption
+                colors="#FFEB3B"
+                displayName="yellow"
+                id="10" />
+
+
+            <ColorOption
+                colors="#E91E63"
+                displayName="red"
+                id="11" />
+        </ColorConfiguration>
+
+
+        <ColorConfiguration
+            defaultValue="0"
+            displayName="background_color"
+            id="background_color"
+            screenReaderText="background_color">
+            <ColorOption
+                colors="#2B324B"
+                displayName="white"
+                id="0" />
+
+            <ColorOption
+                colors="#000000"
+                displayName="black"
+                id="1" />
+
+            <ColorOption
+                colors="#9B9B9B"
+                displayName="black"
+                id="2" />
+
+            <ColorOption
+                colors="#AF1A1A"
+                displayName="red"
+                id="3" />
+
+            <ColorOption
+                colors="#0D7102"
+                displayName="green"
+                id="4" />
+
+
+            <ColorOption
+                colors="#673AB7"
+                displayName="velvet"
+                id="5" />
+
+            <ColorOption
+                colors="#3F51B5"
+                displayName="velvet2"
+                id="6" />
+
+            <ColorOption
+                colors="#FF5722"
+                displayName="orange"
+                id="7" />
+
+            <ColorOption
+                colors="#009688"
+                displayName="green"
+                id="8" />
+
+            <ColorOption
+                colors="#4CAF50"
+                displayName="green"
+                id="9" />
+
+            <ColorOption
+                colors="#FFEB3B"
+                displayName="yellow"
+                id="10" />
+
+
+            <ColorOption
+                colors="#E91E63"
+                displayName="red"
+                id="11" />
+        </ColorConfiguration>
+
+        <ColorConfiguration
+            defaultValue="0"
+            displayName="background_color_bottom"
+            id="background_color_bottom"
+            screenReaderText="background_color_bottom">
+            <ColorOption
+                colors="#D4E1FB"
+                displayName="white"
+                id="0" />
+            <ColorOption
+                colors="#000000"
+                displayName="black"
+                id="1" />
+
+            <ColorOption
+                colors="#9B9B9B"
+                displayName="black"
+                id="2" />
+
+            <ColorOption
+                colors="#AF1A1A"
+                displayName="red"
+                id="3" />
+
+            <ColorOption
+                colors="#0D7102"
+                displayName="green"
+                id="4" />
+
+
+            <ColorOption
+                colors="#673AB7"
+                displayName="velvet"
+                id="5" />
+
+            <ColorOption
+                colors="#3F51B5"
+                displayName="velvet2"
+                id="6" />
+
+            <ColorOption
+                colors="#FF5722"
+                displayName="orange"
+                id="7" />
+
+            <ColorOption
+                colors="#009688"
+                displayName="green"
+                id="8" />
+
+            <ColorOption
+                colors="#4CAF50"
+                displayName="green"
+                id="9" />
+
+            <ColorOption
+                colors="#FFEB3B"
+                displayName="yellow"
+                id="10" />
+
+
+            <ColorOption
+                colors="#E91E63"
+                displayName="red"
+                id="11" />
+        </ColorConfiguration>
+
+        <BooleanConfiguration
+            defaultValue="TRUE"
+            displayName="wallpaper_dim"
+            id="add_wallpaper_dim"
+            screenReaderText="Add Wallpaper Dim" />
+
+        <BooleanConfiguration
+            defaultValue="TRUE"
+            displayName="am_pm"
+            id="am_pm"
+            screenReaderText="am_pm" />
+
+        <ListConfiguration
+            defaultValue="1"
+            displayName="wallpaper"
+            id="wallpaper"
+            screenReaderText="Wallpaper">
+
+            <ListOption
+                displayName="default"
+                id="0"
+                screenReaderText="default" />
+
+
+            <ListOption
+                displayName="1"
+                id="1"
+                screenReaderText="1" />
+
+            <ListOption
+                displayName="2"
+                id="2"
+                screenReaderText="2" />
+
+            <ListOption
+                displayName="3"
+                id="3"
+                screenReaderText="3" />
+
+            <ListOption
+                displayName="4"
+                id="4"
+                screenReaderText="4" />
+
+            <ListOption
+                displayName="5"
+                id="5"
+                screenReaderText="5" />
+
+            <ListOption
+                displayName="6"
+                id="6"
+                screenReaderText="6" />
+
+            <ListOption
+                displayName="7"
+                id="7"
+                screenReaderText="7" />
+        </ListConfiguration>
+
     </UserConfigurations>
 
     <Scene backgroundColor="#ff000000">
@@ -52,45 +369,176 @@
             x="0"
             y="0">
 
+            <ListConfiguration id="wallpaper">
 
-            <PartImage
-                height="450"
-                width="450"
-                x="0"
-                y="0">
+                <ListOption id="0">
 
-                <Variant
-                    mode="AMBIENT"
-                    target="alpha"
-                    value="0" />
+                    <Group name="colored-background" width="450" height="450">
 
-                <Image resource="wallpaper_1" />
-
-
-            </PartImage>
-            <PartDraw
-                alpha="179"
-                height="450"
-                width="450"
-                x="0"
-                y="0">
-                <Variant
-                    mode="AMBIENT"
-                    target="alpha"
-                    value="0" />
-                <Rectangle
-                    height="450"
-                    width="450"
-                    x="0"
-                    y="0">
+<!--                        TODO IMPLEMENT VARIANT-->
+                        <PartDraw
+                            height="330"
+                            width="450"
+                            x="0"
+                            y="0">
+                            <Rectangle
+                                height="330"
+                                width="450"
+                                x="0"
+                                y="0">
 
 
-                    <Fill color="#ff000000" />
-                </Rectangle>
+                                <Fill color="[CONFIGURATION.background_color.0]" />
+                            </Rectangle>
+
+                            <Rectangle
+                                height="120"
+                                width="450"
+                                x="0"
+                                y="330">
 
 
-            </PartDraw>
+                                <Fill color="[CONFIGURATION.background_color_bottom.0]" />
+                            </Rectangle>
+                        </PartDraw>
+                    </Group>
+
+                </ListOption>
+
+                <ListOption id="1">
+                    <PartImage
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Image resource="wallpaper_1" />
+
+                    </PartImage>
+                </ListOption>
+                <ListOption id="2">
+                    <PartImage
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Image resource="wallpaper_2" />
+
+                    </PartImage>
+                </ListOption>
+                <ListOption id="3">
+                    <PartImage
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Image resource="wallpaper_3" />
+
+                    </PartImage>
+                </ListOption>
+                <ListOption id="4">
+                    <PartImage
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Image resource="wallpaper_4" />
+
+                    </PartImage>
+                </ListOption>
+                <ListOption id="5">
+                    <PartImage
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Image resource="wallpaper_5" />
+
+                    </PartImage>
+                </ListOption>
+                <ListOption id="6">
+                    <PartImage
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Image resource="wallpaper_6" />
+
+                    </PartImage>
+                </ListOption>
+                <ListOption id="7">
+                    <PartImage
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Image resource="wallpaper_7" />
+
+                    </PartImage>
+                </ListOption>
+            </ListConfiguration>
+            <BooleanConfiguration id="add_wallpaper_dim">
+                <BooleanOption id="TRUE">
+                    <PartDraw
+                        alpha="179"
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Rectangle
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+
+
+                            <Fill color="#ff000000" />
+                        </Rectangle>
+
+
+                    </PartDraw>
+                </BooleanOption>
+            </BooleanConfiguration>
         </Group>
+
 
         <ComplicationSlot
             height="450"
@@ -206,7 +654,7 @@
                 <Text align="CENTER">
                     <Font
                         color="#ffffff"
-                        family="cairo"
+                        family="righteous"
                         size="18"
                         slant="NORMAL"
                         weight="NORMAL">
@@ -234,7 +682,7 @@
                 <Text align="CENTER">
                     <Font
                         color="[CONFIGURATION.themeColor.2]"
-                        family="cairo"
+                        family="righteous"
                         size="18"
                         slant="NORMAL"
                         weight="NORMAL">
@@ -249,125 +697,193 @@
         </Group>
 
 
-        <DigitalClock
-            height="450"
-            width="450"
-            x="0"
-            y="0">
+        <BooleanConfiguration id="am_pm">
 
-
-            <TimeText
-                align="CENTER"
-                alpha="0"
-                format="hh:mm"
-                height="130"
-                width="200"
-                x="120"
-                y="25">
-
-                <Variant
-                    mode="AMBIENT"
-                    target="alpha"
-                    value="255" />
-
-                <Font
-                    color="#ffffff"
-                    family="SYNC_TO_DEVICE"
-                    size="80"
-                    slant="NORMAL"
-                    weight="NORMAL" />
-            </TimeText>
-
-
-            <TimeText
-                align="CENTER"
-                alpha="255"
-                format="hh:mm"
-                height="130"
-                width="200"
-                x="120"
-                y="25">
-
-                <Variant
-                    mode="AMBIENT"
-                    target="alpha"
-                    value="0" />
-
-                <Font
-                    color="[CONFIGURATION.themeColor.2]"
-                    family="SYNC_TO_DEVICE"
-                    size="80"
-                    slant="NORMAL"
-                    weight="NORMAL" />
-            </TimeText>
-
-
-            <Group
-                name="am-pm"
-                height="50"
-                width="50"
-                x="262"
-                y="108">
-
-
-                <PartText
-                    align="CENTER"
-                    alpha="0"
-                    height="50"
-                    width="50"
+            <BooleanOption id="TRUE">
+                <DigitalClock
+                    height="450"
+                    width="450"
                     x="0"
                     y="0">
 
-                    <Variant
-                        mode="AMBIENT"
-                        target="alpha"
-                        value="255" />
+
+                    <TimeText
+                        align="CENTER"
+                        alpha="0"
+                        format="hh:mm"
+                        height="130"
+                        hourFormat="12"
+                        width="200"
+                        x="120"
+                        y="25">
+
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+
+                        <Font
+                            color="#ffffff"
+                            family="rubik"
+                            size="80"
+                            slant="NORMAL"
+                            weight="NORMAL" />
+                    </TimeText>
+
+                    <!--TODO IMPLEMENT 24 hours bool-->
+
+                    <TimeText
+                        align="CENTER"
+                        alpha="255"
+                        format="hh:mm"
+                        height="130"
+                        hourFormat="12"
+                        width="200"
+                        x="120"
+                        y="25">
+
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Font
+                            color="[CONFIGURATION.themeColor.2]"
+                            family="rubik"
+                            size="80"
+                            slant="NORMAL"
+                            weight="NORMAL" />
+                    </TimeText>
+
+                    <Group
+                        name="am-pm"
+                        height="50"
+                        width="50"
+                        x="265"
+                        y="115">
 
 
-                    <Font
-                        color="#ffffff"
-                        family="SYNC_TO_DEVICE"
-                        size="30"
-                        slant="NORMAL"
-                        weight="NORMAL">
+                        <PartText
+                            align="CENTER"
+                            alpha="0"
+                            height="50"
+                            width="50"
+                            x="0"
+                            y="0">
 
-                        <Template>%s
-                            <Parameter expression="[AMPM_STRING]" />
-                        </Template>
-                    </Font>
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="255" />
 
-                </PartText>
 
-                <PartText
-                    align="CENTER"
-                    alpha="255"
-                    height="50"
-                    width="50"
+                            <Font
+                                color="gray"
+                                family="SYNC_TO_DEVICE"
+                                size="30"
+                                slant="NORMAL"
+                                weight="NORMAL">
+
+                                <Template>%s
+                                    <Parameter expression="[AMPM_STRING]" />
+                                </Template>
+                            </Font>
+
+                        </PartText>
+
+                        <PartText
+                            align="CENTER"
+                            alpha="255"
+                            height="50"
+                            width="50"
+                            x="0"
+                            y="0">
+
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="0" />
+
+                            <Font
+                                color="gray"
+                                family="SYNC_TO_DEVICE"
+                                size="30"
+                                slant="NORMAL"
+                                weight="NORMAL">
+
+                                <Template>%s
+                                    <Parameter expression="[AMPM_STRING]" />
+                                </Template>
+                            </Font>
+
+                        </PartText>
+                    </Group>
+
+
+                </DigitalClock>
+
+            </BooleanOption>
+            <BooleanOption id="FALSE">
+                <DigitalClock
+                    height="450"
+                    width="450"
                     x="0"
                     y="0">
 
-                    <Variant
-                        mode="AMBIENT"
-                        target="alpha"
-                        value="0" />
 
-                    <Font
-                        color="[CONFIGURATION.themeColor.2]"
-                        family="SYNC_TO_DEVICE"
-                        size="30"
-                        slant="NORMAL"
-                        weight="NORMAL">
+                    <TimeText
 
-                        <Template>%s
-                            <Parameter expression="[AMPM_STRING]" />
-                        </Template>
-                    </Font>
+                        align="CENTER"
+                        alpha="0"
+                        format="hh:mm"
+                        height="130"
+                        hourFormat="24"
+                        width="200"
+                        x="120"
+                        y="25">
 
-                </PartText>
-            </Group>
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+
+                        <Font
+                            color="#ffffff"
+                            family="rubik"
+                            size="80"
+                            slant="NORMAL"
+                            weight="NORMAL" />
+                    </TimeText>
+
+                    <!--TODO IMPLEMENT 24 hours bool-->
+
+                    <TimeText
+                        align="CENTER"
+                        alpha="255"
+                        format="hh:mm"
+                        height="130"
+                        hourFormat="24"
+                        width="200"
+                        x="120"
+                        y="25">
+
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+
+                        <Font
+                            color="[CONFIGURATION.themeColor.2]"
+                            family="rubik"
+                            size="80"
+                            slant="NORMAL"
+                            weight="NORMAL" />
+                    </TimeText>
+                </DigitalClock>
 
 
-        </DigitalClock>
+            </BooleanOption>
+        </BooleanConfiguration>
 
         <Group
             name="date"
@@ -392,7 +908,7 @@
                 <Text align="LEFT">
                     <Font
                         color="#ffffff"
-                        family="SYNC_TO_DEVICE"
+                        family="alata"
                         size="32"
                         slant="NORMAL"
                         weight="NORMAL">
@@ -424,7 +940,7 @@
                 <Text align="LEFT">
                     <Font
                         color="[CONFIGURATION.themeColor.2]"
-                        family="SYNC_TO_DEVICE"
+                        family="alata"
                         size="32"
                         slant="NORMAL"
                         weight="NORMAL">
@@ -462,10 +978,10 @@
                     calendar="ISLAMIC_UMALQURA"
                     timeZone="SYNC_TO_DEVICE" />
 
-                <Text align="LEFT">
+                <Text align="CENTER">
                     <Font
                         color="#ffffff"
-                        family="SYNC_TO_DEVICE"
+                        family="alata"
                         size="32"
                         slant="NORMAL"
                         weight="NORMAL">
@@ -493,10 +1009,10 @@
                     calendar="ISLAMIC_UMALQURA"
                     timeZone="SYNC_TO_DEVICE" />
 
-                <Text align="LEFT">
+                <Text align="CENTER">
                     <Font
                         color="[CONFIGURATION.themeColor.2]"
-                        family="SYNC_TO_DEVICE"
+                        family="alata"
                         size="32"
                         slant="NORMAL"
                         weight="NORMAL">
@@ -510,6 +1026,842 @@
                 </Text>
             </PartText>
         </Group>
+
+
+        <ComplicationSlot
+            name="left_complication"
+            displayName="Left Complication"
+            height="85"
+            slotId="98"
+            supportedTypes="SHORT_TEXT"
+            width="85"
+            x="100"
+            y="230">
+            <DefaultProviderPolicy
+                defaultSystemProvider="WATCH_BATTERY"
+                defaultSystemProviderType="SHORT_TEXT"
+                primaryProvider="EMPTY"
+                primaryProviderType="SHORT_TEXT" />
+            <BoundingOval
+                height="112"
+                outlinePadding="2"
+                width="112"
+                x="0"
+                y="0" />
+
+            <Complication type="SHORT_TEXT">
+                <Group
+                    name="shortText_oval"
+                    height="85"
+                    width="85"
+                    x="0"
+                    y="0">
+                    <PartDraw
+                        alpha="0"
+                        height="85"
+                        width="85"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+                        <Arc
+                            centerX="56"
+                            centerY="56"
+                            direction="CLOCKWISE"
+                            endAngle="360"
+                            height="85"
+                            startAngle="0"
+                            width="85">
+                            <Stroke
+                                cap="ROUND"
+                                color="[CONFIGURATION.themeColor.1]"
+                                thickness="2" />
+                        </Arc>
+                    </PartDraw>
+                    <PartDraw
+                        alpha="255"
+                        height="85"
+                        width="85"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Arc
+                            centerX="56"
+                            centerY="56"
+                            direction="CLOCKWISE"
+                            endAngle="360"
+                            height="85"
+                            startAngle="0"
+                            width="85">
+                            <Stroke
+                                cap="ROUND"
+                                color="[CONFIGURATION.themeColor.2]"
+                                thickness="2" />
+                        </Arc>
+                    </PartDraw>
+                </Group>
+                <Condition>
+                    <Expressions>
+                        <Expression name="shortText_monochromaticImage">
+                            <![CDATA[[COMPLICATION.MONOCHROMATIC_IMAGE] != null]]>
+                        </Expression>
+                        <Expression name="shortText_title">
+                            <![CDATA[[COMPLICATION.TITLE] != null]]>
+                        </Expression>
+                    </Expressions>
+                    <Compare expression="shortText_monochromaticImage">
+                        <Condition>
+                            <Expressions>
+                                <Expression name="monochromatic_ambientImage">
+                                    <![CDATA[[COMPLICATION.MONOCHROMATIC_IMAGE] != null && [COMPLICATION.MONOCHROMATIC_IMAGE_AMBIENT] != null]]>
+                                </Expression>
+                                <Expression name="monochromatic_noAmbientImage">
+                                    <![CDATA[[COMPLICATION.MONOCHROMATIC_IMAGE] != null && [COMPLICATION.MONOCHROMATIC_IMAGE_AMBIENT] == null]]>
+                                </Expression>
+                            </Expressions>
+                            <Compare expression="monochromatic_ambientImage">
+                                <PartImage
+                                    alpha="0"
+                                    height="28"
+                                    tintColor="[CONFIGURATION.themeColor.1]"
+                                    width="28"
+                                    x="43"
+                                    y="17">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="255" />
+                                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE_AMBIENT]" />
+                                </PartImage>
+                                <PartImage
+                                    alpha="255"
+                                    height="28"
+                                    tintColor="[CONFIGURATION.themeColor.2]"
+                                    width="28"
+                                    x="43"
+                                    y="17">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="0" />
+                                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                                </PartImage>
+                                <PartText
+                                    alpha="0"
+                                    height="20"
+                                    width="112"
+                                    x="0"
+                                    y="56">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="255" />
+                                    <Text
+                                        align="CENTER"
+                                        ellipsis="TRUE">
+                                        <Font
+                                            color="[CONFIGURATION.themeColor.1]"
+                                            family="SYNC_TO_DEVICE"
+                                            size="24"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TEXT]" />
+                                            </Template>
+                                        </Font>
+                                    </Text>
+                                </PartText>
+                                <PartText
+                                    alpha="255"
+                                    height="20"
+                                    width="112"
+                                    x="0"
+                                    y="56">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="0" />
+                                    <Text
+                                        align="CENTER"
+                                        ellipsis="TRUE">
+                                        <Font
+                                            color="[CONFIGURATION.themeColor.2]"
+                                            family="SYNC_TO_DEVICE"
+                                            size="24"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TEXT]" />
+                                            </Template>
+                                        </Font>
+                                    </Text>
+                                </PartText>
+                            </Compare>
+                            <Compare expression="monochromatic_noAmbientImage">
+                                <PartImage
+                                    alpha="0"
+                                    height="32"
+                                    tintColor="[CONFIGURATION.themeColor.1]"
+                                    width="32"
+                                    x="40"
+                                    y="15">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="255" />
+                                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                                </PartImage>
+                                <PartImage
+                                    alpha="255"
+                                    height="32"
+                                    tintColor="[CONFIGURATION.themeColor.2]"
+                                    width="32"
+                                    x="40"
+                                    y="15">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="0" />
+                                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                                </PartImage>
+                                <PartText
+                                    alpha="0"
+                                    height="20"
+                                    width="112"
+                                    x="0"
+                                    y="56">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="255" />
+                                    <Text
+                                        align="CENTER"
+                                        ellipsis="TRUE">
+                                        <Font
+                                            color="[CONFIGURATION.themeColor.1]"
+                                            family="SYNC_TO_DEVICE"
+                                            size="28"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TEXT]" />
+                                            </Template>
+                                        </Font>
+                                    </Text>
+                                </PartText>
+                                <PartText
+                                    alpha="255"
+                                    height="20"
+                                    width="112"
+                                    x="0"
+                                    y="56">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="0" />
+                                    <Text
+                                        align="CENTER"
+                                        ellipsis="TRUE">
+                                        <Font
+                                            color="[CONFIGURATION.themeColor.2]"
+                                            family="SYNC_TO_DEVICE"
+                                            size="28"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TEXT]" />
+                                            </Template>
+                                        </Font>
+                                    </Text>
+                                </PartText>
+                            </Compare>
+                        </Condition>
+                    </Compare>
+                    <Compare expression="shortText_title">
+                        <Group
+                            name="shortText_title_ambient"
+                            alpha="0"
+                            height="200"
+                            width="200"
+                            x="0"
+                            y="0">
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="255" />
+                            <PartText
+                                height="20"
+                                width="112"
+                                x="0"
+                                y="33">
+                                <Text
+                                    align="CENTER"
+                                    ellipsis="TRUE">
+                                    <Font
+                                        color="[CONFIGURATION.themeColor.1]"
+                                        family="SYNC_TO_DEVICE"
+                                        size="20"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TITLE]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            <PartText
+                                height="20"
+                                width="112"
+                                x="0"
+                                y="56">
+                                <Text
+                                    align="CENTER"
+                                    ellipsis="TRUE">
+                                    <Font
+                                        color="[CONFIGURATION.themeColor.1]"
+                                        family="SYNC_TO_DEVICE"
+                                        size="28"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                        </Group>
+                        <Group
+                            name="shortText_title"
+                            alpha="255"
+                            height="200"
+                            width="200"
+                            x="0"
+                            y="0">
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="0" />
+                            <PartText
+                                height="20"
+                                width="112"
+                                x="0"
+                                y="33">
+                                <Text
+                                    align="CENTER"
+                                    ellipsis="TRUE">
+                                    <Font
+                                        color="[CONFIGURATION.themeColor.2]"
+                                        family="SYNC_TO_DEVICE"
+                                        size="20"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TITLE]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            <PartText
+                                height="20"
+                                width="112"
+                                x="0"
+                                y="56">
+                                <Text
+                                    align="CENTER"
+                                    ellipsis="TRUE">
+                                    <Font
+                                        color="[CONFIGURATION.themeColor.2]"
+                                        family="SYNC_TO_DEVICE"
+                                        size="28"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <!-- Text, on its own, with no Icon or Title -->
+                    <Default>
+                        <PartText
+                            alpha="255"
+                            height="112"
+                            width="112"
+                            x="0"
+                            y="0">
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="0" />
+                            <Text
+                                align="CENTER"
+                                ellipsis="TRUE">
+                                <Font
+                                    color="[CONFIGURATION.themeColor.2]"
+                                    family="SYNC_TO_DEVICE"
+                                    size="28"
+                                    slant="NORMAL"
+                                    weight="NORMAL">
+                                    <Template>%s
+                                        <Parameter expression="[COMPLICATION.TEXT]" />
+                                    </Template>
+                                </Font>
+                            </Text>
+                        </PartText>
+                        <PartText
+                            alpha="0"
+                            height="112"
+                            width="112"
+                            x="0"
+                            y="0">
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="255" />
+                            <Text
+                                align="CENTER"
+                                ellipsis="TRUE">
+                                <Font
+                                    color="[CONFIGURATION.themeColor.1]"
+                                    family="SYNC_TO_DEVICE"
+                                    size="28"
+                                    slant="NORMAL"
+                                    weight="NORMAL">
+                                    <Template>%s
+                                        <Parameter expression="[COMPLICATION.TEXT]" />
+                                    </Template>
+                                </Font>
+                            </Text>
+                        </PartText>
+                    </Default>
+                </Condition>
+            </Complication>
+        </ComplicationSlot>
+
+
+        <ComplicationSlot
+            name="right_complication"
+            displayName="Right Complication"
+            height="85"
+            slotId="97"
+            supportedTypes="SHORT_TEXT"
+            width="85"
+            x="250"
+            y="230">
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT"
+                primaryProvider="EMPTY"
+                primaryProviderType="SHORT_TEXT" />
+            <BoundingOval
+                height="112"
+                outlinePadding="2"
+                width="112"
+                x="0"
+                y="0" />
+
+            <Complication type="SHORT_TEXT">
+                <Group
+                    name="shortText_oval"
+                    height="85"
+                    width="85"
+                    x="0"
+                    y="0">
+                    <PartDraw
+                        alpha="0"
+                        height="85"
+                        width="85"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="255" />
+                        <Arc
+                            centerX="56"
+                            centerY="56"
+                            direction="CLOCKWISE"
+                            endAngle="360"
+                            height="85"
+                            startAngle="0"
+                            width="85">
+                            <Stroke
+                                cap="ROUND"
+                                color="[CONFIGURATION.themeColor.1]"
+                                thickness="2" />
+                        </Arc>
+                    </PartDraw>
+                    <PartDraw
+                        alpha="255"
+                        height="85"
+                        width="85"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Arc
+                            centerX="56"
+                            centerY="56"
+                            direction="CLOCKWISE"
+                            endAngle="360"
+                            height="85"
+                            startAngle="0"
+                            width="85">
+                            <Stroke
+                                cap="ROUND"
+                                color="[CONFIGURATION.themeColor.2]"
+                                thickness="2" />
+                        </Arc>
+                    </PartDraw>
+                </Group>
+                <Condition>
+                    <Expressions>
+                        <Expression name="shortText_monochromaticImage">
+                            <![CDATA[[COMPLICATION.MONOCHROMATIC_IMAGE] != null]]>
+                        </Expression>
+                        <Expression name="shortText_title">
+                            <![CDATA[[COMPLICATION.TITLE] != null]]>
+                        </Expression>
+                    </Expressions>
+                    <Compare expression="shortText_monochromaticImage">
+                        <Condition>
+                            <Expressions>
+                                <Expression name="monochromatic_ambientImage">
+                                    <![CDATA[[COMPLICATION.MONOCHROMATIC_IMAGE] != null && [COMPLICATION.MONOCHROMATIC_IMAGE_AMBIENT] != null]]>
+                                </Expression>
+                                <Expression name="monochromatic_noAmbientImage">
+                                    <![CDATA[[COMPLICATION.MONOCHROMATIC_IMAGE] != null && [COMPLICATION.MONOCHROMATIC_IMAGE_AMBIENT] == null]]>
+                                </Expression>
+                            </Expressions>
+                            <Compare expression="monochromatic_ambientImage">
+                                <PartImage
+                                    alpha="0"
+                                    height="28"
+                                    tintColor="[CONFIGURATION.themeColor.1]"
+                                    width="28"
+                                    x="43"
+                                    y="17">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="255" />
+                                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE_AMBIENT]" />
+                                </PartImage>
+                                <PartImage
+                                    alpha="255"
+                                    height="28"
+                                    tintColor="[CONFIGURATION.themeColor.2]"
+                                    width="28"
+                                    x="43"
+                                    y="17">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="0" />
+                                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                                </PartImage>
+                                <PartText
+                                    alpha="0"
+                                    height="20"
+                                    width="112"
+                                    x="0"
+                                    y="56">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="255" />
+                                    <Text
+                                        align="CENTER"
+                                        ellipsis="TRUE">
+                                        <Font
+                                            color="[CONFIGURATION.themeColor.1]"
+                                            family="SYNC_TO_DEVICE"
+                                            size="24"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TEXT]" />
+                                            </Template>
+                                        </Font>
+                                    </Text>
+                                </PartText>
+                                <PartText
+                                    alpha="255"
+                                    height="20"
+                                    width="112"
+                                    x="0"
+                                    y="56">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="0" />
+                                    <Text
+                                        align="CENTER"
+                                        ellipsis="TRUE">
+                                        <Font
+                                            color="[CONFIGURATION.themeColor.2]"
+                                            family="SYNC_TO_DEVICE"
+                                            size="24"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TEXT]" />
+                                            </Template>
+                                        </Font>
+                                    </Text>
+                                </PartText>
+                            </Compare>
+                            <Compare expression="monochromatic_noAmbientImage">
+                                <PartImage
+                                    alpha="0"
+                                    height="32"
+                                    tintColor="[CONFIGURATION.themeColor.1]"
+                                    width="32"
+                                    x="40"
+                                    y="15">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="255" />
+                                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                                </PartImage>
+                                <PartImage
+                                    alpha="255"
+                                    height="32"
+                                    tintColor="[CONFIGURATION.themeColor.2]"
+                                    width="32"
+                                    x="40"
+                                    y="15">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="0" />
+                                    <Image resource="[COMPLICATION.MONOCHROMATIC_IMAGE]" />
+                                </PartImage>
+                                <PartText
+                                    alpha="0"
+                                    height="20"
+                                    width="112"
+                                    x="0"
+                                    y="56">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="255" />
+                                    <Text
+                                        align="CENTER"
+                                        ellipsis="TRUE">
+                                        <Font
+                                            color="[CONFIGURATION.themeColor.1]"
+                                            family="SYNC_TO_DEVICE"
+                                            size="28"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TEXT]" />
+                                            </Template>
+                                        </Font>
+                                    </Text>
+                                </PartText>
+                                <PartText
+                                    alpha="255"
+                                    height="20"
+                                    width="112"
+                                    x="0"
+                                    y="56">
+                                    <Variant
+                                        mode="AMBIENT"
+                                        target="alpha"
+                                        value="0" />
+                                    <Text
+                                        align="CENTER"
+                                        ellipsis="TRUE">
+                                        <Font
+                                            color="[CONFIGURATION.themeColor.2]"
+                                            family="SYNC_TO_DEVICE"
+                                            size="28"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TEXT]" />
+                                            </Template>
+                                        </Font>
+                                    </Text>
+                                </PartText>
+                            </Compare>
+                        </Condition>
+                    </Compare>
+                    <Compare expression="shortText_title">
+                        <Group
+                            name="shortText_title_ambient"
+                            alpha="0"
+                            height="200"
+                            width="200"
+                            x="0"
+                            y="0">
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="255" />
+                            <PartText
+                                height="20"
+                                width="112"
+                                x="0"
+                                y="33">
+                                <Text
+                                    align="CENTER"
+                                    ellipsis="TRUE">
+                                    <Font
+                                        color="[CONFIGURATION.themeColor.1]"
+                                        family="SYNC_TO_DEVICE"
+                                        size="20"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TITLE]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            <PartText
+                                height="20"
+                                width="112"
+                                x="0"
+                                y="56">
+                                <Text
+                                    align="CENTER"
+                                    ellipsis="TRUE">
+                                    <Font
+                                        color="[CONFIGURATION.themeColor.1]"
+                                        family="SYNC_TO_DEVICE"
+                                        size="28"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                        </Group>
+                        <Group
+                            name="shortText_title"
+                            alpha="255"
+                            height="200"
+                            width="200"
+                            x="0"
+                            y="0">
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="0" />
+                            <PartText
+                                height="20"
+                                width="112"
+                                x="0"
+                                y="33">
+                                <Text
+                                    align="CENTER"
+                                    ellipsis="TRUE">
+                                    <Font
+                                        color="[CONFIGURATION.themeColor.2]"
+                                        family="SYNC_TO_DEVICE"
+                                        size="20"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TITLE]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            <PartText
+                                height="20"
+                                width="112"
+                                x="0"
+                                y="56">
+                                <Text
+                                    align="CENTER"
+                                    ellipsis="TRUE">
+                                    <Font
+                                        color="[CONFIGURATION.themeColor.2]"
+                                        family="SYNC_TO_DEVICE"
+                                        size="28"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                        </Group>
+                    </Compare>
+                    <!-- Text, on its own, with no Icon or Title -->
+                    <Default>
+                        <PartText
+                            alpha="255"
+                            height="112"
+                            width="112"
+                            x="0"
+                            y="0">
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="0" />
+                            <Text
+                                align="CENTER"
+                                ellipsis="TRUE">
+                                <Font
+                                    color="[CONFIGURATION.themeColor.2]"
+                                    family="SYNC_TO_DEVICE"
+                                    size="28"
+                                    slant="NORMAL"
+                                    weight="NORMAL">
+                                    <Template>%s
+                                        <Parameter expression="[COMPLICATION.TEXT]" />
+                                    </Template>
+                                </Font>
+                            </Text>
+                        </PartText>
+                        <PartText
+                            alpha="0"
+                            height="112"
+                            width="112"
+                            x="0"
+                            y="0">
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="255" />
+                            <Text
+                                align="CENTER"
+                                ellipsis="TRUE">
+                                <Font
+                                    color="[CONFIGURATION.themeColor.1]"
+                                    family="SYNC_TO_DEVICE"
+                                    size="28"
+                                    slant="NORMAL"
+                                    weight="NORMAL">
+                                    <Template>%s
+                                        <Parameter expression="[COMPLICATION.TEXT]" />
+                                    </Template>
+                                </Font>
+                            </Text>
+                        </PartText>
+                    </Default>
+                </Condition>
+            </Complication>
+        </ComplicationSlot>
 
 
         <ComplicationSlot
@@ -541,7 +1893,7 @@
                     height="50"
                     width="150"
                     x="90"
-                    y="317">
+                    y="330">
 
                     <PartText
                         alpha="0"
@@ -556,7 +1908,7 @@
                         <Text align="LEFT">
                             <Font
                                 color="#ffffff"
-                                family="SYNC_TO_DEVICE"
+                                family="cairo"
                                 size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
@@ -580,7 +1932,7 @@
                         <Text align="LEFT">
                             <Font
                                 color="[CONFIGURATION.themeColor.1]"
-                                family="SYNC_TO_DEVICE"
+                                family="cairo"
                                 size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
@@ -596,8 +1948,8 @@
                     name="time-left"
                     height="50"
                     width="100"
-                    x="90"
-                    y="340">
+                    x="95"
+                    y="355">
 
                     <PartText
                         alpha="0"
@@ -609,10 +1961,10 @@
                             mode="AMBIENT"
                             target="alpha"
                             value="255" />
-                        <Text align="LEFT">
+                        <Text align="CENTER">
                             <Font
                                 color="#ffffff"
-                                family="SYNC_TO_DEVICE"
+                                family="cairo"
                                 size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
@@ -633,10 +1985,10 @@
                             mode="AMBIENT"
                             target="alpha"
                             value="0" />
-                        <Text align="LEFT">
+                        <Text align="CENTER">
                             <Font
                                 color="[CONFIGURATION.themeColor.1]"
-                                family="SYNC_TO_DEVICE"
+                                family="cairo"
                                 size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
@@ -660,7 +2012,7 @@
             height="60"
             width="20"
             x="225"
-            y="330">
+            y="340">
 
             <PartDraw
                 alpha="0"
@@ -743,7 +2095,7 @@
                     height="50"
                     width="100"
                     x="245"
-                    y="320">
+                    y="330">
 
 
                     <PartText
@@ -759,10 +2111,10 @@
                         <Text align="CENTER">
                             <Font
                                 color="#ffffff"
-                                family="SYNC_TO_DEVICE"
+                                family="cairo"
                                 size="24"
                                 slant="NORMAL"
-                                weight="NORMAL">
+                                weight="BOLD">
                                 <Template>%s
                                     <Parameter expression="[COMPLICATION.TITLE]" />
                                 </Template>
@@ -783,10 +2135,10 @@
                         <Text align="CENTER">
                             <Font
                                 color="[CONFIGURATION.themeColor.2]"
-                                family="SYNC_TO_DEVICE"
+                                family="cairo"
                                 size="24"
                                 slant="NORMAL"
-                                weight="NORMAL">
+                                weight="BOLD">
                                 <Template>%s
                                     <Parameter expression="[COMPLICATION.TITLE]" />
                                 </Template>
@@ -800,7 +2152,7 @@
                     height="50"
                     width="100"
                     x="245"
-                    y="345">
+                    y="355">
 
                     <PartText
                         alpha="0"
@@ -815,7 +2167,7 @@
                         <Text align="CENTER">
                             <Font
                                 color="#ffffff"
-                                family="SYNC_TO_DEVICE"
+                                family="cairo"
                                 size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
@@ -839,7 +2191,7 @@
                         <Text align="CENTER">
                             <Font
                                 color="[CONFIGURATION.themeColor.2]"
-                                family="SYNC_TO_DEVICE"
+                                family="cairo"
                                 size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
