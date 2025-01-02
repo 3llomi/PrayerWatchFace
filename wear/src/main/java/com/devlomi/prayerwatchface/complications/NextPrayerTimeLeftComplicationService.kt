@@ -103,7 +103,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         return when (request.complicationType) {
 
             ComplicationType.SHORT_TEXT -> ShortTextComplicationData.Builder(
-                TimeDifferenceComplicationText.Builder(TimeDifferenceStyle.SHORT_DUAL_UNIT,
+                TimeDifferenceComplicationText.Builder(TimeDifferenceStyle.STOPWATCH,
                     CountDownTimeReference(timeForPrayer.toInstant())
                 ).build(),
                 PlainComplicationText.Builder("Next Prayer Time").build()

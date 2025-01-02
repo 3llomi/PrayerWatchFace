@@ -158,13 +158,15 @@ class ConfigureWatchFaceViewModel(
         }
     }
 
+    /*
+    Since we started moving to WFF and using Complications providers,
+    We need to schedule an update using the receiver and update complications accordingly,
+    and to respect user's preferences, we check if notifications enabled before firing notifications.
+     */
     private fun scheduleNotifications() {
         //Schedule for the first time if enabled.
         viewModelScope.launch {
-            val notificationsEnabled = settingsDataStore.notificationsEnabled.first()
-            if (notificationsEnabled) {
-                schedulePrayerNotification.schedule(appContext)
-            }
+            schedulePrayerNotification.schedule(appContext)
         }
     }
 

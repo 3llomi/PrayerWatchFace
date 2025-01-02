@@ -24,7 +24,7 @@
         value="DIGITAL" />
     <Metadata
         key="PREVIEW_TIME"
-        value="10:08:32" />
+        value="06:18:00" />
 
     <UserConfigurations>
         <ColorConfiguration
@@ -98,8 +98,8 @@
         <ColorConfiguration
             defaultValue="1"
             displayName="foreground_color_bottom"
-            id="foreground_color"
-            screenReaderText="foreground_color">
+            id="foreground_color_bottom"
+            screenReaderText="foreground_color_bottom">
             <ColorOption
                 colors="#ffffff"
                 displayName="white"
@@ -298,8 +298,80 @@
                 id="11" />
         </ColorConfiguration>
 
+        <ColorConfiguration
+            defaultValue="12"
+            displayName="progress_color"
+            id="progress_color"
+            screenReaderText="progress_color">
+
+            <ColorOption
+                colors="#D4E1FB"
+                displayName="white"
+                id="0" />
+            <ColorOption
+                colors="#000000"
+                displayName="black"
+                id="1" />
+
+            <ColorOption
+                colors="#9B9B9B"
+                displayName="black"
+                id="2" />
+
+            <ColorOption
+                colors="#AF1A1A"
+                displayName="red"
+                id="3" />
+
+            <ColorOption
+                colors="#0D7102"
+                displayName="green"
+                id="4" />
+
+
+            <ColorOption
+                colors="#673AB7"
+                displayName="velvet"
+                id="5" />
+
+            <ColorOption
+                colors="#3F51B5"
+                displayName="velvet2"
+                id="6" />
+
+            <ColorOption
+                colors="#FF5722"
+                displayName="orange"
+                id="7" />
+
+            <ColorOption
+                colors="#009688"
+                displayName="green"
+                id="8" />
+
+            <ColorOption
+                colors="#4CAF50"
+                displayName="green"
+                id="9" />
+
+            <ColorOption
+                colors="#FFEB3B"
+                displayName="yellow"
+                id="10" />
+
+            <ColorOption
+                colors="#E91E63"
+                displayName="red"
+                id="11" />
+
+            <ColorOption
+                colors="#0DA7FE"
+                displayName="blue"
+                id="12" />
+        </ColorConfiguration>
+
         <BooleanConfiguration
-            defaultValue="TRUE"
+            defaultValue="FALSE"
             displayName="wallpaper_dim"
             id="add_wallpaper_dim"
             screenReaderText="Add Wallpaper Dim" />
@@ -310,8 +382,21 @@
             id="am_pm"
             screenReaderText="am_pm" />
 
+        <BooleanConfiguration
+            defaultValue="TRUE"
+            displayName="bottom_part"
+            id="bottom_part"
+            screenReaderText="bottom_part" />
+
+        <BooleanConfiguration
+            defaultValue="TRUE"
+            displayName="show_progress"
+            id="show_progress"
+            screenReaderText="show_progress" />
+
+
         <ListConfiguration
-            defaultValue="1"
+            defaultValue="0"
             displayName="wallpaper"
             id="wallpaper"
             screenReaderText="Wallpaper">
@@ -358,6 +443,7 @@
                 screenReaderText="7" />
         </ListConfiguration>
 
+
     </UserConfigurations>
 
     <Scene backgroundColor="#ff000000">
@@ -373,14 +459,23 @@
 
                 <ListOption id="0">
 
-                    <Group name="colored-background" width="450" height="450">
+                    <Group
+                        name="colored-background"
+                        height="450"
+                        width="450">
 
-<!--                        TODO IMPLEMENT VARIANT-->
+                        <!--                        TODO IMPLEMENT VARIANT-->
                         <PartDraw
                             height="330"
                             width="450"
                             x="0"
                             y="0">
+
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="0" />
+
                             <Rectangle
                                 height="330"
                                 width="450"
@@ -391,15 +486,7 @@
                                 <Fill color="[CONFIGURATION.background_color.0]" />
                             </Rectangle>
 
-                            <Rectangle
-                                height="120"
-                                width="450"
-                                x="0"
-                                y="330">
 
-
-                                <Fill color="[CONFIGURATION.background_color_bottom.0]" />
-                            </Rectangle>
                         </PartDraw>
                     </Group>
 
@@ -511,6 +598,43 @@
                     </PartImage>
                 </ListOption>
             </ListConfiguration>
+
+            <BooleanConfiguration id="bottom_part">
+                <BooleanOption id="TRUE">
+                    <Group
+                        name="colored-bottom-background"
+                        height="120"
+                        width="450">
+
+                        <PartDraw
+                            height="330"
+                            width="450"
+                            x="0"
+                            y="330">
+
+                            <Variant
+                                mode="AMBIENT"
+                                target="alpha"
+                                value="0" />
+
+                            <Rectangle
+                                height="120"
+                                width="450"
+                                x="0"
+                                y="0">
+
+
+                                <Fill color="[CONFIGURATION.background_color_bottom.0]" />
+                            </Rectangle>
+
+
+                        </PartDraw>
+                    </Group>
+
+
+                </BooleanOption>
+            </BooleanConfiguration>
+
             <BooleanConfiguration id="add_wallpaper_dim">
                 <BooleanOption id="TRUE">
                     <PartDraw
@@ -543,7 +667,7 @@
         <ComplicationSlot
             height="450"
             isCustomizable="false"
-            slotId="5"
+            slotId="1"
             supportedTypes="RANGED_VALUE"
             width="450"
             x="0"
@@ -563,75 +687,79 @@
                 y="0" />
 
             <Complication type="RANGED_VALUE">
-
-                <Group
-                    name="progress"
-                    height="450"
-                    width="450"
-                    x="0"
-                    y="0">
-
-
-                    <PartDraw
-                        height="450"
-                        width="450"
-                        x="0"
-                        y="0">
-                        <Variant
-                            mode="AMBIENT"
-                            target="alpha"
-                            value="255" />
-                        <Arc
-                            centerX="225"
-                            centerY="225"
-                            direction="CLOCKWISE"
-                            endAngle="150"
+                <BooleanConfiguration id="show_progress">
+                    <BooleanOption id="TRUE">
+                        <Group
+                            name="progress"
                             height="450"
-                            startAngle="0"
-                            width="450">
-                            <!--                        <Transform target="endAngle" value="[COMPLICATION.RANGED_VALUE_MAX] - [UTC_TIMESTAMP]" />-->
-                            <Transform
-                                target="endAngle"
-                                value="((([UTC_TIMESTAMP] - [COMPLICATION.RANGED_VALUE_MIN])/ ([COMPLICATION.RANGED_VALUE_MAX] - [COMPLICATION.RANGED_VALUE_MIN])) * 360)" />
-                            <Stroke
-                                cap="ROUND"
-                                color="#ffffff"
-                                thickness="10" />
-                        </Arc>
-                    </PartDraw>
+                            width="450"
+                            x="0"
+                            y="0">
 
-                    <PartDraw
-                        height="450"
-                        width="450"
-                        x="0"
-                        y="0">
-                        <Variant
-                            mode="AMBIENT"
-                            target="alpha"
-                            value="0" />
-                        <Arc
-                            centerX="225"
-                            centerY="225"
-                            direction="CLOCKWISE"
-                            endAngle="150"
-                            height="450"
-                            startAngle="0"
-                            width="450">
-                            <!--                        <Transform target="endAngle" value="[COMPLICATION.RANGED_VALUE_MAX] - [UTC_TIMESTAMP]" />-->
-                            <Transform
-                                target="endAngle"
-                                value="((([UTC_TIMESTAMP] - [COMPLICATION.RANGED_VALUE_MIN])/ ([COMPLICATION.RANGED_VALUE_MAX] - [COMPLICATION.RANGED_VALUE_MIN])) * 360)" />
-                            <Stroke
-                                cap="ROUND"
-                                color="[CONFIGURATION.themeColor.2]"
-                                thickness="10" />
-                        </Arc>
-                    </PartDraw>
-                </Group>
 
+                            <PartDraw
+                                height="450"
+                                width="450"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Arc
+                                    centerX="225"
+                                    centerY="225"
+                                    direction="CLOCKWISE"
+                                    endAngle="150"
+                                    height="450"
+                                    startAngle="0"
+                                    width="450">
+                                    <!--                        <Transform target="endAngle" value="[COMPLICATION.RANGED_VALUE_MAX] - [UTC_TIMESTAMP]" />-->
+                                    <Transform
+                                        target="endAngle"
+                                        value="((([UTC_TIMESTAMP] - [COMPLICATION.RANGED_VALUE_MIN])/ ([COMPLICATION.RANGED_VALUE_MAX] - [COMPLICATION.RANGED_VALUE_MIN])) * 360)" />
+                                    <Stroke
+                                        cap="ROUND"
+                                        color="#ffffff"
+                                        thickness="10" />
+                                </Arc>
+                            </PartDraw>
+
+                            <PartDraw
+                                height="450"
+                                width="450"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Arc
+                                    centerX="225"
+                                    centerY="225"
+                                    direction="CLOCKWISE"
+                                    endAngle="150"
+                                    height="450"
+                                    startAngle="0"
+                                    width="450">
+                                    <!--                        <Transform target="endAngle" value="[COMPLICATION.RANGED_VALUE_MAX] - [UTC_TIMESTAMP]" />-->
+                                    <Transform
+                                        target="endAngle"
+                                        value="((([UTC_TIMESTAMP] - [COMPLICATION.RANGED_VALUE_MIN])/ ([COMPLICATION.RANGED_VALUE_MAX] - [COMPLICATION.RANGED_VALUE_MIN])) * 360)" />
+                                    <Stroke
+                                        cap="ROUND"
+                                        color="[CONFIGURATION.progress_color]"
+                                        thickness="10" />
+                                </Arc>
+                            </PartDraw>
+                        </Group>
+                    </BooleanOption>
+
+                </BooleanConfiguration>
             </Complication>
 
         </ComplicationSlot>
+
 
         <Group
             name="day-name"
@@ -681,7 +809,7 @@
 
                 <Text align="CENTER">
                     <Font
-                        color="[CONFIGURATION.themeColor.2]"
+                        color="[CONFIGURATION.foreground_color]"
                         family="righteous"
                         size="18"
                         slant="NORMAL"
@@ -748,7 +876,7 @@
                             value="0" />
 
                         <Font
-                            color="[CONFIGURATION.themeColor.2]"
+                            color="[CONFIGURATION.foreground_color]"
                             family="rubik"
                             size="80"
                             slant="NORMAL"
@@ -873,7 +1001,7 @@
                             value="0" />
 
                         <Font
-                            color="[CONFIGURATION.themeColor.2]"
+                            color="[CONFIGURATION.foreground_color]"
                             family="rubik"
                             size="80"
                             slant="NORMAL"
@@ -939,7 +1067,7 @@
                     timeZone="SYNC_TO_DEVICE" />
                 <Text align="LEFT">
                     <Font
-                        color="[CONFIGURATION.themeColor.2]"
+                        color="[CONFIGURATION.foreground_color]"
                         family="alata"
                         size="32"
                         slant="NORMAL"
@@ -1011,7 +1139,7 @@
 
                 <Text align="CENTER">
                     <Font
-                        color="[CONFIGURATION.themeColor.2]"
+                        color="[CONFIGURATION.foreground_color]"
                         family="alata"
                         size="32"
                         slant="NORMAL"
@@ -1032,7 +1160,7 @@
             name="left_complication"
             displayName="Left Complication"
             height="85"
-            slotId="98"
+            slotId="2"
             supportedTypes="SHORT_TEXT"
             width="85"
             x="100"
@@ -1450,7 +1578,7 @@
             name="right_complication"
             displayName="Right Complication"
             height="85"
-            slotId="97"
+            slotId="3"
             supportedTypes="SHORT_TEXT"
             width="85"
             x="250"
@@ -1867,7 +1995,7 @@
         <ComplicationSlot
             height="450"
             isCustomizable="false"
-            slotId="7"
+            slotId="4"
             supportedTypes="SHORT_TEXT"
             width="450"
             x="0"
@@ -1931,7 +2059,7 @@
                             value="0" />
                         <Text align="LEFT">
                             <Font
-                                color="[CONFIGURATION.themeColor.1]"
+                                color="[CONFIGURATION.foreground_color_bottom]"
                                 family="cairo"
                                 size="24"
                                 slant="NORMAL"
@@ -1987,7 +2115,7 @@
                             value="0" />
                         <Text align="CENTER">
                             <Font
-                                color="[CONFIGURATION.themeColor.1]"
+                                color="[CONFIGURATION.foreground_color_bottom]"
                                 family="cairo"
                                 size="24"
                                 slant="NORMAL"
@@ -2056,7 +2184,7 @@
                     startX="0"
                     startY="0">
                     <Stroke
-                        color="[CONFIGURATION.themeColor.2]"
+                        color="[CONFIGURATION.foreground_color_bottom]"
                         thickness="3" />
                 </Line>
 
@@ -2069,7 +2197,7 @@
         <ComplicationSlot
             height="450"
             isCustomizable="false"
-            slotId="6"
+            slotId="5"
             supportedTypes="SHORT_TEXT"
             width="450"
             x="0"
@@ -2134,7 +2262,7 @@
                             value="0" />
                         <Text align="CENTER">
                             <Font
-                                color="[CONFIGURATION.themeColor.2]"
+                                color="[CONFIGURATION.foreground_color_bottom]"
                                 family="cairo"
                                 size="24"
                                 slant="NORMAL"
@@ -2190,7 +2318,7 @@
                             value="0" />
                         <Text align="CENTER">
                             <Font
-                                color="[CONFIGURATION.themeColor.2]"
+                                color="[CONFIGURATION.foreground_color_bottom]"
                                 family="cairo"
                                 size="24"
                                 slant="NORMAL"

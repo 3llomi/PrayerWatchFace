@@ -5,12 +5,16 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.wear.watchface.complications.datasource.ComplicationDataSourceUpdateRequester
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.SchedulePrayerNotification
+import com.devlomi.prayerwatchface.UpdateComplications
+import com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationService
 import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -39,9 +43,12 @@ class PrayerTimeReceiver : BroadcastReceiver() {
                     context,
                     REQUEST_CODE,
                     intent,
-                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
-            alarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(timestamp,pendingIntent),pendingIntent)
+            alarmManager.setAlarmClock(
+                AlarmManager.AlarmClockInfo(timestamp, pendingIntent),
+                pendingIntent
+            )
 
         }
 
@@ -63,12 +70,11 @@ class PrayerTimeReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val prayerName = intent.getStringExtra("prayerName") ?: ""
 
-        fireNotification(context, prayerName)
         scope.launch {
             val settingsDataStore =
                 (context.applicationContext as PrayerApp).appContainer.settingsDataStore
-            if(!settingsDataStore.notificationsEnabled.first()){
-                return@launch
+            if (settingsDataStore.notificationsEnabled.first()) {
+                fireNotification(context, prayerName)
             }
             val getPrayerTimesWithConfigUseCase = GetPrayerTimesWithConfigUseCase(settingsDataStore)
             val getPrayerNameByLocaleUseCase = GetPrayerNameByLocaleUseCase(context)
@@ -79,6 +85,8 @@ class PrayerTimeReceiver : BroadcastReceiver() {
                 getPrayerTimesWithConfigUseCase,
                 getPrayerNameByLocaleUseCase
             ).schedule(context)
+            
+            UpdateComplications(context).update()
         }
     }
 
@@ -97,10 +105,15 @@ class PrayerTimeReceiver : BroadcastReceiver() {
         val builder: NotificationCompat.Builder =
             NotificationCompat.Builder(context, channelId)
                 .setContentTitle(context.getString(com.devlomi.prayerwatchface.R.string.prayer_time))
-                .setContentText(context.getString(com.devlomi.prayerwatchface.R.string.time_for_prayer,prayerName))
+                .setContentText(
+                    context.getString(
+                        com.devlomi.prayerwatchface.R.string.time_for_prayer,
+                        prayerName
+                    )
+                )
                 .setSmallIcon(com.devlomi.prayerwatchface.R.drawable.ic_noti)
                 .setAutoCancel(true)
-                .setVibrate(longArrayOf(500,500,500))
+                .setVibrate(longArrayOf(500, 500, 500))
 
 
         notificationManager.notify(1, builder.build())

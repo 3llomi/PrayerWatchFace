@@ -22,9 +22,6 @@ class DateChangeReceiver : BroadcastReceiver() {
         val getPrayerNameByLocaleUseCase = GetPrayerNameByLocaleUseCase(context)
 
         scope.launch {
-            if(!settingsDataStore.notificationsEnabled.first()){
-                return@launch
-            }
             //schedule next prayer
             SchedulePrayerNotification(
                 settingsDataStore,
