@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.wear.watchface.complications.data.ComplicationData
 import androidx.wear.watchface.complications.data.ComplicationType
 import androidx.wear.watchface.complications.data.CountDownTimeReference
-import androidx.wear.watchface.complications.data.LongTextComplicationData
 import androidx.wear.watchface.complications.data.PlainComplicationText
 import androidx.wear.watchface.complications.data.ShortTextComplicationData
 import androidx.wear.watchface.complications.data.TimeDifferenceComplicationText
@@ -13,18 +12,17 @@ import androidx.wear.watchface.complications.data.TimeDifferenceStyle
 import androidx.wear.watchface.complications.datasource.ComplicationRequest
 import androidx.wear.watchface.complications.datasource.SuspendingComplicationDataSourceService
 import com.batoulapps.adhan.Prayer
+import com.batoulapps.adhan.PrayerTimes
 import com.devlomi.prayerwatchface.PrayerApp
+import com.devlomi.shared.common.previousPrayer
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
-import com.devlomi.shared.locale.LocaleHelper
-import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
-import com.devlomi.shared.usecase.GetTimeLeftForNextPrayerUseCase
+import com.devlomi.shared.usecase.GetNextPrayerUseCase
 import kotlinx.coroutines.flow.first
-import java.time.Instant
-import java.time.temporal.ChronoUnit
+import kotlinx.coroutines.flow.firstOrNull
 import java.util.Date
-import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceService() {
     private val settingsDataStore: SettingsDataStore by lazy {
@@ -37,8 +35,8 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         GetPrayerNameByLocaleUseCase(this)
     }
 
-    private val getTimeLeftForNextPrayerUseCase by lazy {
-        GetTimeLeftForNextPrayerUseCase()
+    private val getNextPrayerUseCase by lazy {
+        GetNextPrayerUseCase(getPrayerTimesWithConfigUseCase)
     }
 
     override fun onComplicationActivated(complicationInstanceId: Int, type: ComplicationType) {
@@ -56,26 +54,19 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
     }
 
     override suspend fun onComplicationRequest(request: ComplicationRequest): ComplicationData? {
-        var prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(Date())
-        var nextPrayer = prayerTimes.nextPrayer()
-        if (nextPrayer == Prayer.NONE) {
-            prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(
-                Date.from(
-                    Instant.now().plus(1, ChronoUnit.DAYS)
-                )
-            )
-            nextPrayer = prayerTimes.nextPrayer()
-        }
-        val localeType =
-            LocaleType.values().firstOrNull { it.id == settingsDataStore.locale.first() }
-                ?: LocaleType.ENGLISH
-        val locale = LocaleHelper.getLocale(localeType)
-        val prayerName =
-            getPrayerNameByLocaleUseCase.getPrayerNameByLocale(nextPrayer, locale)
+        val now = Date()
+        val timeLeftForNextPrayerWithPrayerTimes = getNextPrayerUseCase.getNextPrayer(
+            now
+        )
+        val prayerTimes = timeLeftForNextPrayerWithPrayerTimes.prayerTimes
+        val nextPrayer = timeLeftForNextPrayerWithPrayerTimes.nextPrayer
+
+        val noNextPrayerToday = prayerTimes.nextPrayer() == Prayer.NONE
+        val previousPrayer =
+            if (noNextPrayerToday) Prayer.ISHA else prayerTimes.previousPrayer()
+
 
         val timeForPrayer = prayerTimes.timeForPrayer(nextPrayer)
-        val timeFormat = java.text.SimpleDateFormat("HH:mm", Locale.US)
-        val time = timeFormat.format(timeForPrayer)
 
         Log.d(TAG, "onComplicationRequest() id: ${request.complicationInstanceId}")
         // Create Tap Action so that the user can trigger an update by tapping the complication.
@@ -95,33 +86,50 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
 //            }
 //            .first()
 
-        val number = 30
-        val timeLeft = getTimeLeftForNextPrayerUseCase.getTimeLeftForNextPrayer(prayerTimes, Date())?: "NO_NEXT"
-        Log.d("3llomi","timeLeft: $timeLeft")
+        val elapsedEnabled = settingsDataStore.elapsedTimeEnabled.firstOrNull() ?: false
+        val elapsedMinutesConfig = settingsDataStore.elapsedTimeMinutes.first()
+
+
+        val timeLeft = prayerTimes.timeForPrayer(nextPrayer).time - now.time
+        var willElapseAtDate: Date? = null
+        if (elapsedEnabled) {
+            val elapsedTime = getElapsedMinutes(
+                elapsedMinutesConfig,
+                now,
+                previousPrayer,
+                prayerTimes
+            )
+            if (elapsedTime > 0) {
+                val l = now.time + TimeUnit.MINUTES.toMillis(elapsedTime.toLong())
+                Log.d("3llomi","willElapseAt ${l}")
+                willElapseAtDate = Date(l)
+            }
+        }
+        Log.d("3llomi", "timeLeft: $timeLeft")
         //TODO IMPLEMENT ELAPSED TIME
 
         return when (request.complicationType) {
 
-            ComplicationType.SHORT_TEXT -> ShortTextComplicationData.Builder(
-                TimeDifferenceComplicationText.Builder(TimeDifferenceStyle.STOPWATCH,
-                    CountDownTimeReference(timeForPrayer.toInstant())
-                ).build(),
-                PlainComplicationText.Builder("Next Prayer Time").build()
-            ).setTitle(PlainComplicationText.Builder("Remaining").build()).build()
+            ComplicationType.SHORT_TEXT ->
+                ShortTextComplicationData.Builder(
+                    text =
+                    TimeDifferenceComplicationText.Builder(
+                        style = TimeDifferenceStyle.STOPWATCH,
+                        countDownTimeReference =
+                        CountDownTimeReference(instant = if (willElapseAtDate != null) willElapseAtDate.toInstant() else timeForPrayer.toInstant())
+                    ).build(),
+                    contentDescription =
+                    PlainComplicationText.Builder(text = "Next Prayer Time")
+                        .build()
+                ).setTitle(
+                    title =
+                    //TODO LOCALIZE REMAINING
+                    PlainComplicationText.Builder(text = if(willElapseAtDate != null) "ELAPSED" else "Remaining").build()
+                ).build()
 
-            //TODO IMPLEMENT LONG TEXT
-            ComplicationType.LONG_TEXT -> LongTextComplicationData.Builder(
-                PlainComplicationText.Builder(time).build(),
-                PlainComplicationText.Builder("Next Prayer Time").build()
-            ).setTitle(PlainComplicationText.Builder(prayerName).build()).build()
 
+            else -> null
 
-            else -> {
-                if (Log.isLoggable(TAG, Log.WARN)) {
-                    Log.w(TAG, "Unexpected complication type ${request.complicationType}")
-                }
-                null
-            }
         }
     }
 
@@ -134,5 +142,34 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
 
     companion object {
         private const val TAG = "ComplicationDataService"
+    }
+
+
+    private fun getElapsedMinutes(
+        elapsedTimeMinutes: Int,
+        date: Date,
+        previousPrayer: Prayer,
+        prayerTimes: PrayerTimes
+    ): Int {
+        val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
+        val diff = date.time - timeForPrayer.time
+Log.d("3llomi","Previous prayer elapsed ${previousPrayer.name}")
+Log.d("3llomi","dif is ${diff} date ${date.time} timeForPrayer ${timeForPrayer.time}")
+        var minutes = 0L
+        if (diff > 0) {
+            minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
+
+            Log.d("3llomi","getElapsedMinutes: $minutes")
+            if (minutes < 0) {
+                minutes = 0
+            }
+
+            if (minutes > elapsedTimeMinutes) {
+                Log.d("3llomi","minutes > elapsedTimeMinutes ${elapsedTimeMinutes}")
+                minutes = -1
+            }
+
+        }
+        return minutes.toInt()
     }
 }

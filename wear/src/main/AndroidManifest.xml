@@ -127,25 +127,6 @@
 
         </service>
 
-        <service
-            android:name="com.devlomi.prayerwatchface.complications.NextPrayerNameComplicationService"
-            android:exported="true"
-            android:label="Next Prayer Name"
-            android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
-            <intent-filter>
-                <action android:name="android.support.wearable.complications.ACTION_COMPLICATION_UPDATE_REQUEST" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.support.wearable.complications.SUPPORTED_TYPES"
-                android:value="SHORT_TEXT,LONG_TEXT" />
-
-
-
-            <meta-data
-                android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
-                android:value="0" />
-        </service>
 
         <service
             android:name="com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationService"
@@ -158,7 +139,7 @@
 
             <meta-data
                 android:name="android.support.wearable.complications.SUPPORTED_TYPES"
-                android:value="SHORT_TEXT,LONG_TEXT" />
+                android:value="SHORT_TEXT" />
 
 
 
@@ -178,7 +159,7 @@
 
             <meta-data
                 android:name="android.support.wearable.complications.SUPPORTED_TYPES"
-                android:value="SHORT_TEXT,LONG_TEXT" />
+                android:value="SHORT_TEXT" />
 
 
 

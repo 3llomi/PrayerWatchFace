@@ -3,11 +3,13 @@ package com.devlomi.shared.usecase
 import com.batoulapps.adhan.CalculationMethod
 import com.batoulapps.adhan.Coordinates
 import com.batoulapps.adhan.Madhab
+import com.batoulapps.adhan.Prayer
 import com.batoulapps.adhan.PrayerTimes
 import com.batoulapps.adhan.data.DateComponents
 import com.devlomi.shared.config.SettingsDataStore
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import java.util.Calendar
 import java.util.Date
 
 class GetPrayerTimesWithConfigUseCase(private val settingsDataStore: SettingsDataStore) {
@@ -47,5 +49,11 @@ class GetPrayerTimesWithConfigUseCase(private val settingsDataStore: SettingsDat
         }
         return PrayerTimes(Coordinates(lat, lng), dateComponents, prayerTimesParams)
 
+    }
+    suspend fun getIshaaTimePreviousDay(): Long {
+        val cal = Calendar.getInstance()
+        cal.timeInMillis = System.currentTimeMillis()
+        cal.add(Calendar.DATE, -1)
+        return getPrayerTimes(cal.time).timeForPrayer(Prayer.ISHA).time
     }
 }

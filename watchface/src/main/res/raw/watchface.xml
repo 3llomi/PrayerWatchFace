@@ -858,7 +858,6 @@
                             weight="NORMAL" />
                     </TimeText>
 
-                    <!--TODO IMPLEMENT 24 hours bool-->
 
                     <TimeText
                         align="CENTER"
@@ -983,7 +982,6 @@
                             weight="NORMAL" />
                     </TimeText>
 
-                    <!--TODO IMPLEMENT 24 hours bool-->
 
                     <TimeText
                         align="CENTER"
