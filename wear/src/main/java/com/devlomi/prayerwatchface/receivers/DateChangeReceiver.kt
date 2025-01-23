@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.SchedulePrayerNotification
+import com.devlomi.prayerwatchface.UpdateComplications
 import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import kotlinx.coroutines.CoroutineScope
@@ -29,6 +30,7 @@ class DateChangeReceiver : BroadcastReceiver() {
                 getPrayerNameByLocaleUseCase
             ).schedule(context)
         }
+        UpdateComplications(context).update()
 
     }
 }

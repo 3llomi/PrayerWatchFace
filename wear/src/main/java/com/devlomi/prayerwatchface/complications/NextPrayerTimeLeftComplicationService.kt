@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.wear.watchface.complications.data.ComplicationData
 import androidx.wear.watchface.complications.data.ComplicationType
 import androidx.wear.watchface.complications.data.CountDownTimeReference
+import androidx.wear.watchface.complications.data.CountUpTimeReference
 import androidx.wear.watchface.complications.data.PlainComplicationText
 import androidx.wear.watchface.complications.data.ShortTextComplicationData
 import androidx.wear.watchface.complications.data.TimeDifferenceComplicationText
@@ -91,41 +92,46 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
 
 
         val timeLeft = prayerTimes.timeForPrayer(nextPrayer).time - now.time
-        var willElapseAtDate: Date? = null
+        var previousPrayerDate: Date? = null
+        Log.d("3llomi", "elapsed Enabled ${elapsedEnabled}")
         if (elapsedEnabled) {
-            val elapsedTime = getElapsedMinutes(
+             previousPrayerDate = getPreviousPrayerTimeWhenElapsed(
                 elapsedMinutesConfig,
                 now,
                 previousPrayer,
                 prayerTimes
             )
-            if (elapsedTime > 0) {
-                val l = now.time + TimeUnit.MINUTES.toMillis(elapsedTime.toLong())
-                Log.d("3llomi","willElapseAt ${l}")
-                willElapseAtDate = Date(l)
-            }
         }
         Log.d("3llomi", "timeLeft: $timeLeft")
-        //TODO IMPLEMENT ELAPSED TIME
+        //TODO ELAPSED TIME NOT DISAPPEARS AFTER PASSING ELAPSED MINUTES eg. after 30 minutes - CHECK IF RECEIVER IS WORKING
 
         return when (request.complicationType) {
 
-            ComplicationType.SHORT_TEXT ->
+            ComplicationType.SHORT_TEXT -> {
+                val text =
+                    if (previousPrayerDate != null) TimeDifferenceComplicationText.Builder(
+                    style = TimeDifferenceStyle.STOPWATCH,
+                        countUpTimeReference =
+                    CountUpTimeReference(instant =  previousPrayerDate.toInstant())
+                ).setText("+^1").build() else
+                    TimeDifferenceComplicationText.Builder(
+                    style = TimeDifferenceStyle.STOPWATCH,
+                    countDownTimeReference =
+                    CountDownTimeReference(instant =  timeForPrayer.toInstant())
+                ).build()
                 ShortTextComplicationData.Builder(
                     text =
-                    TimeDifferenceComplicationText.Builder(
-                        style = TimeDifferenceStyle.STOPWATCH,
-                        countDownTimeReference =
-                        CountDownTimeReference(instant = if (willElapseAtDate != null) willElapseAtDate.toInstant() else timeForPrayer.toInstant())
-                    ).build(),
+                    text,
                     contentDescription =
                     PlainComplicationText.Builder(text = "Next Prayer Time")
                         .build()
                 ).setTitle(
                     title =
                     //TODO LOCALIZE REMAINING
-                    PlainComplicationText.Builder(text = if(willElapseAtDate != null) "ELAPSED" else "Remaining").build()
+                    PlainComplicationText.Builder(text = if (previousPrayerDate != null) "ELAPSED" else "Remaining")
+                        .build()
                 ).build()
+            }
 
 
             else -> null
@@ -145,31 +151,32 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
     }
 
 
-    private fun getElapsedMinutes(
+    private fun getPreviousPrayerTimeWhenElapsed(
         elapsedTimeMinutes: Int,
         date: Date,
         previousPrayer: Prayer,
         prayerTimes: PrayerTimes
-    ): Int {
+    ): Date? {
         val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
         val diff = date.time - timeForPrayer.time
-Log.d("3llomi","Previous prayer elapsed ${previousPrayer.name}")
-Log.d("3llomi","dif is ${diff} date ${date.time} timeForPrayer ${timeForPrayer.time}")
+        Log.d("3llomi", "Previous prayer elapsed ${previousPrayer.name}")
+        Log.d("3llomi", "dif is ${diff} date ${date.time} timeForPrayer ${timeForPrayer.time}")
         var minutes = 0L
         if (diff > 0) {
             minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
 
-            Log.d("3llomi","getElapsedMinutes: $minutes")
+            Log.d("3llomi", "getElapsedMinutes: $minutes")
             if (minutes < 0) {
                 minutes = 0
             }
 
             if (minutes > elapsedTimeMinutes) {
-                Log.d("3llomi","minutes > elapsedTimeMinutes ${elapsedTimeMinutes}")
+                Log.d("3llomi", "minutes > elapsedTimeMinutes ${elapsedTimeMinutes}")
                 minutes = -1
+                return null
             }
 
         }
-        return minutes.toInt()
+        return timeForPrayer
     }
 }

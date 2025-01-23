@@ -89,7 +89,7 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
             ((System.currentTimeMillis() - previousPrayerTime) / (nextPrayerTime - previousPrayerTime)) * 360
         Log.d("3llomi", "dif is $diff")
         return when (request.complicationType) {
-
+            //TODO THIS IS CRASHING min must be lower than or equal to max
             ComplicationType.RANGED_VALUE -> {
                 RangedValueComplicationData.Builder(
                     min = previousPrayerTime.toFloat(),

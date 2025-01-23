@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.first
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 class SchedulePrayerNotification(
     private val settingsDataStore: SettingsDataStore,
@@ -37,6 +38,15 @@ class SchedulePrayerNotification(
         val prayerName =
             getPrayerNameByLocaleUseCase.getPrayerNameByLocale(nextPrayer, locale)
 
-        PrayerTimeReceiver.schedule(context, nextPrayerTime.time, prayerName)
+        PrayerTimeReceiver.schedulePrayerTime(context, nextPrayerTime.time, prayerName)
+    }
+
+    suspend fun scheduleElapsedTime(context: Context,prayerTime:Long) {
+        if (settingsDataStore.elapsedTimeEnabled.first()) {
+            val elapsedTimeMinutes = settingsDataStore.elapsedTimeMinutes.first()
+            val elapsedTime =
+                prayerTime + TimeUnit.MINUTES.toMillis(elapsedTimeMinutes.toLong())
+            PrayerTimeReceiver.scheduleUpdateElapsedTimeReceiver(context, elapsedTime)
+        }
     }
 }
