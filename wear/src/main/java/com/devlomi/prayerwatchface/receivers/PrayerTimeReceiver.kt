@@ -121,7 +121,7 @@ class PrayerTimeReceiver : BroadcastReceiver() {
                 schedulePrayerNotification.scheduleElapsedTime(context, time)
             }
         }
-        UpdateComplications(context).update()
+        UpdateComplications.update(context)
     }
 
     private fun fireNotification(context: Context, prayerName: String) {

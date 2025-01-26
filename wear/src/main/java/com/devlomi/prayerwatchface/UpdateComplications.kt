@@ -7,8 +7,8 @@ import com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationServi
 import com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftComplicationService
 import com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftProgressComplicationService
 
-class UpdateComplications(private val context: Context) {
-    fun update() {
+object UpdateComplications{
+    fun update(context: Context) {
 
         ComplicationDataSourceUpdateRequester.create(
             context,

@@ -1,7 +1,5 @@
 package com.devlomi.prayerwatchface
 
-import android.content.ContentValues
-import android.net.Uri
 import android.util.Log
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.receivers.PrayerTimeReceiver
@@ -20,7 +18,6 @@ import com.google.android.gms.wearable.Wearable
 import com.google.android.gms.wearable.WearableListenerService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.UUID
@@ -60,19 +57,23 @@ class DataListenerService : WearableListenerService() {
                         ?.let {
                             settingsDatStore.setCalculationMethod(it)
                             checkAndRescheduleNotifications()
+                            updateComplications()
                         }
                     dataMap.getString(ConfigKeys.ASR_CALC_MADHAB)
                         ?.let {
                             settingsDatStore.setMadhab(it)
                             checkAndRescheduleNotifications()
+                            updateComplications()
                         }
                     dataMap.getDoubleOrNull(ConfigKeys.LAT)?.let {
                         settingsDatStore.setLat(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getDoubleOrNull(ConfigKeys.LNG)?.let {
                         settingsDatStore.setLng(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getString(ConfigKeys.BACKGROUND_COLOR)
                         ?.let {
@@ -101,43 +102,54 @@ class DataListenerService : WearableListenerService() {
                     dataMap.getIntOrNull(ConfigKeys.FAJR_OFFSET)?.let {
                         settingsDatStore.setFajrOffset(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.SHUROOQ_OFFSET)?.let {
                         settingsDatStore.setShurooqOffset(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.DHUHR_OFFSET)?.let {
                         settingsDatStore.setDhuhrOffset(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.ASR_OFFSET)?.let {
                         settingsDatStore.setAsrOffset(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.MAGHRIB_OFFSET)?.let {
                         settingsDatStore.setMaghribOffset(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.ISHA_OFFSET)?.let {
                         settingsDatStore.setIshaaOffset(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.DAYLIGHT_SAVING_OFFSET)?.let {
                         settingsDatStore.setDaylightSavingTimeOffset(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.ELAPSED_TIME_MINUTES)?.let {
                         settingsDatStore.setElapsedTimeMinutes(it)
+                        updateComplications()
                     }
                     dataMap.getBooleanOrNull(ConfigKeys.ELAPSED_TIME_ENABLED)?.let {
                         settingsDatStore.setElapsedTimeEnabled(it)
+                        updateComplications()
                     }
                     dataMap.getBooleanOrNull(ConfigKeys.SHOW_PRAYER_TIMES_ON_CLICK)?.let {
                         settingsDatStore.openPrayerTimesOnClick(it)
+                        updateComplications()
                     }
                     dataMap.getIntOrNull(ConfigKeys.LOCALE_TYPE)?.let {
                         settingsDatStore.setLocale(it)
                         checkAndRescheduleNotifications()
+                        updateComplications()
                     }
                     dataMap.getBooleanOrNull(ConfigKeys.NOTIFICATIONS_ENABLED)?.let {
                         settingsDatStore.setNotificationsEnabled(it)
@@ -186,18 +198,6 @@ class DataListenerService : WearableListenerService() {
                         settingsDatStore.setTapType(it)
                     }
 
-                    Log.d("3llomi", "Data Changed on watch listener received")
-                    val uri =
-                        Uri.parse("content://com.devlomi.prayerwatchface.complication.provider/data")
-                    val values = ContentValues().apply {
-                        put("column_name1", "value1")
-                        put("column_name2", "value2")
-                    }
-
-
-                    val newUri: Int = contentResolver.update(uri, values, null, null)
-
-
                 } catch (e: Exception) {
                     Log.d("3llomi", "error on data changed on watch listener ${e.localizedMessage}")
                 }
@@ -233,6 +233,10 @@ class DataListenerService : WearableListenerService() {
         } else {
             PrayerTimeReceiver.cancel(this)
         }
+    }
+
+    private fun updateComplications(){
+        UpdateComplications.update(this)
     }
 
     override fun onDestroy() {

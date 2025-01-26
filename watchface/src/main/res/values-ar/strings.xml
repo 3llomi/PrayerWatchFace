@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper">الخلفية</string>
+    <string name="wallpaper_dim">خَفت إضاءة الخلفية</string>
+    <string name="bottom_part">الجزء السفلي</string>
+    <string name="background_color">لون الخلفية</string>
+    <string name="background_color_bottom">لون الخلفية - الجزء السفلي</string>
+    <string name="foreground_color">لون الخط الأساسي</string>
+    <string name="foreground_color_bottom">لون الخط - الجزء السفلي</string>
+    <string name="show_progress">إظهار شريط الوقت</string>
+    <string name="twenty_four_hours">٢٤ ساعة</string>
+</resources>

@@ -15,9 +15,13 @@ import androidx.wear.watchface.complications.datasource.SuspendingComplicationDa
 import com.batoulapps.adhan.Prayer
 import com.batoulapps.adhan.PrayerTimes
 import com.devlomi.prayerwatchface.PrayerApp
+import com.devlomi.prayerwatchface.R
+import com.devlomi.shared.common.getLocaleStringResource
 import com.devlomi.shared.common.previousPrayer
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
+import com.devlomi.shared.locale.LocaleHelper
+import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.usecase.GetNextPrayerUseCase
 import kotlinx.coroutines.flow.first
@@ -46,10 +50,10 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
 
     override fun getPreviewData(type: ComplicationType): ComplicationData {
         return ShortTextComplicationData.Builder(
-            text = PlainComplicationText.Builder(text = "6!").build(),
+            text = PlainComplicationText.Builder(text = "3:56").build(),
             contentDescription = PlainComplicationText.Builder(text = "Short Text version of Number.")
                 .build()
-        )
+        ).setTitle(PlainComplicationText.Builder("Remaining").build())
             .setTapAction(null)
             .build()
     }
@@ -95,13 +99,22 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         var previousPrayerDate: Date? = null
         Log.d("3llomi", "elapsed Enabled ${elapsedEnabled}")
         if (elapsedEnabled) {
-             previousPrayerDate = getPreviousPrayerTimeWhenElapsed(
+            previousPrayerDate = getPreviousPrayerTimeWhenElapsed(
                 elapsedMinutesConfig,
                 now,
                 previousPrayer,
                 prayerTimes
             )
         }
+
+        val localTypeInt = settingsDataStore.locale.firstOrNull()
+
+        val localeType = LocaleType.values()
+            .firstOrNull { localTypeInt == it.id }
+            ?: LocaleType.ENGLISH
+
+        val locale = LocaleHelper.getLocale(localeType)
+
         Log.d("3llomi", "timeLeft: $timeLeft")
         //TODO ELAPSED TIME NOT DISAPPEARS AFTER PASSING ELAPSED MINUTES eg. after 30 minutes - CHECK IF RECEIVER IS WORKING
 
@@ -110,15 +123,15 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
             ComplicationType.SHORT_TEXT -> {
                 val text =
                     if (previousPrayerDate != null) TimeDifferenceComplicationText.Builder(
-                    style = TimeDifferenceStyle.STOPWATCH,
+                        style = TimeDifferenceStyle.STOPWATCH,
                         countUpTimeReference =
-                    CountUpTimeReference(instant =  previousPrayerDate.toInstant())
-                ).setText("+^1").build() else
-                    TimeDifferenceComplicationText.Builder(
-                    style = TimeDifferenceStyle.STOPWATCH,
-                    countDownTimeReference =
-                    CountDownTimeReference(instant =  timeForPrayer.toInstant())
-                ).build()
+                        CountUpTimeReference(instant = previousPrayerDate.toInstant())
+                    ).setText("+^1").build() else
+                        TimeDifferenceComplicationText.Builder(
+                            style = TimeDifferenceStyle.STOPWATCH,
+                            countDownTimeReference =
+                            CountDownTimeReference(instant = timeForPrayer.toInstant())
+                        ).build()
                 ShortTextComplicationData.Builder(
                     text =
                     text,
@@ -127,8 +140,15 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
                         .build()
                 ).setTitle(
                     title =
-                    //TODO LOCALIZE REMAINING
-                    PlainComplicationText.Builder(text = if (previousPrayerDate != null) "ELAPSED" else "Remaining")
+                    PlainComplicationText.Builder(
+                        text = if (previousPrayerDate != null) getLocaleStringResource(
+                            locale,
+                            com.devlomi.shared.R.string.elapsed
+                        ) else getLocaleStringResource(
+                            locale,
+                            com.devlomi.shared.R.string.remaining
+                        )
+                    )
                         .build()
                 ).build()
             }
@@ -175,8 +195,8 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
                 minutes = -1
                 return null
             }
-
+            return timeForPrayer
         }
-        return timeForPrayer
+        return null
     }
 }

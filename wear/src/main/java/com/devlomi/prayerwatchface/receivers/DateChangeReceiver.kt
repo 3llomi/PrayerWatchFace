@@ -30,7 +30,7 @@ class DateChangeReceiver : BroadcastReceiver() {
                 getPrayerNameByLocaleUseCase
             ).schedule(context)
         }
-        UpdateComplications(context).update()
+        UpdateComplications.update(context)
 
     }
 }

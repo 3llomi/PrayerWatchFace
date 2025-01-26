@@ -43,7 +43,7 @@
 
             <ColorOption
                 colors="#9B9B9B"
-                displayName="black"
+                displayName="gray"
                 id="2" />
 
             <ColorOption
@@ -74,12 +74,12 @@
 
             <ColorOption
                 colors="#009688"
-                displayName="green"
+                displayName="green2"
                 id="8" />
 
             <ColorOption
                 colors="#4CAF50"
-                displayName="green"
+                displayName="green3"
                 id="9" />
 
             <ColorOption
@@ -147,7 +147,7 @@
 
             <ColorOption
                 colors="#4CAF50"
-                displayName="green"
+                displayName="green2"
                 id="9" />
 
             <ColorOption
@@ -158,7 +158,7 @@
 
             <ColorOption
                 colors="#E91E63"
-                displayName="red"
+                displayName="red2"
                 id="11" />
         </ColorConfiguration>
 
@@ -180,7 +180,7 @@
 
             <ColorOption
                 colors="#9B9B9B"
-                displayName="black"
+                displayName="gray"
                 id="2" />
 
             <ColorOption
@@ -211,12 +211,12 @@
 
             <ColorOption
                 colors="#009688"
-                displayName="green"
+                displayName="green2"
                 id="8" />
 
             <ColorOption
                 colors="#4CAF50"
-                displayName="green"
+                displayName="green3"
                 id="9" />
 
             <ColorOption
@@ -227,7 +227,7 @@
 
             <ColorOption
                 colors="#E91E63"
-                displayName="red"
+                displayName="red2"
                 id="11" />
         </ColorConfiguration>
 
@@ -247,7 +247,7 @@
 
             <ColorOption
                 colors="#9B9B9B"
-                displayName="black"
+                displayName="gray"
                 id="2" />
 
             <ColorOption
@@ -278,12 +278,12 @@
 
             <ColorOption
                 colors="#009688"
-                displayName="green"
+                displayName="green2"
                 id="8" />
 
             <ColorOption
                 colors="#4CAF50"
-                displayName="green"
+                displayName="green3"
                 id="9" />
 
             <ColorOption
@@ -294,7 +294,7 @@
 
             <ColorOption
                 colors="#E91E63"
-                displayName="red"
+                displayName="red2"
                 id="11" />
         </ColorConfiguration>
 
@@ -315,7 +315,7 @@
 
             <ColorOption
                 colors="#9B9B9B"
-                displayName="black"
+                displayName="gray"
                 id="2" />
 
             <ColorOption
@@ -351,7 +351,7 @@
 
             <ColorOption
                 colors="#4CAF50"
-                displayName="green"
+                displayName="green2"
                 id="9" />
 
             <ColorOption
@@ -361,7 +361,7 @@
 
             <ColorOption
                 colors="#E91E63"
-                displayName="red"
+                displayName="red2"
                 id="11" />
 
             <ColorOption
@@ -377,10 +377,10 @@
             screenReaderText="Add Wallpaper Dim" />
 
         <BooleanConfiguration
-            defaultValue="TRUE"
-            displayName="am_pm"
-            id="am_pm"
-            screenReaderText="am_pm" />
+            defaultValue="FALSE"
+            displayName="twenty_four_hours"
+            id="twenty_four_hours"
+            screenReaderText="twenty_four_hours" />
 
         <BooleanConfiguration
             defaultValue="TRUE"
@@ -825,9 +825,9 @@
         </Group>
 
 
-        <BooleanConfiguration id="am_pm">
+        <BooleanConfiguration id="twenty_four_hours">
 
-            <BooleanOption id="TRUE">
+            <BooleanOption id="FALSE">
                 <DigitalClock
                     height="450"
                     width="450"
@@ -950,7 +950,7 @@
                 </DigitalClock>
 
             </BooleanOption>
-            <BooleanOption id="FALSE">
+            <BooleanOption id="TRUE">
                 <DigitalClock
                     height="450"
                     width="450"
@@ -2038,9 +2038,11 @@
                                 size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
-                                <Template>%s
-                                    <Parameter expression="[COMPLICATION.TITLE]" />
-                                </Template>
+                                <Upper>
+                                    <Template>%s
+                                        <Parameter expression="[COMPLICATION.TITLE]" />
+                                    </Template>
+                                </Upper>
                             </Font>
                         </Text>
                     </PartText>
@@ -2062,9 +2064,11 @@
                                 size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
-                                <Template>%s
-                                    <Parameter expression="[COMPLICATION.TITLE]" />
-                                </Template>
+                                <Upper>
+                                    <Template>%s
+                                        <Parameter expression="[COMPLICATION.TITLE]" />
+                                    </Template>
+                                </Upper>
                             </Font>
                         </Text>
                     </PartText>
@@ -2241,9 +2245,11 @@
                                 size="24"
                                 slant="NORMAL"
                                 weight="BOLD">
-                                <Template>%s
-                                    <Parameter expression="[COMPLICATION.TITLE]" />
-                                </Template>
+                                <Upper>
+                                    <Template>%s
+                                        <Parameter expression="[COMPLICATION.TITLE]" />
+                                    </Template>
+                                </Upper>
                             </Font>
                         </Text>
                     </PartText>
@@ -2265,9 +2271,11 @@
                                 size="24"
                                 slant="NORMAL"
                                 weight="BOLD">
-                                <Template>%s
-                                    <Parameter expression="[COMPLICATION.TITLE]" />
-                                </Template>
+                                <Upper>
+                                    <Template>%s
+                                        <Parameter expression="[COMPLICATION.TITLE]" />
+                                    </Template>
+                                </Upper>
                             </Font>
                         </Text>
                     </PartText>

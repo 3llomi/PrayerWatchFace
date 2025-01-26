@@ -45,10 +45,11 @@ class NextPrayerTimeComplicationService : SuspendingComplicationDataSourceServic
 
     override fun getPreviewData(type: ComplicationType): ComplicationData {
         return ShortTextComplicationData.Builder(
-            text = PlainComplicationText.Builder(text = "6!").build(),
+            text = PlainComplicationText.Builder(text = "4:30")
+                .build(),
             contentDescription = PlainComplicationText.Builder(text = "Short Text version of Number.")
                 .build()
-        )
+        ).setTitle(PlainComplicationText.Builder("Fajr").build())
             .setTapAction(null)
             .build()
     }

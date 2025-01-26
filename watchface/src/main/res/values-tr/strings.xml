@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper">Duvar Kağıdı</string>
+    <string name="wallpaper_dim">Soluk Duvar Kağıdı</string>
+    <string name="foreground_color">Ön Plan Rengi</string>
+    <string name="foreground_color_bottom">Alt Kısım Ön Plan Rengi</string>
+    <string name="background_color">Arka Plan Rengi</string>
+    <string name="background_color_bottom">Alt Kısım Arka Plan Rengi</string>
+    <string name="bottom_part">Alt Kısmı</string>
+    <string name="show_progress">Kalan süre için ilerlemeyi göster</string>
+    <string name="twenty_four_hours">24 saat</string>
+</resources>

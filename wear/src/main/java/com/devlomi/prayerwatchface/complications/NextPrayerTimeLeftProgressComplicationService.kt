@@ -24,9 +24,6 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
     private val getPrayerTimesWithConfigUseCase by lazy {
         GetPrayerTimesWithConfigUseCase(settingsDataStore)
     }
-    private val getPrayerNameByLocaleUseCase by lazy {
-        GetPrayerNameByLocaleUseCase(this)
-    }
     private val getNextPrayerUseCase by lazy {
         GetNextPrayerUseCase(getPrayerTimesWithConfigUseCase)
     }
@@ -40,8 +37,8 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
             min = 0f,
             max = 360f,
             value = 150f,
-            contentDescription = PlainComplicationText.Builder(text = "Ranged Value").build()
-        ).setText(PlainComplicationText.Builder("Hello").build())
+            contentDescription = PlainComplicationText.Builder(text = "Next Prayer Time Progress").build()
+        ).setText(PlainComplicationText.Builder("").build())
             .setTapAction(null)
             .build()
     }
@@ -66,7 +63,7 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
 
         val previousPrayerTime =
             if (previousPrayer == Prayer.NONE || previousPrayer == Prayer.ISHA) {
-                getPrayerTimesWithConfigUseCase.getPrayerTimes(now).timeForPrayer(Prayer.ISHA).time
+                getPrayerTimesWithConfigUseCase.getIshaaTimePreviousDay()
             } else {
                 prayerTimes.timeForPrayer(previousPrayer).time
             }
