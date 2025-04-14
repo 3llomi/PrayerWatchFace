@@ -37,7 +37,8 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
             min = 0f,
             max = 360f,
             value = 150f,
-            contentDescription = PlainComplicationText.Builder(text = "Next Prayer Time Progress").build()
+            contentDescription = PlainComplicationText.Builder(text = "Next Prayer Time Progress")
+                .build()
         ).setText(PlainComplicationText.Builder("").build())
             .setTapAction(null)
             .build()
@@ -56,16 +57,26 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
 
         val nextPrayerWithPrayerTimes = getNextPrayerUseCase.getNextPrayer(now)
         val prayerTimes = nextPrayerWithPrayerTimes.prayerTimes
+        val prayerTimesWithoutAdditions = nextPrayerWithPrayerTimes.prayerTimesWithoutAdditions
         val nextPrayer = nextPrayerWithPrayerTimes.nextPrayer
         val noNextPrayerToday = prayerTimes.nextPrayer() == Prayer.NONE
+        Log.d(
+            "3llomi",
+            "previousPrayer ${prayerTimes.previousPrayer()} nextPrayer ${prayerTimes.nextPrayer()}"
+        )
         val previousPrayer =
             if (noNextPrayerToday) Prayer.ISHA else prayerTimes.previousPrayer()
 
+        Log.d("3llomi","nextPrayer Real ${nextPrayerWithPrayerTimes.prayerTimes.nextPrayer()}")
         val previousPrayerTime =
-            if (previousPrayer == Prayer.NONE || previousPrayer == Prayer.ISHA) {
+            if ((previousPrayer == Prayer.NONE || previousPrayer == Prayer.ISHA) &&
+                //NOTE: USE THE ACTUAL PRAYER TIMES THAT RETURNS NONE, SINCE THE OTHER ONE RETURNS NEXT PRAYER (NOT RETURNS NONE)
+                nextPrayerWithPrayerTimes.prayerTimes.nextPrayer() == Prayer.FAJR) {
+                Log.d("3llomi","previous prayer is NONE - getting previous day")
                 getPrayerTimesWithConfigUseCase.getIshaaTimePreviousDay()
             } else {
-                prayerTimes.timeForPrayer(previousPrayer).time
+                Log.d("3llomi","previous prayer is not NONE ${previousPrayer.name} - getting previous time ${prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time}")
+                prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time
             }
 
         val nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer).time

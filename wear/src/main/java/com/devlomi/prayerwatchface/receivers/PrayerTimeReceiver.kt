@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.devlomi.prayerwatchface.PrayerApp
@@ -35,7 +36,7 @@ class PrayerTimeReceiver : BroadcastReceiver() {
         fun schedulePrayerTime(context: Context, timestamp: Long, prayerName: String) {
             val date = Date()
             date.time = timestamp
-
+            Log.d("3llomi","schedule prayer time: $prayerName")
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(context, PrayerTimeReceiver::class.java)
             intent.putExtra("prayerName", prayerName)
@@ -62,7 +63,7 @@ class PrayerTimeReceiver : BroadcastReceiver() {
         ) {
             val date = Date()
             date.time = timestamp
-
+            Log.d("3llomi","schedule elapsed time: $timestamp")
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             val intent = Intent(context, PrayerTimeReceiver::class.java)
             intent.action = ACTION_ELAPSED_COMPLICATION_UPDATE
@@ -97,7 +98,7 @@ class PrayerTimeReceiver : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context, intent: Intent) {
-
+        Log.d("3llomi","onReceive ${intent.action}")
         if (intent.action == ACTION_PRAYER_TIME) {
             val prayerName = intent.getStringExtra("prayerName") ?: ""
             val time = intent.getLongExtra("time", 0)
@@ -121,6 +122,7 @@ class PrayerTimeReceiver : BroadcastReceiver() {
                 schedulePrayerNotification.scheduleElapsedTime(context, time)
             }
         }
+        Log.d("3llomi","onReceive ${intent.action}")
         UpdateComplications.update(context)
     }
 

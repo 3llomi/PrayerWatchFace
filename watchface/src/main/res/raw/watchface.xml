@@ -623,6 +623,34 @@
                 </ListOption>
             </ListConfiguration>
 
+
+            <BooleanConfiguration id="add_wallpaper_dim">
+                <BooleanOption id="TRUE">
+                    <PartDraw
+                        alpha="179"
+                        height="450"
+                        width="450"
+                        x="0"
+                        y="0">
+                        <Variant
+                            mode="AMBIENT"
+                            target="alpha"
+                            value="0" />
+                        <Rectangle
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+
+
+                            <Fill color="#ff000000" />
+                        </Rectangle>
+
+
+                    </PartDraw>
+                </BooleanOption>
+            </BooleanConfiguration>
+
             <BooleanConfiguration id="bottom_part">
                 <BooleanOption id="TRUE">
                     <Group
@@ -659,32 +687,6 @@
                 </BooleanOption>
             </BooleanConfiguration>
 
-            <BooleanConfiguration id="add_wallpaper_dim">
-                <BooleanOption id="TRUE">
-                    <PartDraw
-                        alpha="179"
-                        height="450"
-                        width="450"
-                        x="0"
-                        y="0">
-                        <Variant
-                            mode="AMBIENT"
-                            target="alpha"
-                            value="0" />
-                        <Rectangle
-                            height="450"
-                            width="450"
-                            x="0"
-                            y="0">
-
-
-                            <Fill color="#ff000000" />
-                        </Rectangle>
-
-
-                    </PartDraw>
-                </BooleanOption>
-            </BooleanConfiguration>
         </Group>
 
 
@@ -915,7 +917,7 @@
                             <Font
                                 color="#ffffff"
                                 family="righteous"
-                                size="24"
+                                size="28"
                                 slant="NORMAL"
                                 weight="NORMAL">
                                 <Upper>
@@ -943,7 +945,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="righteous"
-                                size="24"
+                                size="28"
                                 slant="NORMAL"
                                 weight="NORMAL">
                                 <Upper>
@@ -1167,180 +1169,372 @@
                     x="265"
                     y="115">
 
-                    <ListConfiguration id="font_size">
-                        <ListOption id="0">
-                            <PartText
-                                align="CENTER"
-                                alpha="0"
-                                height="50"
-                                width="50"
-                                x="-10"
-                                y="0">
 
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
+                    <Condition>
+                        <Expressions>
+                        <!--  ARABIC text will have its own coordinates, therefore we have to check
+                               if the current text is Arabic or not
+                         -->
+                            <Expression name="isArabic_am_pm">
+                                <![CDATA[[AMPM_STRING] == "م" || [AMPM_STRING] == "ص" ]]>
+                            </Expression>
+                        </Expressions>
 
+                        <Compare expression="isArabic_am_pm">
+                            <ListConfiguration id="font_size">
+                                <ListOption id="0">
+                                    <PartText
+                                        alpha="0"
+                                        height="50"
+                                        width="50"
+                                        x="-10"
+                                        y="0">
 
-                                <Font
-                                    color="gray"
-                                    family="SYNC_TO_DEVICE"
-                                    size="30"
-                                    slant="NORMAL"
-                                    weight="NORMAL">
-
-                                    <Template>%s
-                                        <Parameter expression="[AMPM_STRING]" />
-                                    </Template>
-                                </Font>
-
-                            </PartText>
-
-                            <PartText
-                                align="CENTER"
-                                alpha="255"
-                                height="50"
-                                width="50"
-                                x="-10"
-                                y="0">
-
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-
-                                <Font
-                                    color="gray"
-                                    family="SYNC_TO_DEVICE"
-                                    size="30"
-                                    slant="NORMAL"
-                                    weight="NORMAL">
-
-                                    <Template>%s
-                                        <Parameter expression="[AMPM_STRING]" />
-                                    </Template>
-                                </Font>
-
-                            </PartText>
-                        </ListOption>
-                        <ListOption id="1">
-                            <PartText
-                                align="CENTER"
-                                alpha="0"
-                                height="50"
-                                width="50"
-                                x="15"
-                                y="3">
-
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="255" />
 
 
-                                <Font
-                                    color="gray"
-                                    family="SYNC_TO_DEVICE"
-                                    size="35"
-                                    slant="NORMAL"
-                                    weight="NORMAL">
+                                        <Font
+                                            color="gray"
+                                            family="SYNC_TO_DEVICE"
+                                            size="30"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
 
-                                    <Template>%s
-                                        <Parameter expression="[AMPM_STRING]" />
-                                    </Template>
-                                </Font>
+                                            <Template>%s
+                                                <Parameter expression="[AMPM_STRING]" />
+                                            </Template>
+                                        </Font>
 
-                            </PartText>
+                                    </PartText>
 
-                            <PartText
-                                align="CENTER"
-                                alpha="255"
-                                height="50"
-                                width="50"
-                                x="15"
-                                y="3">
+                                    <PartText
+                                        align="CENTER"
+                                        alpha="255"
+                                        height="50"
+                                        width="50"
+                                        x="-10"
+                                        y="0">
 
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="0" />
 
-                                <Font
-                                    color="gray"
-                                    family="SYNC_TO_DEVICE"
-                                    size="35"
-                                    slant="NORMAL"
-                                    weight="NORMAL">
+                                        <Font
+                                            color="gray"
+                                            family="SYNC_TO_DEVICE"
+                                            size="30"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
 
-                                    <Template>%s
-                                        <Parameter expression="[AMPM_STRING]" />
-                                    </Template>
-                                </Font>
+                                            <Template>%s
+                                                <Parameter expression="[AMPM_STRING]" />
+                                            </Template>
+                                        </Font>
 
-                            </PartText>
-                        </ListOption>
-                        <ListOption id="2">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="80"
-                                x="20"
-                                y="10">
+                                    </PartText>
+                                </ListOption>
+                                <ListOption id="1">
+                                    <PartText
+                                        align="CENTER"
+                                        alpha="0"
+                                        height="50"
+                                        width="50"
+                                        x="15"
+                                        y="3">
 
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-
-
-                                <Font
-                                    color="gray"
-                                    family="SYNC_TO_DEVICE"
-                                    size="40"
-                                    slant="NORMAL"
-                                    weight="NORMAL">
-
-                                    <Template>%s
-                                        <Parameter expression="[AMPM_STRING]" />
-                                    </Template>
-                                </Font>
-
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="80"
-                                x="20"
-                                y="10">
-
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="255" />
 
 
+                                        <Font
+                                            color="gray"
+                                            family="SYNC_TO_DEVICE"
+                                            size="35"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+
+                                            <Template>%s
+                                                <Parameter expression="[AMPM_STRING]" />
+                                            </Template>
+                                        </Font>
+
+                                    </PartText>
+
+                                    <PartText
+                                        align="CENTER"
+                                        alpha="255"
+                                        height="50"
+                                        width="50"
+                                        x="15"
+                                        y="3">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="0" />
+
+                                        <Font
+                                            color="gray"
+                                            family="SYNC_TO_DEVICE"
+                                            size="35"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+
+                                            <Template>%s
+                                                <Parameter expression="[AMPM_STRING]" />
+                                            </Template>
+                                        </Font>
+
+                                    </PartText>
+                                </ListOption>
+
+<!--                                TODO IMPLEMENT FONT 1 and 2 since they're incorrect-->
+                                <ListOption id="2">
+                                    <PartText
+                                        alpha="0"
+                                        height="50"
+                                        width="80"
+                                        x="-10"
+                                        y="-10">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="255" />
+
+                                        <Text align="CENTER>">
+
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="40"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
+
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
+                                    </PartText>
+
+                                    <PartText
+                                        alpha="255"
+                                        height="50"
+                                        width="80"
+                                        x="-10"
+                                        y="-10">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="0" />
+
+                                        <Text align="CENTER">
+
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="40"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
+
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
+                                    </PartText>
+                                </ListOption>
 
 
-                                <Font
-                                    color="gray"
-                                    family="SYNC_TO_DEVICE"
-                                    size="40"
-                                    slant="NORMAL"
-                                    weight="NORMAL">
+                            </ListConfiguration>
+                        </Compare>
 
-                                    <Template>%s
-                                        <Parameter expression="[AMPM_STRING]" />
-                                    </Template>
-                                </Font>
-                                </Text>
-                            </PartText>
-                        </ListOption>
+                        <Default>
+                            <ListConfiguration id="font_size">
+                                <ListOption id="0">
+                                    <PartText
+                                        alpha="0"
+                                        height="50"
+                                        width="50"
+                                        x="-10"
+                                        y="0">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="255" />
 
 
-                    </ListConfiguration>
+                                        <Font
+                                            color="gray"
+                                            family="SYNC_TO_DEVICE"
+                                            size="30"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+
+                                            <Template>%s
+                                                <Parameter expression="[AMPM_STRING]" />
+                                            </Template>
+                                        </Font>
+
+                                    </PartText>
+
+                                    <PartText
+                                        align="CENTER"
+                                        alpha="255"
+                                        height="50"
+                                        width="50"
+                                        x="-10"
+                                        y="0">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="0" />
+
+                                        <Font
+                                            color="gray"
+                                            family="SYNC_TO_DEVICE"
+                                            size="30"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+
+                                            <Template>%s
+                                                <Parameter expression="[AMPM_STRING]" />
+                                            </Template>
+                                        </Font>
+
+                                    </PartText>
+                                </ListOption>
+                                <ListOption id="1">
+                                    <PartText
+                                        align="CENTER"
+                                        alpha="0"
+                                        height="50"
+                                        width="50"
+                                        x="15"
+                                        y="3">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="255" />
+
+
+                                        <Font
+                                            color="gray"
+                                            family="SYNC_TO_DEVICE"
+                                            size="35"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+
+                                            <Template>%s
+                                                <Parameter expression="[AMPM_STRING]" />
+                                            </Template>
+                                        </Font>
+
+                                    </PartText>
+
+                                    <PartText
+                                        align="CENTER"
+                                        alpha="255"
+                                        height="50"
+                                        width="50"
+                                        x="15"
+                                        y="3">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="0" />
+
+                                        <Font
+                                            color="gray"
+                                            family="SYNC_TO_DEVICE"
+                                            size="35"
+                                            slant="NORMAL"
+                                            weight="NORMAL">
+
+                                            <Template>%s
+                                                <Parameter expression="[AMPM_STRING]" />
+                                            </Template>
+                                        </Font>
+
+                                    </PartText>
+                                </ListOption>
+
+                                <ListOption id="2">
+                                    <PartText
+                                        alpha="0"
+                                        height="50"
+                                        width="80"
+                                        x="20"
+                                        y="10">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="255" />
+
+                                        <Text align="CENTER>">
+
+                                            <Font
+                                                color="gray"
+                                                family="righteous"
+                                                size="40"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
+
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
+                                    </PartText>
+
+                                    <PartText
+                                        alpha="255"
+                                        height="50"
+                                        width="80"
+                                        x="20"
+                                        y="10">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="0" />
+
+                                        <Text align="CENTER">
+
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="40"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
+
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
+                                    </PartText>
+                                </ListOption>
+
+
+                            </ListConfiguration>
+
+
+                        </Default>
+                    </Condition>
 
 
                 </Group>
@@ -1615,8 +1809,8 @@
         <Group
             name="hijri-date"
             height="50"
-            width="150"
-            x="270"
+            width="200"
+            x="250"
             y="170">
 
 
@@ -1756,7 +1950,7 @@
                     <PartText
                         alpha="0"
                         height="50"
-                        width="150"
+                        width="200"
                         x="0"
                         y="0">
                         <Variant
@@ -1787,7 +1981,7 @@
                     <PartText
                         alpha="255"
                         height="50"
-                        width="150"
+                        width="200"
                         x="0"
                         y="0">
                         <Variant
@@ -2802,7 +2996,7 @@
                                     mode="AMBIENT"
                                     target="alpha"
                                     value="255" />
-                                <Text align="LEFT">
+                                <Text align="CENTER">
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
@@ -3098,8 +3292,8 @@
                 <Group
                     name="prayer-title"
                     height="50"
-                    width="100"
-                    x="245"
+                    width="200"
+                    x="195"
                     y="330">
 
 
@@ -3108,7 +3302,7 @@
                             <PartText
                                 alpha="0"
                                 height="50"
-                                width="100"
+                                width="200"
                                 x="0"
                                 y="0">
                                 <Variant
@@ -3134,7 +3328,7 @@
                             <PartText
                                 alpha="255"
                                 height="50"
-                                width="100"
+                                width="200"
                                 x="0"
                                 y="0">
                                 <Variant
@@ -3162,7 +3356,7 @@
                             <PartText
                                 alpha="0"
                                 height="50"
-                                width="100"
+                                width="200"
                                 x="0"
                                 y="0">
                                 <Variant
@@ -3188,7 +3382,7 @@
                             <PartText
                                 alpha="255"
                                 height="50"
-                                width="100"
+                                width="200"
                                 x="0"
                                 y="0">
                                 <Variant
@@ -3216,7 +3410,7 @@
                             <PartText
                                 alpha="0"
                                 height="50"
-                                width="100"
+                                width="200"
                                 x="0"
                                 y="0">
                                 <Variant
@@ -3242,7 +3436,7 @@
                             <PartText
                                 alpha="255"
                                 height="50"
-                                width="100"
+                                width="200"
                                 x="0"
                                 y="0">
                                 <Variant

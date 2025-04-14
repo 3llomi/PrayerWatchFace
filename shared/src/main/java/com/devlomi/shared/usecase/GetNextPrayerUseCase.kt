@@ -10,6 +10,7 @@ class GetNextPrayerUseCase(private val getPrayerTimesWithConfigUseCase: GetPraye
     //TODO DELETE IF NOT NEEDED
     suspend fun getNextPrayer(date: Date): PrayerTimesWithNextPrayer {
         var prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(date)
+        val prayerTimesWithoutAdditions = prayerTimes
         var nextPrayer = prayerTimes.nextPrayer()
         if (nextPrayer == Prayer.NONE) {
             prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(
@@ -21,6 +22,6 @@ class GetNextPrayerUseCase(private val getPrayerTimesWithConfigUseCase: GetPraye
         }
 
         //TODO CHECK IF PRAYER TIMES IS WORKING CORRECTLY
-        return PrayerTimesWithNextPrayer(prayerTimes, nextPrayer)
+        return PrayerTimesWithNextPrayer(prayerTimes,prayerTimesWithoutAdditions, nextPrayer)
     }
 }

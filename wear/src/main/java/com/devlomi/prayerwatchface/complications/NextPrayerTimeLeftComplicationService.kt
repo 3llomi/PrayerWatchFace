@@ -15,7 +15,6 @@ import androidx.wear.watchface.complications.datasource.SuspendingComplicationDa
 import com.batoulapps.adhan.Prayer
 import com.batoulapps.adhan.PrayerTimes
 import com.devlomi.prayerwatchface.PrayerApp
-import com.devlomi.prayerwatchface.R
 import com.devlomi.shared.common.getLocaleStringResource
 import com.devlomi.shared.common.previousPrayer
 import com.devlomi.shared.config.SettingsDataStore
@@ -100,7 +99,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         Log.d("3llomi", "elapsed Enabled ${elapsedEnabled}")
         if (elapsedEnabled) {
             previousPrayerDate = getPreviousPrayerTimeWhenElapsed(
-                elapsedMinutesConfig,
+                elapsedMinutesConfig* 60 * 1000,
                 now,
                 previousPrayer,
                 prayerTimes
@@ -116,7 +115,6 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         val locale = LocaleHelper.getLocale(localeType)
 
         Log.d("3llomi", "timeLeft: $timeLeft")
-        //TODO ELAPSED TIME NOT DISAPPEARS AFTER PASSING ELAPSED MINUTES eg. after 30 minutes - CHECK IF RECEIVER IS WORKING
 
         return when (request.complicationType) {
 
@@ -131,7 +129,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
                             style = TimeDifferenceStyle.STOPWATCH,
                             countDownTimeReference =
                             CountDownTimeReference(instant = timeForPrayer.toInstant())
-                        ).build()
+                        ).setMinimumTimeUnit(TimeUnit.MINUTES).build()
                 ShortTextComplicationData.Builder(
                     text =
                     text,
@@ -172,7 +170,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
 
 
     private fun getPreviousPrayerTimeWhenElapsed(
-        elapsedTimeMinutes: Int,
+        elapsedTimeMinutesMillis: Int,
         date: Date,
         previousPrayer: Prayer,
         prayerTimes: PrayerTimes
@@ -180,19 +178,20 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
         val diff = date.time - timeForPrayer.time
         Log.d("3llomi", "Previous prayer elapsed ${previousPrayer.name}")
-        Log.d("3llomi", "dif is ${diff} date ${date.time} timeForPrayer ${timeForPrayer.time}")
-        var minutes = 0L
+        Log.d("3llomi", "TIME LEFT SERVICE: dif is ${diff} date ${date.time} timeForPrayer ${timeForPrayer.time}")
+//        var minutesMillis = 0L
         if (diff > 0) {
-            minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
+//            minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
+//            minutesMillis = diff / 1000 / 60
 
-            Log.d("3llomi", "getElapsedMinutes: $minutes")
-            if (minutes < 0) {
-                minutes = 0
-            }
+            Log.d("3llomi", "getElapsedMinutes: $elapsedTimeMinutesMillis")
+//            if (minutesMillis < 0) {
+//                minutesMillis = 0
+//            }
 
-            if (minutes > elapsedTimeMinutes) {
-                Log.d("3llomi", "minutes > elapsedTimeMinutes ${elapsedTimeMinutes}")
-                minutes = -1
+            if (diff >= elapsedTimeMinutesMillis) {
+                Log.d("3llomi", "minutes > elapsedTimeMinutes ${elapsedTimeMinutesMillis}")
+//                minutesMillis = -1
                 return null
             }
             return timeForPrayer
