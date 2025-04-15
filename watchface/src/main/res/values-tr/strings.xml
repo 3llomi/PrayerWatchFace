@@ -9,4 +9,11 @@
     <string name="bottom_part">Alt Kısmı</string>
     <string name="show_progress">Kalan süre için ilerlemeyi göster</string>
     <string name="twenty_four_hours">24 saat</string>
+    <string name="progress_color">İlerleme Rengi</string>
+    <string name="font_size">Yazı Boyutu</string>
+    <string name="none_wallpaper">Hiçbiri</string>
+    <string name="small">Küçük</string>
+    <string name="medium">Orta</string>
+    <string name="large">Büyük</string>
+    <string name="huge">Çok Büyük</string>
 </resources>

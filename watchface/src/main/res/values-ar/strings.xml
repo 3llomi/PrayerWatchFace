@@ -9,4 +9,11 @@
     <string name="foreground_color_bottom">لون الخط - الجزء السفلي</string>
     <string name="show_progress">إظهار شريط الوقت</string>
     <string name="twenty_four_hours">٢٤ ساعة</string>
+    <string name="progress_color">لون شريط التقدم</string>
+    <string name="font_size">حجم الخط</string>
+    <string name="none_wallpaper">بدون</string>
+    <string name="small">صغير</string>
+    <string name="medium">وسط</string>
+    <string name="large">كبير</string>
+    <string name="huge">ضخم</string>
 </resources>

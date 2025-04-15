@@ -40,59 +40,46 @@
                 colors="#000000"
                 displayName="black"
                 id="1" />
-
             <ColorOption
-                colors="#9B9B9B"
+                colors="#9b9b9b"
                 displayName="gray"
                 id="2" />
-
             <ColorOption
-                colors="#AF1A1A"
-                displayName="red"
+                colors="#af1a1a"
+                displayName="dark_red"
                 id="3" />
-
             <ColorOption
-                colors="#0D7102"
-                displayName="green"
+                colors="#0d7102"
+                displayName="dark_green"
                 id="4" />
-
-
             <ColorOption
-                colors="#673AB7"
-                displayName="velvet"
+                colors="#673ab7"
+                displayName="purple"
                 id="5" />
-
             <ColorOption
-                colors="#3F51B5"
-                displayName="velvet2"
+                colors="#3f51b5"
+                displayName="blue"
                 id="6" />
-
             <ColorOption
-                colors="#FF5722"
+                colors="#ff5722"
                 displayName="orange"
                 id="7" />
-
             <ColorOption
                 colors="#009688"
-                displayName="green2"
+                displayName="teal"
                 id="8" />
-
             <ColorOption
-                colors="#4CAF50"
-                displayName="green3"
+                colors="#4caf50"
+                displayName="green"
                 id="9" />
-
             <ColorOption
-                colors="#FFEB3B"
+                colors="#ffeb3b"
                 displayName="yellow"
                 id="10" />
-
-
             <ColorOption
-                colors="#E91E63"
-                displayName="red"
+                colors="#e91e63"
+                displayName="pink"
                 id="11" />
-
         </ColorConfiguration>
 
         <ColorConfiguration
@@ -108,60 +95,47 @@
                 colors="#000000"
                 displayName="black"
                 id="1" />
-
             <ColorOption
-                colors="#9B9B9B"
-                displayName="black"
+                colors="#9b9b9b"
+                displayName="gray"
                 id="2" />
-
             <ColorOption
-                colors="#AF1A1A"
+                colors="#af1a1a"
                 displayName="red"
                 id="3" />
-
             <ColorOption
-                colors="#0D7102"
+                colors="#0d7102"
                 displayName="green"
                 id="4" />
-
-
             <ColorOption
-                colors="#673AB7"
+                colors="#673ab7"
                 displayName="velvet"
                 id="5" />
-
             <ColorOption
-                colors="#3F51B5"
-                displayName="velvet2"
+                colors="#3f51b5"
+                displayName="velvet_2"
                 id="6" />
-
             <ColorOption
-                colors="#FF5722"
+                colors="#ff5722"
                 displayName="orange"
                 id="7" />
-
             <ColorOption
                 colors="#009688"
-                displayName="green"
+                displayName="teal"
                 id="8" />
-
             <ColorOption
-                colors="#4CAF50"
-                displayName="green2"
+                colors="#4caf50"
+                displayName="green_2"
                 id="9" />
-
             <ColorOption
-                colors="#FFEB3B"
+                colors="#ffeb3b"
                 displayName="yellow"
                 id="10" />
-
-
             <ColorOption
-                colors="#E91E63"
-                displayName="red2"
+                colors="#e91e63"
+                displayName="red_2"
                 id="11" />
         </ColorConfiguration>
-
 
         <ColorConfiguration
             defaultValue="0"
@@ -169,65 +143,52 @@
             id="background_color"
             screenReaderText="background_color">
             <ColorOption
-                colors="#2B324B"
-                displayName="white"
+                colors="#2b324b"
+                displayName="dark_blue"
                 id="0" />
-
             <ColorOption
                 colors="#000000"
                 displayName="black"
                 id="1" />
-
             <ColorOption
-                colors="#9B9B9B"
+                colors="#9b9b9b"
                 displayName="gray"
                 id="2" />
-
             <ColorOption
-                colors="#AF1A1A"
+                colors="#af1a1a"
                 displayName="red"
                 id="3" />
-
             <ColorOption
-                colors="#0D7102"
+                colors="#0d7102"
                 displayName="green"
                 id="4" />
-
-
             <ColorOption
-                colors="#673AB7"
+                colors="#673ab7"
                 displayName="velvet"
                 id="5" />
-
             <ColorOption
-                colors="#3F51B5"
-                displayName="velvet2"
+                colors="#3f51b5"
+                displayName="velvet_2"
                 id="6" />
-
             <ColorOption
-                colors="#FF5722"
+                colors="#ff5722"
                 displayName="orange"
                 id="7" />
-
             <ColorOption
                 colors="#009688"
-                displayName="green2"
+                displayName="teal"
                 id="8" />
-
             <ColorOption
-                colors="#4CAF50"
-                displayName="green3"
+                colors="#4caf50"
+                displayName="green_3"
                 id="9" />
-
             <ColorOption
-                colors="#FFEB3B"
+                colors="#ffeb3b"
                 displayName="yellow"
                 id="10" />
-
-
             <ColorOption
-                colors="#E91E63"
-                displayName="red2"
+                colors="#e91e63"
+                displayName="red_2"
                 id="11" />
         </ColorConfiguration>
 
@@ -237,64 +198,52 @@
             id="background_color_bottom"
             screenReaderText="background_color_bottom">
             <ColorOption
-                colors="#D4E1FB"
-                displayName="white"
+                colors="#d4e1fb"
+                displayName="light_blue"
                 id="0" />
             <ColorOption
                 colors="#000000"
                 displayName="black"
                 id="1" />
-
             <ColorOption
-                colors="#9B9B9B"
+                colors="#9b9b9b"
                 displayName="gray"
                 id="2" />
-
             <ColorOption
-                colors="#AF1A1A"
+                colors="#af1a1a"
                 displayName="red"
                 id="3" />
-
             <ColorOption
-                colors="#0D7102"
+                colors="#0d7102"
                 displayName="green"
                 id="4" />
-
-
             <ColorOption
-                colors="#673AB7"
+                colors="#673ab7"
                 displayName="velvet"
                 id="5" />
-
             <ColorOption
-                colors="#3F51B5"
-                displayName="velvet2"
+                colors="#3f51b5"
+                displayName="velvet_2"
                 id="6" />
-
             <ColorOption
-                colors="#FF5722"
+                colors="#ff5722"
                 displayName="orange"
                 id="7" />
-
             <ColorOption
                 colors="#009688"
-                displayName="green2"
+                displayName="teal"
                 id="8" />
-
             <ColorOption
-                colors="#4CAF50"
-                displayName="green3"
+                colors="#4caf50"
+                displayName="green_3"
                 id="9" />
-
             <ColorOption
-                colors="#FFEB3B"
+                colors="#ffeb3b"
                 displayName="yellow"
                 id="10" />
-
-
             <ColorOption
-                colors="#E91E63"
-                displayName="red2"
+                colors="#e91e63"
+                displayName="red_2"
                 id="11" />
         </ColorConfiguration>
 
@@ -303,69 +252,56 @@
             displayName="progress_color"
             id="progress_color"
             screenReaderText="progress_color">
-
             <ColorOption
-                colors="#D4E1FB"
-                displayName="white"
+                colors="#d4e1fb"
+                displayName="light_blue"
                 id="0" />
             <ColorOption
                 colors="#000000"
                 displayName="black"
                 id="1" />
-
             <ColorOption
-                colors="#9B9B9B"
+                colors="#9b9b9b"
                 displayName="gray"
                 id="2" />
-
             <ColorOption
-                colors="#AF1A1A"
+                colors="#af1a1a"
                 displayName="red"
                 id="3" />
-
             <ColorOption
-                colors="#0D7102"
+                colors="#0d7102"
                 displayName="green"
                 id="4" />
-
-
             <ColorOption
-                colors="#673AB7"
+                colors="#673ab7"
                 displayName="velvet"
                 id="5" />
-
             <ColorOption
-                colors="#3F51B5"
-                displayName="velvet2"
+                colors="#3f51b5"
+                displayName="velvet_2"
                 id="6" />
-
             <ColorOption
-                colors="#FF5722"
+                colors="#ff5722"
                 displayName="orange"
                 id="7" />
-
             <ColorOption
                 colors="#009688"
-                displayName="green"
+                displayName="teal"
                 id="8" />
-
             <ColorOption
-                colors="#4CAF50"
-                displayName="green2"
+                colors="#4caf50"
+                displayName="green_2"
                 id="9" />
-
             <ColorOption
-                colors="#FFEB3B"
+                colors="#ffeb3b"
                 displayName="yellow"
                 id="10" />
-
             <ColorOption
-                colors="#E91E63"
-                displayName="red2"
+                colors="#e91e63"
+                displayName="red_2"
                 id="11" />
-
             <ColorOption
-                colors="#0DA7FE"
+                colors="#0da7fe"
                 displayName="blue"
                 id="12" />
         </ColorConfiguration>
@@ -402,9 +338,9 @@
             screenReaderText="Wallpaper">
 
             <ListOption
-                displayName="default"
+                displayName="none_wallpaper"
                 id="0"
-                screenReaderText="default" />
+                screenReaderText="none_wallpaper" />
 
 
             <ListOption
@@ -457,13 +393,13 @@
             <ListOption
                 displayName="medium"
                 id="1"
-                screenReaderText="small" />
+                screenReaderText="medium" />
 
 
             <ListOption
                 displayName="large"
                 id="2"
-                screenReaderText="small" />
+                screenReaderText="large" />
 
 
         </ListConfiguration>
@@ -488,9 +424,8 @@
                         height="450"
                         width="450">
 
-                        <!--                        TODO IMPLEMENT VARIANT-->
                         <PartDraw
-                            height="330"
+                            height="450"
                             width="450"
                             x="0"
                             y="0">
@@ -501,13 +436,13 @@
                                 value="0" />
 
                             <Rectangle
-                                height="330"
+                                height="450"
                                 width="450"
                                 x="0"
                                 y="0">
 
 
-                                <Fill color="[CONFIGURATION.background_color.0]" />
+                                <Fill color="[CONFIGURATION.background_color]" />
                             </Rectangle>
 
 
@@ -676,7 +611,7 @@
                                 y="0">
 
 
-                                <Fill color="[CONFIGURATION.background_color_bottom.0]" />
+                                <Fill color="[CONFIGURATION.background_color_bottom]" />
                             </Rectangle>
 
 
@@ -1172,9 +1107,9 @@
 
                     <Condition>
                         <Expressions>
-                        <!--  ARABIC text will have its own coordinates, therefore we have to check
-                               if the current text is Arabic or not
-                         -->
+                            <!--  ARABIC text will have its own coordinates, therefore we have to check
+                                   if the current text is Arabic or not
+                             -->
                             <Expression name="isArabic_am_pm">
                                 <![CDATA[[AMPM_STRING] == "م" || [AMPM_STRING] == "ص" ]]>
                             </Expression>
@@ -1294,7 +1229,7 @@
                                     </PartText>
                                 </ListOption>
 
-<!--                                TODO IMPLEMENT FONT 1 and 2 since they're incorrect-->
+                                <!--                                TODO IMPLEMENT FONT 1 and 2 since they're incorrect-->
                                 <ListOption id="2">
                                     <PartText
                                         alpha="0"
