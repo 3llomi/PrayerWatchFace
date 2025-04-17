@@ -729,9 +729,9 @@
                     <PartText
                         alpha="0"
                         height="50"
-                        width="50"
-                        x="0"
-                        y="0">
+                        width="80"
+                        x="-15"
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -740,7 +740,7 @@
                             <Font
                                 color="#ffffff"
                                 family="righteous"
-                                size="18"
+                                size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
                                 <Upper>
@@ -755,9 +755,9 @@
                     <PartText
                         alpha="255"
                         height="50"
-                        width="50"
-                        x="0"
-                        y="0">
+                        width="80"
+                        x="-15"
+                        y="-10">
 
                         <Variant
                             mode="AMBIENT"
@@ -768,7 +768,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="righteous"
-                                size="18"
+                                size="24"
                                 slant="NORMAL"
                                 weight="NORMAL">
                                 <Upper>
@@ -785,9 +785,9 @@
                     <PartText
                         alpha="0"
                         height="50"
-                        width="50"
-                        x="0"
-                        y="-10">
+                        width="80"
+                        x="-15"
+                        y="-15">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -796,7 +796,7 @@
                             <Font
                                 color="#ffffff"
                                 family="righteous"
-                                size="21"
+                                size="28"
                                 slant="NORMAL"
                                 weight="NORMAL">
                                 <Upper>
@@ -811,9 +811,9 @@
                     <PartText
                         alpha="255"
                         height="50"
-                        width="50"
-                        x="0"
-                        y="-10">
+                        width="80"
+                        x="-15"
+                        y="-15">
 
                         <Variant
                             mode="AMBIENT"
@@ -824,7 +824,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="righteous"
-                                size="21"
+                                size="28"
                                 slant="NORMAL"
                                 weight="NORMAL">
                                 <Upper>
@@ -852,7 +852,7 @@
                             <Font
                                 color="#ffffff"
                                 family="righteous"
-                                size="28"
+                                size="32"
                                 slant="NORMAL"
                                 weight="NORMAL">
                                 <Upper>
@@ -880,7 +880,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="righteous"
-                                size="28"
+                                size="32"
                                 slant="NORMAL"
                                 weight="NORMAL">
                                 <Upper>
@@ -899,41 +899,11 @@
         <BooleanConfiguration id="twenty_four_hours">
 
             <BooleanOption id="FALSE">
+            <!-- AMBIENT -->
                 <ListConfiguration id="font_size">
+
+
                     <ListOption id="0">
-                        <DigitalClock
-                            height="450"
-                            width="450"
-                            x="0"
-                            y="0">
-
-
-                            <TimeText
-                                align="CENTER"
-                                alpha="0"
-                                format="hh:mm"
-                                height="130"
-                                hourFormat="12"
-                                width="200"
-                                x="120"
-                                y="25">
-
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-
-                                <Font
-                                    color="#ffffff"
-                                    family="rubik"
-                                    size="80"
-                                    slant="NORMAL"
-                                    weight="NORMAL" />
-                            </TimeText>
-                        </DigitalClock>
-                    </ListOption>
-
-                    <ListOption id="1">
                         <DigitalClock
                             height="450"
                             width="450"
@@ -966,7 +936,7 @@
                         </DigitalClock>
                     </ListOption>
 
-                    <ListOption id="2">
+                    <ListOption id="1">
                         <DigitalClock
                             height="450"
                             width="450"
@@ -993,6 +963,39 @@
                                     color="#ffffff"
                                     family="rubik"
                                     size="110"
+                                    slant="NORMAL"
+                                    weight="NORMAL" />
+                            </TimeText>
+                        </DigitalClock>
+                    </ListOption>
+
+                    <ListOption id="2">
+                        <DigitalClock
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+
+
+                            <TimeText
+                                align="CENTER"
+                                alpha="0"
+                                format="hh:mm"
+                                height="130"
+                                hourFormat="12"
+                                width="300"
+                                x="70"
+                                y="25">
+
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+
+                                <Font
+                                    color="#ffffff"
+                                    family="rubik"
+                                    size="120"
                                     slant="NORMAL"
                                     weight="NORMAL" />
                             </TimeText>
@@ -1001,41 +1004,11 @@
 
                 </ListConfiguration>
 
-
+            <!--  NORMAL  -->
                 <ListConfiguration id="font_size">
 
+
                     <ListOption id="0">
-                        <DigitalClock
-                            height="450"
-                            width="450"
-                            x="0"
-                            y="0">
-                            <TimeText
-                                align="CENTER"
-                                alpha="255"
-                                format="hh:mm"
-                                height="130"
-                                hourFormat="12"
-                                width="200"
-                                x="120"
-                                y="25">
-
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-
-                                <Font
-                                    color="[CONFIGURATION.foreground_color]"
-                                    family="rubik"
-                                    size="80"
-                                    slant="NORMAL"
-                                    weight="NORMAL" />
-                            </TimeText>
-                        </DigitalClock>
-                    </ListOption>
-
-                    <ListOption id="1">
                         <DigitalClock
                             height="450"
                             width="450"
@@ -1065,7 +1038,7 @@
                             </TimeText>
                         </DigitalClock>
                     </ListOption>
-                    <ListOption id="2">
+                    <ListOption id="1">
                         <DigitalClock
                             height="450"
                             width="450"
@@ -1090,6 +1063,36 @@
                                     color="[CONFIGURATION.foreground_color]"
                                     family="rubik"
                                     size="110"
+                                    slant="NORMAL"
+                                    weight="NORMAL" />
+                            </TimeText>
+                        </DigitalClock>
+                    </ListOption>
+                    <ListOption id="2">
+                        <DigitalClock
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+                            <TimeText
+                                align="CENTER"
+                                alpha="255"
+                                format="hh:mm"
+                                height="130"
+                                hourFormat="12"
+                                width="300"
+                                x="70"
+                                y="25">
+
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+
+                                <Font
+                                    color="[CONFIGURATION.foreground_color]"
+                                    family="rubik"
+                                    size="120"
                                     slant="NORMAL"
                                     weight="NORMAL" />
                             </TimeText>
@@ -1101,7 +1104,7 @@
                     name="am-pm"
                     height="100"
                     width="120"
-                    x="265"
+                    x="255"
                     y="115">
 
 
@@ -1121,116 +1124,60 @@
                                     <PartText
                                         alpha="0"
                                         height="50"
-                                        width="50"
+                                        width="80"
                                         x="-10"
-                                        y="0">
+                                        y="-10">
 
                                         <Variant
                                             mode="AMBIENT"
                                             target="alpha"
                                             value="255" />
 
+                                        <Text align="CENTER>">
 
-                                        <Font
-                                            color="gray"
-                                            family="SYNC_TO_DEVICE"
-                                            size="30"
-                                            slant="NORMAL"
-                                            weight="NORMAL">
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="30"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
 
-                                            <Template>%s
-                                                <Parameter expression="[AMPM_STRING]" />
-                                            </Template>
-                                        </Font>
-
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
                                     </PartText>
 
                                     <PartText
-                                        align="CENTER"
                                         alpha="255"
                                         height="50"
-                                        width="50"
+                                        width="80"
                                         x="-10"
-                                        y="0">
+                                        y="-10">
 
                                         <Variant
                                             mode="AMBIENT"
                                             target="alpha"
                                             value="0" />
 
-                                        <Font
-                                            color="gray"
-                                            family="SYNC_TO_DEVICE"
-                                            size="30"
-                                            slant="NORMAL"
-                                            weight="NORMAL">
+                                        <Text align="CENTER">
 
-                                            <Template>%s
-                                                <Parameter expression="[AMPM_STRING]" />
-                                            </Template>
-                                        </Font>
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="30"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
 
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
                                     </PartText>
                                 </ListOption>
                                 <ListOption id="1">
-                                    <PartText
-                                        align="CENTER"
-                                        alpha="0"
-                                        height="50"
-                                        width="50"
-                                        x="15"
-                                        y="3">
-
-                                        <Variant
-                                            mode="AMBIENT"
-                                            target="alpha"
-                                            value="255" />
-
-
-                                        <Font
-                                            color="gray"
-                                            family="SYNC_TO_DEVICE"
-                                            size="35"
-                                            slant="NORMAL"
-                                            weight="NORMAL">
-
-                                            <Template>%s
-                                                <Parameter expression="[AMPM_STRING]" />
-                                            </Template>
-                                        </Font>
-
-                                    </PartText>
-
-                                    <PartText
-                                        align="CENTER"
-                                        alpha="255"
-                                        height="50"
-                                        width="50"
-                                        x="15"
-                                        y="3">
-
-                                        <Variant
-                                            mode="AMBIENT"
-                                            target="alpha"
-                                            value="0" />
-
-                                        <Font
-                                            color="gray"
-                                            family="SYNC_TO_DEVICE"
-                                            size="35"
-                                            slant="NORMAL"
-                                            weight="NORMAL">
-
-                                            <Template>%s
-                                                <Parameter expression="[AMPM_STRING]" />
-                                            </Template>
-                                        </Font>
-
-                                    </PartText>
-                                </ListOption>
-
-                                <!--                                TODO IMPLEMENT FONT 1 and 2 since they're incorrect-->
-                                <ListOption id="2">
                                     <PartText
                                         alpha="0"
                                         height="50"
@@ -1277,6 +1224,63 @@
                                                 color="gray"
                                                 family="SYNC_TO_DEVICE"
                                                 size="40"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
+
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
+                                    </PartText>
+                                </ListOption>
+                                <ListOption id="2">
+                                    <PartText
+                                        alpha="0"
+                                        height="50"
+                                        width="80"
+                                        x="-10"
+                                        y="-10">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="255" />
+
+                                        <Text align="CENTER>">
+
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="50"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
+
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
+                                    </PartText>
+
+                                    <PartText
+                                        alpha="255"
+                                        height="50"
+                                        width="80"
+                                        x="-10"
+                                        y="-10">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="0" />
+
+                                        <Text align="CENTER">
+
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="50"
                                                 slant="NORMAL"
                                                 weight="NORMAL">
 
@@ -1296,11 +1300,12 @@
                             <ListConfiguration id="font_size">
                                 <ListOption id="0">
                                     <PartText
+                                        align="CENTER"
                                         alpha="0"
                                         height="50"
-                                        width="50"
-                                        x="-10"
-                                        y="0">
+                                        width="60"
+                                        x="12"
+                                        y="3">
 
                                         <Variant
                                             mode="AMBIENT"
@@ -1311,7 +1316,7 @@
                                         <Font
                                             color="gray"
                                             family="SYNC_TO_DEVICE"
-                                            size="30"
+                                            size="35"
                                             slant="NORMAL"
                                             weight="NORMAL">
 
@@ -1326,9 +1331,9 @@
                                         align="CENTER"
                                         alpha="255"
                                         height="50"
-                                        width="50"
-                                        x="-10"
-                                        y="0">
+                                        width="60"
+                                        x="12"
+                                        y="3">
 
                                         <Variant
                                             mode="AMBIENT"
@@ -1338,7 +1343,7 @@
                                         <Font
                                             color="gray"
                                             family="SYNC_TO_DEVICE"
-                                            size="30"
+                                            size="35"
                                             slant="NORMAL"
                                             weight="NORMAL">
 
@@ -1351,67 +1356,10 @@
                                 </ListOption>
                                 <ListOption id="1">
                                     <PartText
-                                        align="CENTER"
-                                        alpha="0"
-                                        height="50"
-                                        width="50"
-                                        x="15"
-                                        y="3">
-
-                                        <Variant
-                                            mode="AMBIENT"
-                                            target="alpha"
-                                            value="255" />
-
-
-                                        <Font
-                                            color="gray"
-                                            family="SYNC_TO_DEVICE"
-                                            size="35"
-                                            slant="NORMAL"
-                                            weight="NORMAL">
-
-                                            <Template>%s
-                                                <Parameter expression="[AMPM_STRING]" />
-                                            </Template>
-                                        </Font>
-
-                                    </PartText>
-
-                                    <PartText
-                                        align="CENTER"
-                                        alpha="255"
-                                        height="50"
-                                        width="50"
-                                        x="15"
-                                        y="3">
-
-                                        <Variant
-                                            mode="AMBIENT"
-                                            target="alpha"
-                                            value="0" />
-
-                                        <Font
-                                            color="gray"
-                                            family="SYNC_TO_DEVICE"
-                                            size="35"
-                                            slant="NORMAL"
-                                            weight="NORMAL">
-
-                                            <Template>%s
-                                                <Parameter expression="[AMPM_STRING]" />
-                                            </Template>
-                                        </Font>
-
-                                    </PartText>
-                                </ListOption>
-
-                                <ListOption id="2">
-                                    <PartText
                                         alpha="0"
                                         height="50"
                                         width="80"
-                                        x="20"
+                                        x="12"
                                         y="10">
 
                                         <Variant
@@ -1423,8 +1371,65 @@
 
                                             <Font
                                                 color="gray"
-                                                family="righteous"
-                                                size="40"
+                                                family="SYNC_TO_DEVICE"
+                                                size="45"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
+
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
+                                    </PartText>
+
+                                    <PartText
+                                        alpha="255"
+                                        height="50"
+                                        width="80"
+                                        x="12"
+                                        y="10">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="0" />
+
+                                        <Text align="CENTER">
+
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="45"
+                                                slant="NORMAL"
+                                                weight="NORMAL">
+
+                                                <Template>%s
+                                                    <Parameter expression="[AMPM_STRING]" />
+                                                </Template>
+                                            </Font>
+                                        </Text>
+                                    </PartText>
+                                </ListOption>
+                                <ListOption id="2">
+                                    <PartText
+                                        alpha="0"
+                                        height="50"
+                                        width="80"
+                                        x="20"
+                                        y="15">
+
+                                        <Variant
+                                            mode="AMBIENT"
+                                            target="alpha"
+                                            value="255" />
+
+                                        <Text align="CENTER>">
+
+                                            <Font
+                                                color="gray"
+                                                family="SYNC_TO_DEVICE"
+                                                size="50"
                                                 slant="NORMAL"
                                                 weight="NORMAL">
 
@@ -1440,7 +1445,7 @@
                                         height="50"
                                         width="80"
                                         x="20"
-                                        y="10">
+                                        y="15">
 
                                         <Variant
                                             mode="AMBIENT"
@@ -1452,7 +1457,7 @@
                                             <Font
                                                 color="gray"
                                                 family="SYNC_TO_DEVICE"
-                                                size="40"
+                                                size="50"
                                                 slant="NORMAL"
                                                 weight="NORMAL">
 
@@ -1477,70 +1482,214 @@
 
             </BooleanOption>
             <BooleanOption id="TRUE">
-                <DigitalClock
-                    height="450"
-                    width="450"
-                    x="0"
-                    y="0">
+                <!-- AMBIENT -->
+                <ListConfiguration id="font_size">
 
 
-                    <TimeText
-
-                        align="CENTER"
-                        alpha="0"
-                        format="hh:mm"
-                        height="130"
-                        hourFormat="24"
-                        width="200"
-                        x="120"
-                        y="25">
-
-                        <Variant
-                            mode="AMBIENT"
-                            target="alpha"
-                            value="255" />
-
-                        <Font
-                            color="#ffffff"
-                            family="rubik"
-                            size="80"
-                            slant="NORMAL"
-                            weight="NORMAL" />
-                    </TimeText>
+                    <ListOption id="0">
+                        <DigitalClock
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
 
 
-                    <TimeText
-                        align="CENTER"
-                        alpha="255"
-                        format="hh:mm"
-                        height="130"
-                        hourFormat="24"
-                        width="200"
-                        x="120"
-                        y="25">
+                            <TimeText
+                                align="CENTER"
+                                alpha="0"
+                                format="hh:mm"
+                                height="130"
+                                hourFormat="24"
+                                width="300"
+                                x="70"
+                                y="25">
 
-                        <Variant
-                            mode="AMBIENT"
-                            target="alpha"
-                            value="0" />
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
 
-                        <Font
-                            color="[CONFIGURATION.foreground_color]"
-                            family="rubik"
-                            size="80"
-                            slant="NORMAL"
-                            weight="NORMAL" />
-                    </TimeText>
-                </DigitalClock>
+                                <Font
+                                    color="#ffffff"
+                                    family="rubik"
+                                    size="95"
+                                    slant="NORMAL"
+                                    weight="NORMAL" />
+                            </TimeText>
+                        </DigitalClock>
+                    </ListOption>
 
+                    <ListOption id="1">
+                        <DigitalClock
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+
+
+                            <TimeText
+                                align="CENTER"
+                                alpha="0"
+                                format="hh:mm"
+                                height="130"
+                                hourFormat="24"
+                                width="300"
+                                x="70"
+                                y="25">
+
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+
+                                <Font
+                                    color="#ffffff"
+                                    family="rubik"
+                                    size="110"
+                                    slant="NORMAL"
+                                    weight="NORMAL" />
+                            </TimeText>
+                        </DigitalClock>
+                    </ListOption>
+
+                    <ListOption id="2">
+                        <DigitalClock
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+
+
+                            <TimeText
+                                align="CENTER"
+                                alpha="0"
+                                format="hh:mm"
+                                height="130"
+                                hourFormat="24"
+                                width="300"
+                                x="70"
+                                y="25">
+
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+
+                                <Font
+                                    color="#ffffff"
+                                    family="rubik"
+                                    size="120"
+                                    slant="NORMAL"
+                                    weight="NORMAL" />
+                            </TimeText>
+                        </DigitalClock>
+                    </ListOption>
+
+                </ListConfiguration>
+
+                <!--  NORMAL  -->
+                <ListConfiguration id="font_size">
+
+
+                    <ListOption id="0">
+                        <DigitalClock
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+                            <TimeText
+                                align="CENTER"
+                                alpha="255"
+                                format="hh:mm"
+                                height="130"
+                                hourFormat="24"
+                                width="300"
+                                x="70"
+                                y="25">
+
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+
+                                <Font
+                                    color="[CONFIGURATION.foreground_color]"
+                                    family="rubik"
+                                    size="95"
+                                    slant="NORMAL"
+                                    weight="NORMAL" />
+                            </TimeText>
+                        </DigitalClock>
+                    </ListOption>
+                    <ListOption id="1">
+                        <DigitalClock
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+                            <TimeText
+                                align="CENTER"
+                                alpha="255"
+                                format="hh:mm"
+                                height="130"
+                                hourFormat="24"
+                                width="300"
+                                x="70"
+                                y="25">
+
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+
+                                <Font
+                                    color="[CONFIGURATION.foreground_color]"
+                                    family="rubik"
+                                    size="110"
+                                    slant="NORMAL"
+                                    weight="NORMAL" />
+                            </TimeText>
+                        </DigitalClock>
+                    </ListOption>
+                    <ListOption id="2">
+                        <DigitalClock
+                            height="450"
+                            width="450"
+                            x="0"
+                            y="0">
+                            <TimeText
+                                align="CENTER"
+                                alpha="255"
+                                format="hh:mm"
+                                height="130"
+                                hourFormat="24"
+                                width="300"
+                                x="70"
+                                y="25">
+
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+
+                                <Font
+                                    color="[CONFIGURATION.foreground_color]"
+                                    family="rubik"
+                                    size="120"
+                                    slant="NORMAL"
+                                    weight="NORMAL" />
+                            </TimeText>
+                        </DigitalClock>
+                    </ListOption>
+                </ListConfiguration>
 
             </BooleanOption>
         </BooleanConfiguration>
 
         <Group
             name="date"
-            height="50"
-            width="150"
+            height="70"
+            width="160"
             x="50"
             y="170">
 
@@ -1549,7 +1698,7 @@
                     <PartText
                         alpha="0"
                         height="50"
-                        width="100"
+                        width="150"
                         x="0"
                         y="0">
                         <Variant
@@ -1563,7 +1712,7 @@
                             <Font
                                 color="#ffffff"
                                 family="alata"
-                                size="32"
+                                size="43"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1580,7 +1729,7 @@
                     <PartText
                         alpha="255"
                         height="50"
-                        width="100"
+                        width="150"
                         x="0"
                         y="0">
                         <Variant
@@ -1594,7 +1743,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="alata"
-                                size="32"
+                                size="43"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1612,10 +1761,10 @@
                 <ListOption id="1">
                     <PartText
                         alpha="0"
-                        height="50"
-                        width="100"
+                        height="70"
+                        width="150"
                         x="0"
-                        y="0">
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1627,7 +1776,7 @@
                             <Font
                                 color="#ffffff"
                                 family="alata"
-                                size="38"
+                                size="48"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1643,10 +1792,10 @@
 
                     <PartText
                         alpha="255"
-                        height="50"
-                        width="100"
+                        height="70"
+                        width="150"
                         x="0"
-                        y="0">
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1658,7 +1807,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="alata"
-                                size="38"
+                                size="48"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1676,10 +1825,10 @@
                 <ListOption id="2">
                     <PartText
                         alpha="0"
-                        height="50"
-                        width="150"
+                        height="70"
+                        width="160"
                         x="0"
-                        y="0">
+                        y="-15">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1691,7 +1840,7 @@
                             <Font
                                 color="#ffffff"
                                 family="alata"
-                                size="42"
+                                size="53"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1707,10 +1856,10 @@
 
                     <PartText
                         alpha="255"
-                        height="50"
-                        width="150"
+                        height="70"
+                        width="160"
                         x="0"
-                        y="0">
+                        y="-15">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1722,7 +1871,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="alata"
-                                size="42"
+                                size="53"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1743,7 +1892,7 @@
 
         <Group
             name="hijri-date"
-            height="50"
+            height="70"
             width="200"
             x="250"
             y="170">
@@ -1754,10 +1903,10 @@
 
                     <PartText
                         alpha="0"
-                        height="50"
-                        width="150"
+                        height="70"
+                        width="200"
                         x="0"
-                        y="0">
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1770,7 +1919,7 @@
                             <Font
                                 color="#ffffff"
                                 family="alata"
-                                size="32"
+                                size="43"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1785,10 +1934,10 @@
 
                     <PartText
                         alpha="255"
-                        height="50"
-                        width="150"
+                        height="70"
+                        width="200"
                         x="0"
-                        y="0">
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1801,7 +1950,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="alata"
-                                size="32"
+                                size="43"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1819,10 +1968,10 @@
 
                     <PartText
                         alpha="0"
-                        height="50"
-                        width="150"
+                        height="70"
+                        width="200"
                         x="0"
-                        y="0">
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1835,7 +1984,7 @@
                             <Font
                                 color="#ffffff"
                                 family="alata"
-                                size="38"
+                                size="48"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1850,10 +1999,10 @@
 
                     <PartText
                         alpha="255"
-                        height="50"
-                        width="150"
+                        height="70"
+                        width="200"
                         x="0"
-                        y="0">
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1866,7 +2015,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="alata"
-                                size="38"
+                                size="48"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1884,10 +2033,10 @@
 
                     <PartText
                         alpha="0"
-                        height="50"
+                        height="70"
                         width="200"
                         x="0"
-                        y="0">
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1900,7 +2049,7 @@
                             <Font
                                 color="#ffffff"
                                 family="alata"
-                                size="42"
+                                size="53"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
@@ -1915,10 +2064,10 @@
 
                     <PartText
                         alpha="255"
-                        height="50"
+                        height="70"
                         width="200"
                         x="0"
-                        y="0">
+                        y="-10">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1931,7 +2080,7 @@
                             <Font
                                 color="[CONFIGURATION.foreground_color]"
                                 family="alata"
-                                size="42"
+                                size="53"
                                 slant="NORMAL"
                                 weight="NORMAL">
 
