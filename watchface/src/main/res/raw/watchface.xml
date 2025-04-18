@@ -1,21 +1,3 @@
-<!--
-  An example of using Complications in a watch face.
-
-  Demonstrates
-  - SHORT_TEXT
-  - MONOCHROMATIC_IMAGE
-  - SMALL_IMAGE
-  - RANGED_VALUE
-  - PHOTO_IMAGE
-  - LONG_TEXT
-
-  The other types are not demonstrated in this sample at this time.
-
-  For more guidance on using complications see:
-
-  https://developer.android.com/training/wearables/wff/complication/complication-slot
-  https://developer.android.com/training/wearables/wff/complication/complication
--->
 <WatchFace
     height="450"
     width="450">
@@ -842,7 +824,7 @@
                         alpha="0"
                         height="50"
                         width="80"
-                        x="-15"
+                        x="-25"
                         y="-15">
                         <Variant
                             mode="AMBIENT"
@@ -868,7 +850,7 @@
                         alpha="255"
                         height="50"
                         width="80"
-                        x="-15"
+                        x="-25"
                         y="-15">
 
                         <Variant
@@ -1689,7 +1671,7 @@
         <Group
             name="date"
             height="70"
-            width="160"
+            width="180"
             x="50"
             y="170">
 
@@ -1762,7 +1744,7 @@
                     <PartText
                         alpha="0"
                         height="70"
-                        width="150"
+                        width="160"
                         x="0"
                         y="-10">
                         <Variant
@@ -1793,7 +1775,7 @@
                     <PartText
                         alpha="255"
                         height="70"
-                        width="150"
+                        width="160"
                         x="0"
                         y="-10">
                         <Variant
@@ -1826,9 +1808,9 @@
                     <PartText
                         alpha="0"
                         height="70"
-                        width="160"
-                        x="0"
-                        y="-15">
+                        width="180"
+                        x="-30"
+                        y="-9">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1857,9 +1839,9 @@
                     <PartText
                         alpha="255"
                         height="70"
-                        width="160"
-                        x="0"
-                        y="-15">
+                        width="180"
+                        x="-30"
+                        y="-9">
                         <Variant
                             mode="AMBIENT"
                             target="alpha"
@@ -1893,7 +1875,7 @@
         <Group
             name="hijri-date"
             height="70"
-            width="200"
+            width="250"
             x="250"
             y="170">
 
@@ -2034,8 +2016,8 @@
                     <PartText
                         alpha="0"
                         height="70"
-                        width="200"
-                        x="0"
+                        width="220"
+                        x="-25"
                         y="-10">
                         <Variant
                             mode="AMBIENT"
@@ -2065,8 +2047,8 @@
                     <PartText
                         alpha="255"
                         height="70"
-                        width="200"
-                        x="0"
+                        width="220"
+                        x="-25"
                         y="-10">
                         <Variant
                             mode="AMBIENT"
@@ -2956,27 +2938,28 @@
                 <Group
                     name="prayer-left-title"
                     height="50"
-                    width="150"
+                    width="200"
                     x="85"
                     y="330">
 
                     <ListConfiguration id="font_size">
+
                         <ListOption id="0">
                             <PartText
                                 alpha="0"
                                 height="50"
                                 width="150"
-                                x="0"
+                                x="-20"
                                 y="0">
                                 <Variant
                                     mode="AMBIENT"
                                     target="alpha"
                                     value="255" />
-                                <Text align="LEFT">
+                                <Text align="CENTER">
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="24"
+                                        size="28"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Upper>
@@ -2992,17 +2975,17 @@
                                 alpha="255"
                                 height="50"
                                 width="150"
-                                x="0"
+                                x="-20"
                                 y="0">
                                 <Variant
                                     mode="AMBIENT"
                                     target="alpha"
                                     value="0" />
-                                <Text align="LEFT">
+                                <Text align="CENTER">
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="24"
+                                        size="28"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Upper>
@@ -3019,18 +3002,18 @@
                             <PartText
                                 alpha="0"
                                 height="50"
-                                width="150"
-                                x="-20"
+                                width="180"
+                                x="-32"
                                 y="0">
                                 <Variant
                                     mode="AMBIENT"
                                     target="alpha"
                                     value="255" />
-                                <Text align="LEFT">
+                                <Text align="CENTER">
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="28"
+                                        size="32"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Upper>
@@ -3045,18 +3028,18 @@
                             <PartText
                                 alpha="255"
                                 height="50"
-                                width="150"
-                                x="-20"
+                                width="180"
+                                x="-32"
                                 y="0">
                                 <Variant
                                     mode="AMBIENT"
                                     target="alpha"
                                     value="0" />
-                                <Text align="LEFT">
+                                <Text align="CENTER">
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="28"
+                                        size="32"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Upper>
@@ -3068,12 +3051,11 @@
                                 </Text>
                             </PartText>
                         </ListOption>
-
                         <ListOption id="2">
                             <PartText
                                 alpha="0"
-                                height="50"
-                                width="180"
+                                height="53"
+                                width="200"
                                 x="-32"
                                 y="0">
                                 <Variant
@@ -3084,7 +3066,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="32"
+                                        size="37"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Upper>
@@ -3098,8 +3080,8 @@
 
                             <PartText
                                 alpha="255"
-                                height="50"
-                                width="180"
+                                height="53"
+                                width="200"
                                 x="-32"
                                 y="0">
                                 <Variant
@@ -3110,7 +3092,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="32"
+                                        size="37"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Upper>
@@ -3133,6 +3115,7 @@
                     y="358">
 
                     <ListConfiguration id="font_size">
+
                         <ListOption id="0">
 
                             <PartText
@@ -3149,7 +3132,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="24"
+                                        size="30"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3173,7 +3156,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="24"
+                                        size="30"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3183,7 +3166,6 @@
                                 </Text>
                             </PartText>
                         </ListOption>
-
                         <ListOption id="1">
 
                             <PartText
@@ -3191,7 +3173,7 @@
                                 height="50"
                                 width="100"
                                 x="0"
-                                y="0">
+                                y="5">
                                 <Variant
                                     mode="AMBIENT"
                                     target="alpha"
@@ -3200,7 +3182,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="30"
+                                        size="34"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3215,7 +3197,7 @@
                                 height="50"
                                 width="100"
                                 x="0"
-                                y="0">
+                                y="5">
                                 <Variant
                                     mode="AMBIENT"
                                     target="alpha"
@@ -3224,7 +3206,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="30"
+                                        size="34"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3234,7 +3216,6 @@
                                 </Text>
                             </PartText>
                         </ListOption>
-
                         <ListOption id="2">
 
                             <PartText
@@ -3251,7 +3232,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="34"
+                                        size="39"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3275,7 +3256,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="34"
+                                        size="39"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3375,11 +3356,10 @@
 
                 <Group
                     name="prayer-title"
-                    height="50"
+                    height="53"
                     width="200"
                     x="195"
                     y="330">
-
 
                     <ListConfiguration id="font_size">
                         <ListOption id="0">
@@ -3397,7 +3377,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="24"
+                                        size="28"
                                         slant="NORMAL"
                                         weight="BOLD">
                                         <Upper>
@@ -3423,7 +3403,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="24"
+                                        size="28"
                                         slant="NORMAL"
                                         weight="BOLD">
                                         <Upper>
@@ -3451,7 +3431,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="28"
+                                        size="32"
                                         slant="NORMAL"
                                         weight="BOLD">
                                         <Upper>
@@ -3477,7 +3457,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="28"
+                                        size="32"
                                         slant="NORMAL"
                                         weight="BOLD">
                                         <Upper>
@@ -3493,7 +3473,7 @@
                         <ListOption id="2">
                             <PartText
                                 alpha="0"
-                                height="50"
+                                height="53"
                                 width="200"
                                 x="0"
                                 y="0">
@@ -3505,7 +3485,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="32"
+                                        size="37"
                                         slant="NORMAL"
                                         weight="BOLD">
                                         <Upper>
@@ -3519,7 +3499,7 @@
 
                             <PartText
                                 alpha="255"
-                                height="50"
+                                height="53"
                                 width="200"
                                 x="0"
                                 y="0">
@@ -3531,7 +3511,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="32"
+                                        size="37"
                                         slant="NORMAL"
                                         weight="BOLD">
                                         <Upper>
@@ -3543,8 +3523,6 @@
                                 </Text>
                             </PartText>
                         </ListOption>
-
-
                     </ListConfiguration>
                 </Group>
 
@@ -3571,7 +3549,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="24"
+                                        size="30"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3595,7 +3573,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="24"
+                                        size="30"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3612,7 +3590,7 @@
                                 height="50"
                                 width="100"
                                 x="0"
-                                y="0">
+                                y="5">
                                 <Variant
                                     mode="AMBIENT"
                                     target="alpha"
@@ -3621,7 +3599,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="30"
+                                        size="34"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3636,7 +3614,7 @@
                                 height="50"
                                 width="100"
                                 x="0"
-                                y="0">
+                                y="5">
                                 <Variant
                                     mode="AMBIENT"
                                     target="alpha"
@@ -3645,7 +3623,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="30"
+                                        size="34"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3672,7 +3650,7 @@
                                     <Font
                                         color="#ffffff"
                                         family="cairo"
-                                        size="34"
+                                        size="39"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s
@@ -3696,7 +3674,7 @@
                                     <Font
                                         color="[CONFIGURATION.foreground_color_bottom]"
                                         family="cairo"
-                                        size="34"
+                                        size="39"
                                         slant="NORMAL"
                                         weight="NORMAL">
                                         <Template>%s

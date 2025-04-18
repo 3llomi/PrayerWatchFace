@@ -4,7 +4,7 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
     <application
-        android:label="PWF WFF"
+        android:label="Prayer Watch Face V2"
         android:hasCode="false">
         <property
             android:name="com.google.wear.watchface.format.version"
