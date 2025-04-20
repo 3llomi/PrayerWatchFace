@@ -1,5 +1,8 @@
 package com.devlomi.prayerwatchface.complications
 
+import android.app.PendingIntent
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.util.Log
 import androidx.wear.watchface.complications.data.ComplicationData
 import androidx.wear.watchface.complications.data.ComplicationType
@@ -9,11 +12,14 @@ import androidx.wear.watchface.complications.datasource.ComplicationRequest
 import androidx.wear.watchface.complications.datasource.SuspendingComplicationDataSourceService
 import com.batoulapps.adhan.Prayer
 import com.devlomi.prayerwatchface.PrayerApp
+import com.devlomi.prayerwatchface.receivers.ComplicationUpdateReceiver
+import com.devlomi.prayerwatchface.ui.prayer_times.PrayerTimesActivity
 import com.devlomi.shared.common.previousPrayer
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.usecase.GetNextPrayerUseCase
 import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
+import kotlinx.coroutines.flow.first
 import java.util.Calendar
 import java.util.Date
 
@@ -40,7 +46,6 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
             contentDescription = PlainComplicationText.Builder(text = "Next Prayer Time Progress")
                 .build()
         ).setText(PlainComplicationText.Builder("").build())
-            .setTapAction(null)
             .build()
     }
 
@@ -67,15 +72,21 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
         val previousPrayer =
             if (noNextPrayerToday) Prayer.ISHA else prayerTimes.previousPrayer()
 
-        Log.d("3llomi","nextPrayer Real ${nextPrayerWithPrayerTimes.prayerTimes.nextPrayer()}")
+        Log.d("3llomi", "nextPrayer Real ${nextPrayerWithPrayerTimes.prayerTimes.nextPrayer()}")
         val previousPrayerTime =
             if ((previousPrayer == Prayer.NONE || previousPrayer == Prayer.ISHA) &&
                 //NOTE: USE THE ACTUAL PRAYER TIMES THAT RETURNS NONE, SINCE THE OTHER ONE RETURNS NEXT PRAYER (NOT RETURNS NONE)
-                nextPrayerWithPrayerTimes.prayerTimes.nextPrayer() == Prayer.FAJR) {
-                Log.d("3llomi","previous prayer is NONE - getting previous day")
+                nextPrayerWithPrayerTimes.prayerTimes.nextPrayer() == Prayer.FAJR
+            ) {
+                Log.d("3llomi", "previous prayer is NONE - getting previous day")
                 getPrayerTimesWithConfigUseCase.getIshaaTimePreviousDay()
             } else {
-                Log.d("3llomi","previous prayer is not NONE ${previousPrayer.name} - getting previous time ${prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time}")
+                Log.d(
+                    "3llomi",
+                    "previous prayer is not NONE ${previousPrayer.name} - getting previous time ${
+                        prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time
+                    }"
+                )
                 prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time
             }
 
@@ -96,6 +107,8 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
         val diff =
             ((System.currentTimeMillis() - previousPrayerTime) / (nextPrayerTime - previousPrayerTime)) * 360
         Log.d("3llomi", "dif is $diff")
+        val pendingIntent = getTapPendingIntent()
+
         return when (request.complicationType) {
             //TODO THIS IS CRASHING min must be lower than or equal to max
             ComplicationType.RANGED_VALUE -> {
@@ -105,7 +118,8 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
                     value = now.time.toFloat(),
                     contentDescription = PlainComplicationText.Builder(text = "Ranged Value")
                         .build()
-                ).setText(PlainComplicationText.Builder("").build()).build()
+                ).setText(PlainComplicationText.Builder("").build()).setTapAction(pendingIntent)
+                    .build()
             }
 
             else -> {
@@ -114,6 +128,27 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
                 }
                 null
             }
+        }
+    }
+
+
+    private suspend fun getTapPendingIntent(): PendingIntent {
+        if (settingsDataStore.openPrayerTimesOnClick.first()) {
+            val intent =
+                Intent(this, PrayerTimesActivity::class.java)
+            val pendingIntent = PendingIntent.getActivity(
+                this, System.currentTimeMillis().toInt(), intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE,
+            )
+            return pendingIntent
+        } else {
+            val intent =
+                Intent(this, ComplicationUpdateReceiver::class.java)
+            val pendingIntent = PendingIntent.getBroadcast(
+                this, System.currentTimeMillis().toInt(), intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE,
+            )
+            return pendingIntent
         }
     }
 

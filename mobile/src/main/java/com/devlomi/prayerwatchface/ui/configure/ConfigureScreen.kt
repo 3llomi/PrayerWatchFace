@@ -265,43 +265,7 @@ fun ConfigureScreen(
                             }
                         })
                 }
-                item {
-                    ConfigureItemCard(stringResource(R.string.colors),
-                        null, com.devlomi.shared.R.drawable.ic_color, onClick = {
-                            navController.navigate(route = Screen.Colors.route)
-                        })
-                }
-                item {
-                    ConfigureItemCardToggle(
-                        title = stringResource(R.string.twenty_four_hours),
-                        icon = R.drawable.ic_time,
-                        checked = state.twentyFourHours,
-                        onClick = {
-                            viewModel.set24Hours(!state.twentyFourHours)
-                        },
-                        onCheckedChange = {
-                            viewModel.set24Hours(it)
-                        }
-                    )
-                }
-                item {
-                    ConfigureItemCardOffset(
-                        title = stringResource(R.string.hijri_offset),
-                        icon = R.drawable.ic_date,
-                        subtitle = viewModel.hijriDate.value,
-                        offset = state.hijriOffset,
-                        isEditingEnabled = true,
-                        onValueChange = {
-                            viewModel.onHijriOffsetChangeText(it)
-                        },
-                        onMinusClick = {
-                            viewModel.decrementHijriOffset()
-                        },
-                        onPlusClick = {
-                            viewModel.incrementHijriOffset()
-                        }
-                    )
-                }
+
 
                 item {
                     ConfigureItemCard(stringResource(R.string.prayer_times),
@@ -310,22 +274,6 @@ fun ConfigureScreen(
                         })
                 }
 
-                item {
-                    ConfigureItemCardOffset(
-                        title = stringResource(R.string.daylight_saving_time),
-                        icon = R.drawable.ic_daylight,
-                        subtitle = stringResource(R.string.daylight_type),
-                        offset = state.daylightSavingOffset,
-                        isEditingEnabled = false,
-                        onValueChange = {},
-                        onMinusClick = {
-                            viewModel.decrementDaylightOffset()
-                        },
-                        onPlusClick = {
-                            viewModel.incrementDaylightOffset()
-                        }
-                    )
-                }
 
                 item {
                     ElapsedTimeCard(
@@ -359,33 +307,7 @@ fun ConfigureScreen(
                             viewModel.onShowPrayerTimesSwitchChange(it)
                         },
                         onClick = {}
-                    ) {
-                        if (state.showPrayerTimesOnClick) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                RadioButton(
-                                    selected = state.tapType == SimpleTapType.SINGLE_TAP,
-                                    onClick = {
-                                        viewModel.onTapTypeChange(SimpleTapType.SINGLE_TAP)
-                                    })
-                                Text(stringResource(R.string.single_click))
-                            }
-
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                RadioButton(
-                                    selected = state.tapType == SimpleTapType.DOUBLE_TAP,
-                                    onClick = {
-                                        viewModel.onTapTypeChange(SimpleTapType.DOUBLE_TAP)
-                                    })
-                                Text(stringResource(R.string.double_click))
-                            }
-                            Text(
-                                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-                                text = stringResource(R.string.recommended_when_having_complications_enabled),
-                                color = Color.Gray,
-                                fontSize = 12.sp
-                            )
-                        }
-                    }
+                    )
                 }
 
                 item {
@@ -412,163 +334,6 @@ fun ConfigureScreen(
                         },
                         onClick = {}
                     )
-                }
-
-                item {
-                    Card(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                            .wrapContentHeight(),
-                        shape = RoundedCornerShape(2.dp),
-                        elevation = 4.dp,
-
-                        ) {
-                        Column(
-                            modifier = Modifier.padding(
-                                top = 12.dp,
-                                bottom = 12.dp,
-                                start = 4.dp,
-                                end = 4.dp
-                            )
-                                .defaultMinSize(minHeight = 40.dp),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Row() {
-
-                                Icon(
-                                    Icons.Default.TextFields,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(30.dp)
-                                        .align(Alignment.CenterVertically)
-                                        .padding(start = 4.dp),
-                                    tint = colorResource(R.color.primary_variant)
-                                )
-                                Spacer(modifier = Modifier.size(8.dp))
-                                Text(text = stringResource(R.string.font_size))
-
-                            }
-
-                            Column(
-                                modifier = Modifier.fillMaxWidth()
-                                    .padding(start = 16.dp, end = 16.dp)
-                            ) {
-                                val sliderValue = viewModel.fontSizeSliderState.value
-                                Slider(
-                                    value = sliderValue,
-                                    onValueChange = {
-                                        viewModel.fontSizeSliderChanged(it)
-                                    },
-                                    colors = SliderDefaults.colors(
-                                        thumbColor = colorResource(R.color.primary_variant),
-                                        activeTrackColor = colorResource(R.color.primary_color),
-                                        inactiveTrackColor = Color.Gray,
-                                    ),
-                                    steps = 2,
-                                    valueRange = 0f..100f
-                                )
-                            }
-
-                        }
-                    }
-                }
-
-                item {
-                    Card(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
-                            .wrapContentHeight(),
-                        shape = RoundedCornerShape(2.dp),
-                        elevation = 4.dp,
-                        onClick = {
-                            navController.navigate(route = Screen.Wallpaper.route)
-                        }
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(
-                                top = 12.dp,
-                                bottom = 12.dp,
-                                start = 4.dp,
-                                end = 4.dp
-                            )
-                                .defaultMinSize(minHeight = 40.dp),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            Row() {
-                                Icon(
-                                    Icons.Default.Wallpaper,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(30.dp)
-                                        .align(Alignment.CenterVertically)
-                                        .padding(start = 4.dp),
-                                    tint = colorResource(R.color.primary_variant)
-                                )
-                                Spacer(modifier = Modifier.size(8.dp))
-                                Text(text = stringResource(R.string.wallpaper))
-                            }
-                        }
-                    }
-                }
-                item {
-                    ConfigureItemCardToggle(
-                        title = stringResource(R.string.remove_bottom_part),
-                        subtitle = stringResource(R.string.remove_bottom_part_background),
-                        icon = R.drawable.ic_wallpaper,
-                        onClick = {},
-                        checked = state.removeBottomPart,
-                        onCheckedChange = { viewModel.onBottomPartRemoveChange(it) }
-                    )
-                }
-
-                item {
-                    ConfigureItemCardToggle(
-                        title = stringResource(R.string.progress),
-                        subtitle = stringResource(R.string.progress_info),
-                        icon = R.drawable.ic_progress,
-                        onClick = {},
-                        checked = state.progressEnabled,
-                        onCheckedChange = { viewModel.onProgressEnabledChange(it) }
-                    )
-                }
-
-                item {
-                    ConfigureItemCardToggle(
-                        title = stringResource(R.string.complications),
-                        subtitle = stringResource(R.string.show_extra_customizable_info),
-                        icon = R.drawable.ic_complications,
-                        onClick = {},
-                        checked = state.complicationsEnabled,
-                        onCheckedChange = { viewModel.onComplicationsEnabledChange(it) }
-                    ) {
-                        if (state.complicationsEnabled) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = stringResource(R.string.left_complication),
-                                    modifier = Modifier.weight(1f)
-                                )
-
-                                Switch(
-                                    checked = state.leftComplicationEnabled,
-                                    onCheckedChange = { viewModel.onLeftComplicationEnabledChange(it) }
-                                )
-                            }
-
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = stringResource(R.string.right_complication),
-                                    modifier = Modifier.weight(1f)
-                                )
-                                Switch(
-                                    checked = state.rightComplicationEnabled,
-                                    onCheckedChange = {
-                                        viewModel.onRightComplicationEnabledChange(
-                                            it
-                                        )
-                                    }
-                                )
-                            }
-                        }
-
-                    }
                 }
 
                 item {
@@ -794,11 +559,19 @@ fun WatchPreviewComposable(
     ) {
         //used to force update the preview
         viewModel.updatePreviewState.value
-        PreviewWatchFaceComposable(
-            modifier = Modifier.align(Alignment.Center).size(200.dp)
-                .background(color = Color.White),
-            watchFacePainter
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text(modifier = Modifier.padding(vertical = 8.dp), text = stringResource(R.string.sample_preview))
+            Box {
+                PreviewWatchFaceComposable(
+                    modifier = Modifier.align(Alignment.Center).size(200.dp)
+                        .background(color = Color.White),
+                    watchFacePainter
+                )
+            }
+        }
     }
 
 }

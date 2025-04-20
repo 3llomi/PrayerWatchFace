@@ -21,18 +21,21 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Starting">
+        <receiver
+            android:name=".receivers.ComplicationUpdateReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
         <activity
             android:name=".ui.WatchFaceComplicationsEditorActivity"
             android:exported="true"
             android:taskAffinity=".main">
-
             <intent-filter>
                 <action android:name="androidx.wear.watchface.editor.action.WATCH_FACE_EDITOR" />
 
                 <category android:name="com.google.android.wearable.watchface.category.WEARABLE_CONFIGURATION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
         </activity>
 
         <receiver
@@ -88,18 +91,16 @@
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview_circular"
                 android:resource="@drawable/preview" />
-
             <meta-data
                 android:name="com.google.android.wearable.watchface.wearableConfigurationAction"
                 android:value="androidx.wear.watchface.editor.action.WATCH_FACE_EDITOR" />
 
-
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
+
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
             </intent-filter>
         </service>
-
         <service
             android:name=".watchface.analog.AnalogWatchFaceService"
             android:exported="true"
@@ -114,7 +115,6 @@
             <meta-data
                 android:name="com.google.android.wearable.watchface.preview_circular"
                 android:resource="@drawable/preview_analog" />
-
             <meta-data
                 android:name="com.google.android.wearable.watchface.wearableConfigurationAction"
                 android:value="androidx.wear.watchface.editor.action.WATCH_FACE_EDITOR" />
@@ -124,12 +124,9 @@
 
                 <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
             </intent-filter>
-
         </service>
-
-
         <service
-            android:name="com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationService"
+            android:name=".complications.NextPrayerTimeComplicationService"
             android:exported="true"
             android:label="Next Prayer Time"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
@@ -140,16 +137,12 @@
             <meta-data
                 android:name="android.support.wearable.complications.SUPPORTED_TYPES"
                 android:value="SHORT_TEXT" />
-
-
-
             <meta-data
                 android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
                 android:value="0" />
         </service>
-
         <service
-            android:name="com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftComplicationService"
+            android:name=".complications.NextPrayerTimeLeftComplicationService"
             android:exported="true"
             android:label="Time Left for Next Prayer"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
@@ -160,17 +153,12 @@
             <meta-data
                 android:name="android.support.wearable.complications.SUPPORTED_TYPES"
                 android:value="SHORT_TEXT" />
-
-
-
             <meta-data
                 android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
                 android:value="0" />
         </service>
-
-
         <service
-            android:name="com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftProgressComplicationService"
+            android:name=".complications.NextPrayerTimeLeftProgressComplicationService"
             android:exported="true"
             android:label="Progress for Next Prayer"
             android:permission="com.google.android.wearable.permission.BIND_COMPLICATION_PROVIDER">
@@ -181,14 +169,10 @@
             <meta-data
                 android:name="android.support.wearable.complications.SUPPORTED_TYPES"
                 android:value="RANGED_VALUE" />
-
-
-
             <meta-data
                 android:name="android.support.wearable.complications.UPDATE_PERIOD_SECONDS"
                 android:value="0" />
         </service>
-
         <service
             android:name=".DataListenerService"
             android:enabled="true"

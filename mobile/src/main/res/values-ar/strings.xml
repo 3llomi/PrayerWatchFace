@@ -22,9 +22,9 @@
     <string name="show_prayer_times_on_click_desc">إظهار أوقات الصلاة عند الضغط على الساعة</string>
     <string name="locale">اللغة/المنطقة</string>
     <string name="arabic">العربية</string>
-    <string name="english_default">الإنجليزية (الإفتراضي)</string>
+    <string name="english">الإنجليزية</string>
     <string name="turkish">التركية</string>
-    <string name="locale_device">لغة/منطقة الجهاز</string>
+    <string name="locale_device">(الإفتراضي) لغة/منطقة الجهاز</string>
     <string name="notifications">الإشعارات</string>
     <string name="show_notifications_desc">إظهار إشعار عندما يحين وقت الصلاة</string>
     <string name="enable_notifications_notice">يرجى فتح التطبيق على الساعة ومنح الصلاحيات المطلوبة إذا تم طلبها.\\nبعض الساعات تحتوي على تطبيق إدارة خاص بالساعة,يجب عليك تفعيل الإشعارات من هذا التطبيق أيضاً</string>
@@ -50,4 +50,6 @@
     <string name="double_click">ضغطتين</string>
     <string name="recommended_when_having_complications_enabled">مستحسن عند تفعيل المعلومات الإضافية</string>
     <string name="enable_complications_notice">يمكنك تخصيص المعلومات الإضافية عبر الضغط المطول على الواجهة ثم الضغط على زر التعديل</string>
+    <string name="sample_preview">معاينة تقريبية</string>
+
 </resources>

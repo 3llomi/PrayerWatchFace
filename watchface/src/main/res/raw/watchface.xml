@@ -362,7 +362,7 @@
         </ListConfiguration>
 
         <ListConfiguration
-            defaultValue="0"
+            defaultValue="1"
             displayName="font_size"
             id="font_size"
             screenReaderText="Font Size">
@@ -2918,11 +2918,11 @@
 
 
         <ComplicationSlot
-            height="450"
+            height="55"
             isCustomizable="false"
             slotId="4"
             supportedTypes="SHORT_TEXT"
-            width="450"
+            width="200"
             x="0"
             y="0">
 
@@ -3337,11 +3337,11 @@
 
 
         <ComplicationSlot
-            height="450"
+            height="55"
             isCustomizable="false"
             slotId="5"
             supportedTypes="SHORT_TEXT"
-            width="450"
+            width="200"
             x="0"
             y="0">
 

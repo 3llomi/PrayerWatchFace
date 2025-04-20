@@ -9,7 +9,7 @@ object LocaleDataSource {
     fun getItems(context: Context): List<LocaleItem> {
         return arrayListOf<LocaleItem>(
             LocaleItem(LocaleType.ARABIC, context.getString(R.string.arabic)),
-            LocaleItem(LocaleType.ENGLISH, context.getString(R.string.english_default)),
+            LocaleItem(LocaleType.ENGLISH, context.getString(R.string.english)),
             LocaleItem(LocaleType.TURKISH, context.getString(R.string.turkish)),
             LocaleItem(LocaleType.Device, context.getString(R.string.locale_device)),
         )

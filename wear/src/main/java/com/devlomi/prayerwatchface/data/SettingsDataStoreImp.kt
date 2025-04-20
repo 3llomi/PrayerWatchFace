@@ -283,7 +283,7 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     }
 
     override val locale: Flow<Int> = context.dataStore.data.map { preferences ->
-        preferences[_locale] ?: LocaleType.ENGLISH.id
+        preferences[_locale] ?: LocaleType.Device.id
     }
 
     override suspend fun setLocale(type: Int) {

@@ -53,6 +53,7 @@ class ConfigureWatchFaceViewModel(
     private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase,
     private val getPrayerTimesWithConfigUseCase: GetPrayerTimesWithConfigUseCase,
 ) : ViewModel() {
+    //TODO REMOVE UNUSED METHODS AFTER REMOVING MOBIle UI CUSTOMIZATIONS
     companion object {
 
         val Factory = viewModelFactory {

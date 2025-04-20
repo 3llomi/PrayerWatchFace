@@ -21,9 +21,9 @@
     <string name="show_prayer_times_on_click_desc">Saat yüzüne tıklandığında tüm namaz vakitlerini göster.</string>
     <string name="locale">Dil</string>
     <string name="arabic">Arapça</string>
-    <string name="english_default">İngilizce (Varsayılan)</string>
+    <string name="english">İngilizce</string>
     <string name="turkish">Türkçe</string>
-    <string name="locale_device">Cihazın Dili</string>
+    <string name="locale_device">Cihazın Dili (Varsayılan)</string>
     <string name="notifications">Bildirimler\n</string>
     <string name="show_notifications_desc">Namaz vakti geldiğinde bildirimleri göster.</string>
     <string name="enable_notifications_notice">Lütfen uygulamayı saat cihazınızda açtığınızdan ve Bildirim İzinlerini onayladığınızdan emin olun.\nBazı saatlerde, Bildirimleri etkinleştirmek için Saat Yöneticisi uygulamasını kullanmanız gerekebilir.</string>
@@ -49,5 +49,5 @@
     <string name="double_click">Çift Tıklama</string>
     <string name="recommended_when_having_complications_enabled">Bileşenler etkinleştirildiğinde önerilir</string>
     <string name="enable_complications_notice">Bileşenleri yapılandırmak için saat kadranına uzun tıklayıp düzenle düğmesine tıklayabilirsiniz</string>
-
+    <string name="sample_preview">Örnek Önizleme</string>
 </resources>
