@@ -6,4 +6,6 @@
     <string name="time_for_prayer">It\'s time for %s</string>
     <string name="configure_note_dialog_msg">It\'s recommended to download the App on your phone for more customization options</string>
     <string name="ok">OK</string>
+    <string name="configure">Configure</string>
+    <string name="prayer_times">Prayer Times</string>
 </resources>

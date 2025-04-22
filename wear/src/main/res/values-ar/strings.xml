@@ -5,5 +5,6 @@
     <string name="time_for_prayer">حان موعد صلاة %s</string>
     <string name="configure_note_dialog_msg">من الأفضل أن يتم تحميل التطبيق على هاتفك للحصول على المزيد من التخصيص</string>
     <string name="ok">حسناً</string>
-
+    <string name="configure">إعداد</string>
+    <string name="prayer_times">أوقات الصلاة</string>
 </resources>

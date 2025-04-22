@@ -13,6 +13,7 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -32,7 +33,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -104,6 +107,11 @@ fun ConfigureScreen(
         confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
+    val installAppBottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        skipHalfExpanded = true
+    )
 
     val currentCalculationMethod = state.calculationMethod
     val currentMadhabMethod = state.madhab
@@ -113,11 +121,13 @@ fun ConfigureScreen(
                 || backgroundColorSheetState.isVisible
                 || madhabMethodsSheetState.isVisible
                 || localesSheetState.isVisible
+                || installAppBottomSheetState.isVisible
     ) {
         coroutineScope.launch { calculationMethodsSheetState.hide() }
         coroutineScope.launch { madhabMethodsSheetState.hide() }
         coroutineScope.launch { backgroundColorSheetState.hide() }
         coroutineScope.launch { localesSheetState.hide() }
+        coroutineScope.launch { installAppBottomSheetState.hide() }
     }
 
 
@@ -188,8 +198,12 @@ fun ConfigureScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             Button(
                 onClick = {
-                    viewModel.sendAppToWatch()
+//                    viewModel.sendAppToWatch()
+                    coroutineScope.launch {
+                        installAppBottomSheetState.show()
+                    }
                 },
+
                 modifier = Modifier.fillMaxWidth()
                     .padding(top = 8.dp, start = 16.dp, end = 16.dp),
                 shape = RoundedCornerShape(16.dp),
@@ -426,6 +440,14 @@ fun ConfigureScreen(
             modifier = Modifier.fillMaxSize()
         ) {}
 
+        ModalBottomSheetLayout(
+            sheetState = installAppBottomSheetState,
+            sheetContent = {
+                PickAppToInstallBottomSheet()
+            },
+            modifier = Modifier.fillMaxSize()
+        ) {}
+
 
         if (viewModel.showDialogWhenEnablingNotifications.value) {
             AlertDialog(
@@ -563,7 +585,10 @@ fun WatchPreviewComposable(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            Text(modifier = Modifier.padding(vertical = 8.dp), text = stringResource(R.string.sample_preview))
+            Text(
+                modifier = Modifier.padding(vertical = 8.dp),
+                text = stringResource(R.string.sample_preview)
+            )
             Box {
                 PreviewWatchFaceComposable(
                     modifier = Modifier.align(Alignment.Center).size(200.dp)
@@ -690,6 +715,50 @@ fun LocaleBottomSheet(
             ) {
                 RadioButton(selected = item.type == current, onClick = { onClick(item.type) })
                 Text(text = item.text)
+            }
+        }
+    }
+}
+
+@Composable
+fun PickAppToInstallBottomSheet() {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Column {
+            Text(
+                modifier = Modifier.padding(16.dp).align(Alignment.CenterHorizontally),
+                text = "Pick an App",
+                fontSize = 20.sp,
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(top = 8.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)
+            ) {
+                Card {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+                        Text("Prayer Watch Face", fontWeight = FontWeight.Bold)
+                        Image(
+                            modifier = Modifier.padding(top = 4.dp),
+                            painter = painterResource(R.drawable.todo_delete),
+                            contentDescription = null
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.weight(1f))
+
+
+                Card {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Prayer Wear", fontWeight = FontWeight.Bold)
+                        Text("To display prayer times on the watch face, please ensure this app is installed. Otherwise, the prayer times will not appear.", modifier = Modifier.padding(4.dp))
+                        Image(
+                            modifier = Modifier.padding(top = 4.dp),
+                            painter = painterResource(R.drawable.todo_delete),
+                            contentDescription = null
+                        )
+                    }
+                }
             }
         }
     }

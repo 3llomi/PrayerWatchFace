@@ -1,6 +1,7 @@
 package com.devlomi.prayerwatchface.complications
 
 import android.content.ComponentName
+import android.text.format.DateFormat
 import android.util.Log
 import androidx.wear.watchface.complications.data.ComplicationData
 import androidx.wear.watchface.complications.data.ComplicationType
@@ -39,6 +40,10 @@ class NextPrayerTimeComplicationService : SuspendingComplicationDataSourceServic
         GetNextPrayerUseCase(getPrayerTimesWithConfigUseCase)
     }
 
+    private val tapPendingIntent:TapPendingIntent by lazy {
+        TapPendingIntent(settingsDataStore)
+    }
+
     override fun onComplicationActivated(complicationInstanceId: Int, type: ComplicationType) {
         super.onComplicationActivated(complicationInstanceId, type)
     }
@@ -70,28 +75,11 @@ class NextPrayerTimeComplicationService : SuspendingComplicationDataSourceServic
             getPrayerNameByLocaleUseCase.getPrayerNameByLocale(nextPrayer, locale)
 
         val timeForPrayer = prayerTimes.timeForPrayer(nextPrayer)
-        val isTwentyFourHours = settingsDataStore.is24Hours.firstOrNull() ?: false
+        val isTwentyFourHours = DateFormat.is24HourFormat(this)
         val timeFormat =
             java.text.SimpleDateFormat(if (isTwentyFourHours) "HH:mm" else "hh:mm", Locale.US)
         val time = timeFormat.format(timeForPrayer)
-
-        Log.d(TAG, "onComplicationRequest() id: ${request.complicationInstanceId}")
-        // Create Tap Action so that the user can trigger an update by tapping the complication.
-        val thisDataSource = ComponentName(this, javaClass)
-        // We pass the complication id, so we can only update the specific complication tapped.
-//        val complicationPendingIntent =
-//            ComplicationTapBroadcastReceiver.getToggleIntent(
-//                this,
-//                thisDataSource,
-//                request.complicationInstanceId
-//            )
-
-        // Retrieves your data, in this case, we grab an incrementing number from Datastore.
-//        val number: Int = applicationContext.dataStore.data
-//            .map { preferences ->
-//                preferences[TAP_COUNTER_PREF_KEY] ?: 0
-//            }
-//            .first()
+        val pendingIntent = tapPendingIntent.getTapPendingIntent(this)
 
 
         return when (request.complicationType) {
@@ -104,7 +92,7 @@ class NextPrayerTimeComplicationService : SuspendingComplicationDataSourceServic
             ).setTitle(
                 PlainComplicationText.Builder(text = prayerName)
                     .build()
-            ).build()
+            ).setTapAction(pendingIntent).build()
 
             else -> null
         }

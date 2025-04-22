@@ -33,6 +33,9 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
     private val getNextPrayerUseCase by lazy {
         GetNextPrayerUseCase(getPrayerTimesWithConfigUseCase)
     }
+    private val tapPendingIntent:TapPendingIntent by lazy {
+        TapPendingIntent(settingsDataStore)
+    }
 
     override fun onComplicationActivated(complicationInstanceId: Int, type: ComplicationType) {
         super.onComplicationActivated(complicationInstanceId, type)
@@ -107,7 +110,8 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
         val diff =
             ((System.currentTimeMillis() - previousPrayerTime) / (nextPrayerTime - previousPrayerTime)) * 360
         Log.d("3llomi", "dif is $diff")
-        val pendingIntent = getTapPendingIntent()
+        val pendingIntent = tapPendingIntent.getTapPendingIntent(this)
+
 
         return when (request.complicationType) {
             //TODO THIS IS CRASHING min must be lower than or equal to max
@@ -132,25 +136,6 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
     }
 
 
-    private suspend fun getTapPendingIntent(): PendingIntent {
-        if (settingsDataStore.openPrayerTimesOnClick.first()) {
-            val intent =
-                Intent(this, PrayerTimesActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(
-                this, System.currentTimeMillis().toInt(), intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE,
-            )
-            return pendingIntent
-        } else {
-            val intent =
-                Intent(this, ComplicationUpdateReceiver::class.java)
-            val pendingIntent = PendingIntent.getBroadcast(
-                this, System.currentTimeMillis().toInt(), intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE,
-            )
-            return pendingIntent
-        }
-    }
 
     /*
      * Called when the complication has been deactivated.

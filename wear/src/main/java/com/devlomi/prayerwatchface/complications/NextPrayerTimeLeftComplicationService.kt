@@ -35,17 +35,16 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
     private val getPrayerTimesWithConfigUseCase by lazy {
         GetPrayerTimesWithConfigUseCase(settingsDataStore)
     }
-    private val getPrayerNameByLocaleUseCase by lazy {
-        GetPrayerNameByLocaleUseCase(this)
-    }
 
     private val getNextPrayerUseCase by lazy {
         GetNextPrayerUseCase(getPrayerTimesWithConfigUseCase)
     }
 
-    override fun onComplicationActivated(complicationInstanceId: Int, type: ComplicationType) {
-        super.onComplicationActivated(complicationInstanceId, type)
+    private val tapPendingIntent:TapPendingIntent by lazy {
+        TapPendingIntent(settingsDataStore)
     }
+
+
 
     override fun getPreviewData(type: ComplicationType): ComplicationData {
         return ShortTextComplicationData.Builder(
@@ -73,22 +72,6 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         val timeForPrayer = prayerTimes.timeForPrayer(nextPrayer)
 
         Log.d(TAG, "onComplicationRequest() id: ${request.complicationInstanceId}")
-        // Create Tap Action so that the user can trigger an update by tapping the complication.
-        val thisDataSource = ComponentName(this, javaClass)
-        // We pass the complication id, so we can only update the specific complication tapped.
-//        val complicationPendingIntent =
-//            ComplicationTapBroadcastReceiver.getToggleIntent(
-//                this,
-//                thisDataSource,
-//                request.complicationInstanceId
-//            )
-
-        // Retrieves your data, in this case, we grab an incrementing number from Datastore.
-//        val number: Int = applicationContext.dataStore.data
-//            .map { preferences ->
-//                preferences[TAP_COUNTER_PREF_KEY] ?: 0
-//            }
-//            .first()
 
         val elapsedEnabled = settingsDataStore.elapsedTimeEnabled.firstOrNull() ?: false
         val elapsedMinutesConfig = settingsDataStore.elapsedTimeMinutes.first()
@@ -113,7 +96,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
             ?: LocaleType.ENGLISH
 
         val locale = LocaleHelper.getLocale(localeType)
-
+        val pendingIntent = tapPendingIntent.getTapPendingIntent(this)
         Log.d("3llomi", "timeLeft: $timeLeft")
 
         return when (request.complicationType) {
@@ -148,7 +131,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
                         )
                     )
                         .build()
-                ).build()
+                ).setTapAction(pendingIntent).build()
             }
 
 
