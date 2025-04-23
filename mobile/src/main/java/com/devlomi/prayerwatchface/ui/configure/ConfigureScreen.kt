@@ -40,6 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.toColorInt
 import androidx.core.location.LocationManagerCompat
 import androidx.navigation.NavHostController
 import com.batoulapps.adhan.CalculationMethod
@@ -719,6 +720,151 @@ fun LocaleBottomSheet(
         }
     }
 }
+@Composable
+fun PickAppToInstallBottomSheet() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier.padding(16.dp),
+            text = "Pick an App",
+            fontSize = 20.sp,
+        )
+
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp, bottom = 32.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    Card(
+                        modifier = Modifier.matchParentSize().clickable {  },
+                        elevation = 4.dp,
+                        shape = RoundedCornerShape(8.dp)
+                    ) {}
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth().padding(8.dp)
+                    ) {
+                        Box(modifier = Modifier.height(80.dp), contentAlignment = Alignment.Center) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_watch),
+                                    modifier = Modifier.size(48.dp),
+                                    contentDescription = null
+                                )
+                                Text(
+                                    text = "Prayer Watch Face",
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 18.sp
+                                )
+                            }
+                        }
+
+                        Box(modifier = Modifier.height(60.dp), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = "Elegant watch face with daily prayer times.",
+                                color = Color.Gray,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+
+                        Image(
+                            modifier = Modifier.size(200.dp),
+                            painter = painterResource(R.drawable.screenshot_pwf),
+                            contentDescription = null
+                        )
+
+                        Box(modifier = Modifier.height(60.dp), contentAlignment = Alignment.Center) {
+                            OutlinedButton(
+                                onClick = {},
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text("Install", color = Color(0xFF068E46))
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Box(modifier = Modifier.weight(1f)) {
+                    Card(
+                        modifier = Modifier.matchParentSize(),
+                        elevation = 4.dp,
+                        shape = RoundedCornerShape(8.dp)
+                    ) {}
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.fillMaxWidth().padding(8.dp)
+                    ) {
+                        Box(modifier = Modifier.height(80.dp), contentAlignment = Alignment.Center) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_link),
+                                    modifier = Modifier.size(48.dp),
+                                    contentDescription = null
+                                )
+                                Text(
+                                    text = "Prayer Wear",
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 18.sp
+                                )
+                            }
+                        }
+
+                        Box(modifier = Modifier.height(60.dp), contentAlignment = Alignment.Center) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_warning),
+                                        contentDescription = null,
+                                        tint = Color(0xFFFCAE37)
+                                    )
+                                    Text(
+                                        modifier = Modifier.padding(start = 4.dp),
+                                        text = "Required",
+                                        fontSize = 18.sp
+                                    )
+                                }
+                                Text(
+                                    text = "Required to fetch prayer times",
+                                    textAlign = TextAlign.Center,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
+
+                        Image(
+                            modifier = Modifier.size(200.dp),
+                            painter = painterResource(R.drawable.screenshow_pwr),
+                            contentDescription = null
+                        )
+
+                        Box(modifier = Modifier.height(60.dp), contentAlignment = Alignment.Center) {
+                            OutlinedButton(
+                                onClick = {},
+                                shape = RoundedCornerShape(8.dp)
+                            ) {
+                                Text("Install", color = Color(0xFF068E46))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/*
 
 @Composable
 fun PickAppToInstallBottomSheet() {
@@ -731,35 +877,106 @@ fun PickAppToInstallBottomSheet() {
             )
             Row(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(top = 8.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)
+                    .padding(top = 8.dp, bottom = 32.dp, start = 8.dp, end = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Card {
+                Card(
+                    modifier = Modifier.weight(1f),
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(8.dp)
+                ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-                        Text("Prayer Watch Face", fontWeight = FontWeight.Bold)
-                        Image(
-                            modifier = Modifier.padding(top = 4.dp),
-                            painter = painterResource(R.drawable.todo_delete),
+                        Icon(
+                            painter = painterResource(R.drawable.ic_watch),
+                            modifier = Modifier.size(48.dp).padding(top = 4.dp),
                             contentDescription = null
                         )
+
+                        Text(
+                            modifier = Modifier.padding(top = 8.dp),
+                            text = "Prayer Watch Face",
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 18.sp
+                        )
+                        Text(
+                            modifier = Modifier.padding(top = 8.dp, start = 4.dp, end = 4.dp),
+                            text = "Elegant watch face with daily prayer times.",
+                            color = Color.Gray,
+                            textAlign = TextAlign.Center
+                        )
+                        Image(
+                            modifier = Modifier.padding(top = 8.dp).size(200.dp),
+                            painter = painterResource(R.drawable.screenshot_pwf),
+                            contentDescription = null
+                        )
+                        OutlinedButton(
+                            onClick = {},
+                            modifier = Modifier.padding(top = 8.dp),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text("Install", color = Color(0xFF068E46))
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+                Card(
+                    modifier = Modifier.weight(1f),
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_link),
+                            modifier = Modifier.size(48.dp).padding(top = 4.dp),
+                            contentDescription = null
+                        )
+
+                        Text(
+                            modifier = Modifier.padding(top = 8.dp),
+                            text = "Prayer Wear",
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 18.sp
+                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(top = 2.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_warning),
+                                contentDescription = null,
+                                tint = Color(0xFFFCAE37)
+
+                            )
+                            Text(
+                                modifier = Modifier.padding(start = 4.dp),
+                                text = "Required",
+                                fontSize = 18.sp
+                            )
+                        }
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 4.dp, end = 4.dp),
+                            text = "Required to fetch prayer times",
+                            textAlign = TextAlign.Center,
+                            color = Color.Gray
+                        )
+                        Image(
+                            modifier = Modifier.padding(top = 8.dp).size(200.dp),
+                            painter = painterResource(R.drawable.screenshow_pwr),
+                            contentDescription = null
+                        )
+                        OutlinedButton(
+                            onClick = {},
+                            modifier = Modifier.padding(top = 8.dp),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text("Install", color = Color(0xFF068E46))
+                        }
                     }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
-
-
-                Card {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Prayer Wear", fontWeight = FontWeight.Bold)
-                        Text("To display prayer times on the watch face, please ensure this app is installed. Otherwise, the prayer times will not appear.", modifier = Modifier.padding(4.dp))
-                        Image(
-                            modifier = Modifier.padding(top = 4.dp),
-                            painter = painterResource(R.drawable.todo_delete),
-                            contentDescription = null
-                        )
-                    }
-                }
             }
         }
     }
 }
+ */

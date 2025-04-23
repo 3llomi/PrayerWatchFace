@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_color">#068E46</color>0FA958
+    <color name="primary_color">#068E46</color>
     <color name="primary_variant">#0FA958</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
