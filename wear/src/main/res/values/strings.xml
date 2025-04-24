@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Prayer WatchFace</string>
+    <string name="app_name" translatable="false">Prayer Watch Face</string>
     <string name="please_enable_gps">Please enable GPS in settings</string>
     <string name="enable_watch_location">Enable Watch Location</string>
     <string name="prayer_time">Prayer time</string>
@@ -8,4 +8,7 @@
     <string name="ok">OK</string>
     <string name="configure">Configure</string>
     <string name="prayer_times">Prayer Times</string>
+    <string name="next_prayer_time">Next Prayer Time</string>
+    <string name="time_left_for_next_prayer">Time Left for Next Prayer</string>
+    <string name="progress_for_next_prayer">Progress for Next Prayer</string>
 </resources>

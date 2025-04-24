@@ -52,4 +52,9 @@
     <string name="enable_complications_notice">You can configure complications on the Watch by long clicking on the watch face and clicking on the edit button</string>
     <string name="disable_complications_notice"><![CDATA[To prevent clicking complications while it\'s disabled, on your watch, long click on the watch face > click on the edit button > choose complication > choose \'Empty\' Complication]]></string>
     <string name="sample_preview">Sample Preview</string>
+    <string name="pick_an_app">Pick an App</string>
+    <string name="elegant_watch_face_with_daily_prayer_times">Elegant watch face with daily prayer times.</string>
+    <string name="required">Required</string>
+    <string name="required_to_fetch_prayer_times">Required to fetch prayer times</string>
+    <string name="install">Install</string>
 </resources>

@@ -50,4 +50,9 @@
     <string name="recommended_when_having_complications_enabled">Bileşenler etkinleştirildiğinde önerilir</string>
     <string name="enable_complications_notice">Bileşenleri yapılandırmak için saat kadranına uzun tıklayıp düzenle düğmesine tıklayabilirsiniz</string>
     <string name="sample_preview">Örnek Önizleme</string>
+    <string name="pick_an_app">Bir Uygulama Seç</string>
+    <string name="elegant_watch_face_with_daily_prayer_times">Günlük namaz vakitleriyle zarif saat ekranı.</string>
+    <string name="required">Gerekli</string>
+    <string name="required_to_fetch_prayer_times">Namaz vakitlerini getirmek için gerekli</string>
+    <string name="install">Yükle</string>
 </resources>

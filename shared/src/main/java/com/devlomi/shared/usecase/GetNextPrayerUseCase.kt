@@ -7,7 +7,6 @@ import java.time.temporal.ChronoUnit
 import java.util.Date
 
 class GetNextPrayerUseCase(private val getPrayerTimesWithConfigUseCase: GetPrayerTimesWithConfigUseCase) {
-    //TODO DELETE IF NOT NEEDED
     suspend fun getNextPrayer(date: Date): PrayerTimesWithNextPrayer {
         var prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(date)
         val prayerTimesWithoutAdditions = prayerTimes
@@ -21,7 +20,6 @@ class GetNextPrayerUseCase(private val getPrayerTimesWithConfigUseCase: GetPraye
             nextPrayer = prayerTimes.nextPrayer()
         }
 
-        //TODO CHECK IF PRAYER TIMES IS WORKING CORRECTLY
         return PrayerTimesWithNextPrayer(prayerTimes,prayerTimesWithoutAdditions, nextPrayer)
     }
 }

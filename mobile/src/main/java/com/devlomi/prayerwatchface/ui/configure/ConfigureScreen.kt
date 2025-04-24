@@ -23,8 +23,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.TextFields
-import androidx.compose.material.icons.filled.Wallpaper
 import androidx.compose.material.icons.sharp.Watch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,7 +37,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
-import androidx.core.graphics.toColorInt
 import androidx.core.location.LocationManagerCompat
 import androidx.navigation.NavHostController
 import com.batoulapps.adhan.CalculationMethod
@@ -51,7 +47,6 @@ import com.devlomi.prayerwatchface.common.isLoading
 import com.devlomi.prayerwatchface.ui.PreviewWatchFaceComposable
 import com.devlomi.prayerwatchface.ui.Screen
 import com.devlomi.prayerwatchface.ui.configure.locale.LocaleItem
-import com.devlomi.shared.SimpleTapType
 import com.devlomi.shared.WatchFacePainter
 import com.devlomi.shared.calculationmethod.CalculationMethodItem
 import com.devlomi.shared.locale.LocaleType
@@ -199,7 +194,6 @@ fun ConfigureScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             Button(
                 onClick = {
-//                    viewModel.sendAppToWatch()
                     coroutineScope.launch {
                         installAppBottomSheetState.show()
                     }
@@ -444,7 +438,12 @@ fun ConfigureScreen(
         ModalBottomSheetLayout(
             sheetState = installAppBottomSheetState,
             sheetContent = {
-                PickAppToInstallBottomSheet()
+                PickAppToInstallBottomSheet{
+                    coroutineScope.launch {
+                        installAppBottomSheetState.hide()
+                    viewModel.sendAppToWatch(it)
+                    }
+                }
             },
             modifier = Modifier.fillMaxSize()
         ) {}
@@ -720,6 +719,7 @@ fun LocaleBottomSheet(
         }
     }
 }
+/*
 @Composable
 fun PickAppToInstallBottomSheet() {
     Column(
@@ -863,25 +863,30 @@ fun PickAppToInstallBottomSheet() {
         }
     }
 }
+*/
 
-/*
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PickAppToInstallBottomSheet() {
+fun PickAppToInstallBottomSheet(onClick:(app:InstallAppType) -> Unit) {
     Box(modifier = Modifier.fillMaxWidth()) {
         Column {
             Text(
                 modifier = Modifier.padding(16.dp).align(Alignment.CenterHorizontally),
-                text = "Pick an App",
+                text = stringResource(R.string.pick_an_app),
                 fontSize = 20.sp,
             )
             Row(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(top = 8.dp, bottom = 32.dp, start = 8.dp, end = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(top = 8.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)
+                    .height(IntrinsicSize.Max), // Row takes the height of the tallest child
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Card(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).fillMaxHeight(),
+                    onClick = {
+                        onClick(InstallAppType.WATCH_FACE)
+                    },
                     elevation = 4.dp,
                     shape = RoundedCornerShape(8.dp)
                 ) {
@@ -900,27 +905,35 @@ fun PickAppToInstallBottomSheet() {
                         )
                         Text(
                             modifier = Modifier.padding(top = 8.dp, start = 4.dp, end = 4.dp),
-                            text = "Elegant watch face with daily prayer times.",
+                            text = stringResource(R.string.elegant_watch_face_with_daily_prayer_times),
                             color = Color.Gray,
                             textAlign = TextAlign.Center
                         )
-                        Image(
-                            modifier = Modifier.padding(top = 8.dp).size(200.dp),
-                            painter = painterResource(R.drawable.screenshot_pwf),
-                            contentDescription = null
-                        )
+                        Box(modifier = Modifier.weight(1f).padding(top = 8.dp)) {
+                            Image(
+                                modifier = Modifier.size(200.dp),
+                                painter = painterResource(R.drawable.screenshot_pwf),
+                                contentDescription = null
+                            )
+                        }
+
                         OutlinedButton(
-                            onClick = {},
+                            onClick = {
+                                onClick(InstallAppType.WATCH_FACE)
+                            },
                             modifier = Modifier.padding(top = 8.dp),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Install", color = Color(0xFF068E46))
+                            Text(stringResource(R.string.install), color = Color(0xFF068E46))
                         }
                     }
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Card(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).fillMaxHeight(),
+                    onClick = {
+                        onClick(InstallAppType.WEAR)
+                    },
                     elevation = 4.dp,
                     shape = RoundedCornerShape(8.dp)
                 ) {
@@ -949,28 +962,33 @@ fun PickAppToInstallBottomSheet() {
                             )
                             Text(
                                 modifier = Modifier.padding(start = 4.dp),
-                                text = "Required",
+                                text = stringResource(R.string.required),
                                 fontSize = 18.sp
                             )
                         }
 
                         Text(
-                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp, start = 4.dp, end = 4.dp),
-                            text = "Required to fetch prayer times",
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(top = 8.dp, start = 4.dp, end = 4.dp),
+                            text = stringResource(R.string.required_to_fetch_prayer_times),
                             textAlign = TextAlign.Center,
                             color = Color.Gray
                         )
-                        Image(
-                            modifier = Modifier.padding(top = 8.dp).size(200.dp),
-                            painter = painterResource(R.drawable.screenshow_pwr),
-                            contentDescription = null
-                        )
+                        Box(modifier = Modifier.weight(1f).padding(top = 8.dp)) {
+                            Image(
+                                modifier = Modifier.size(200.dp),
+                                painter = painterResource(R.drawable.screenshow_pwr),
+                                contentDescription = null
+                            )
+                        }
                         OutlinedButton(
-                            onClick = {},
+                            onClick = {
+                                onClick(InstallAppType.WEAR)
+                            },
                             modifier = Modifier.padding(top = 8.dp),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text("Install", color = Color(0xFF068E46))
+                            Text(stringResource(R.string.install), color = Color(0xFF068E46))
                         }
                     }
                 }
@@ -979,4 +997,3 @@ fun PickAppToInstallBottomSheet() {
         }
     }
 }
- */

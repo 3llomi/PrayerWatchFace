@@ -7,4 +7,7 @@
     <string name="ok">حسناً</string>
     <string name="configure">إعداد</string>
     <string name="prayer_times">أوقات الصلاة</string>
+    <string name="next_prayer_time">وقت الصلاة التالية</string>
+    <string name="time_left_for_next_prayer">الوقت المتبقي للصلاة التالية</string>
+    <string name="progress_for_next_prayer">التقدم للصلاة التالية</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.devlomi.prayerwatchface.watchface.analog
 
 import android.content.Intent
-import com.devlomi.prayerwatchface.watchface.createComplicationSlotManager
 
 /*
  * Copyright 2020 The Android Open Source Project
@@ -63,7 +62,7 @@ class AnalogWatchFaceService : WatchFaceService() {
 
     private val dataClient by lazy { Wearable.getDataClient(applicationContext) }
 
-
+/*
     override fun createComplicationSlotsManager(
         currentUserStyleRepository: CurrentUserStyleRepository
     ): ComplicationSlotsManager =
@@ -73,7 +72,7 @@ class AnalogWatchFaceService : WatchFaceService() {
             topBound = LEFT_AND_RIGHT_COMPLICATIONS_TOP_BOUND,
             bottomBound = LEFT_AND_RIGHT_COMPLICATIONS_BOTTOM_BOUND
         )
-
+*/
 
     override suspend fun createWatchFace(
         surfaceHolder: SurfaceHolder,

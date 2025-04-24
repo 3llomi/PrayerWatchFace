@@ -391,8 +391,14 @@ class ConfigureWatchFaceViewModel(
     }
 
 
-    fun sendAppToWatch() {
-        val appLink = "https://play.google.com/store/apps/details?id=com.devlomi.prayerwatchface"
+    fun sendAppToWatch(installAppType: InstallAppType) {
+        //TODO
+        val packageName = when(installAppType) {
+            InstallAppType.WATCH_FACE -> "com.devlomi.prayerwatchface"
+            InstallAppType.WEAR -> "com.devlomi.prayerwatchface.wear"
+        }
+
+        val appLink = "https://play.google.com/store/apps/details?id=$packageName"
         val remoteActivityHelper = RemoteActivityHelper(appContext)
         _openAppLinkResult.value = Resource.loading()
         viewModelScope.launch {

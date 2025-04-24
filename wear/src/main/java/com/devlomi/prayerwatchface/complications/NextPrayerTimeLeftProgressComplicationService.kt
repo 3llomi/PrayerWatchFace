@@ -111,9 +111,16 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
             ((System.currentTimeMillis() - previousPrayerTime) / (nextPrayerTime - previousPrayerTime)) * 360
         Log.d("3llomi", "dif is $diff")
         val pendingIntent = tapPendingIntent.getTapPendingIntent(this)
+        //fix java.lang.IllegalArgumentException: From T API onwards, value must be between min and max
+        if (now.time.toFloat() < previousPrayerTime.toFloat() || now.time.toFloat() > nextPrayerTime.toFloat()) {
+            Log.d(
+                "3llomi",
+                "now is not between previous and next prayer ${now.time} $previousPrayerTime $nextPrayerTime"
+            )
+            return null
+        }
 
-
-        return when (request.complicationType) {
+            return when (request.complicationType) {
             //TODO THIS IS CRASHING min must be lower than or equal to max
             ComplicationType.RANGED_VALUE -> {
                 RangedValueComplicationData.Builder(

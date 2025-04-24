@@ -14,7 +14,6 @@ import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.ui.prayer_times.PrayerTimesActivity
 import com.devlomi.prayerwatchface.ui.sendToMobile
 import com.devlomi.prayerwatchface.watchface.SimpleWatchFaceTapListener
-import com.devlomi.prayerwatchface.watchface.createComplicationSlotManager
 import com.devlomi.shared.constants.ConfigKeys
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.SimpleTapType
@@ -53,6 +52,7 @@ class PrayerWatchFaceService : WatchFaceService() {
 
     private val dataClient by lazy { Wearable.getDataClient(applicationContext) }
 
+    /*
     override fun createComplicationSlotsManager(currentUserStyleRepository: CurrentUserStyleRepository): ComplicationSlotsManager {
         return createComplicationSlotManager(
             context = applicationContext,
@@ -62,7 +62,7 @@ class PrayerWatchFaceService : WatchFaceService() {
         )
 
     }
-
+*/
 
     override suspend fun createWatchFace(
         surfaceHolder: SurfaceHolder,
