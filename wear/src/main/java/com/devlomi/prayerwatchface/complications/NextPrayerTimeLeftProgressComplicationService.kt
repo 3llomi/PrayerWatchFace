@@ -68,55 +68,51 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
         val prayerTimesWithoutAdditions = nextPrayerWithPrayerTimes.prayerTimesWithoutAdditions
         val nextPrayer = nextPrayerWithPrayerTimes.nextPrayer
         val noNextPrayerToday = prayerTimes.nextPrayer() == Prayer.NONE
-        Log.d(
-            "3llomi",
-            "previousPrayer ${prayerTimes.previousPrayer()} nextPrayer ${prayerTimes.nextPrayer()}"
-        )
+
         val previousPrayer =
             if (noNextPrayerToday) Prayer.ISHA else prayerTimes.previousPrayer()
 
-        Log.d("3llomi", "nextPrayer Real ${nextPrayerWithPrayerTimes.prayerTimes.nextPrayer()}")
         val previousPrayerTime =
             if ((previousPrayer == Prayer.NONE || previousPrayer == Prayer.ISHA) &&
                 //NOTE: USE THE ACTUAL PRAYER TIMES THAT RETURNS NONE, SINCE THE OTHER ONE RETURNS NEXT PRAYER (NOT RETURNS NONE)
                 nextPrayerWithPrayerTimes.prayerTimes.nextPrayer() == Prayer.FAJR
             ) {
-                Log.d("3llomi", "previous prayer is NONE - getting previous day")
+//                Log.d("3llomi", "previous prayer is NONE - getting previous day")
                 getPrayerTimesWithConfigUseCase.getIshaaTimePreviousDay()
             } else {
-                Log.d(
-                    "3llomi",
-                    "previous prayer is not NONE ${previousPrayer.name} - getting previous time ${
-                        prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time
-                    }"
-                )
+//                Log.d(
+//                    "3llomi",
+//                    "previous prayer is not NONE ${previousPrayer.name} - getting previous time ${
+//                        prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time
+//                    }"
+//                )
                 prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time
             }
 
         val nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer).time
 
 
-        Log.d("3llomi", "Next Prayer ${nextPrayer.name} Previous ${previousPrayer.name}")
+//        Log.d("3llomi", "Next Prayer ${nextPrayer.name} Previous ${previousPrayer.name}")
 //        val progress = (elapsed.toFloat() / total)
         val elapsed = now.time - previousPrayerTime
         val total = nextPrayerTime - previousPrayerTime
         val sweepAngle = ((elapsed / total) * 360)
 
-        Log.d("3llomi", "sweepAngle $sweepAngle progrss: ${elapsed.toFloat() / total}")
-        Log.d(
-            "3llomi",
-            "min ${previousPrayerTime} max ${nextPrayerTime} value ${now.time}"
-        )
+//        Log.d("3llomi", "sweepAngle $sweepAngle progrss: ${elapsed.toFloat() / total}")
+//        Log.d(
+//            "3llomi",
+//            "min ${previousPrayerTime} max ${nextPrayerTime} value ${now.time}"
+//        )
         val diff =
             ((System.currentTimeMillis() - previousPrayerTime) / (nextPrayerTime - previousPrayerTime)) * 360
-        Log.d("3llomi", "dif is $diff")
+//        Log.d("3llomi", "dif is $diff")
         val pendingIntent = tapPendingIntent.getTapPendingIntent(this)
         //fix java.lang.IllegalArgumentException: From T API onwards, value must be between min and max
         if (now.time.toFloat() < previousPrayerTime.toFloat() || now.time.toFloat() > nextPrayerTime.toFloat()) {
-            Log.d(
-                "3llomi",
-                "now is not between previous and next prayer ${now.time} $previousPrayerTime $nextPrayerTime"
-            )
+//            Log.d(
+//                "3llomi",
+//                "now is not between previous and next prayer ${now.time} $previousPrayerTime $nextPrayerTime"
+//            )
             return null
         }
 
@@ -148,7 +144,6 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
      * Called when the complication has been deactivated.
      */
     override fun onComplicationDeactivated(complicationInstanceId: Int) {
-        Log.d(TAG, "onComplicationDeactivated(): $complicationInstanceId")
     }
 
     companion object {

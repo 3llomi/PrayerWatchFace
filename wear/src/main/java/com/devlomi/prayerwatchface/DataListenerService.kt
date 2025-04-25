@@ -199,7 +199,6 @@ class DataListenerService : WearableListenerService() {
                     }
 
                 } catch (e: Exception) {
-                    Log.d("3llomi", "error on data changed on watch listener ${e.localizedMessage}")
                 }
             }
         }

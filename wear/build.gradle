@@ -8,11 +8,11 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.devlomi.prayerwatchface"
+        applicationId "com.devlomi.prayerwear"
         minSdk 26
         targetSdk 34
         versionCode 44
-        versionName "2.0.2w"
+        versionName "1.0.0w"
 
     }
 

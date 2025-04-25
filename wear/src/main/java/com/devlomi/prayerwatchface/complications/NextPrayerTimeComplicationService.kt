@@ -102,7 +102,6 @@ class NextPrayerTimeComplicationService : SuspendingComplicationDataSourceServic
      * Called when the complication has been deactivated.
      */
     override fun onComplicationDeactivated(complicationInstanceId: Int) {
-        Log.d(TAG, "onComplicationDeactivated(): $complicationInstanceId")
     }
 
     companion object {

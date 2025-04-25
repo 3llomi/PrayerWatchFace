@@ -619,7 +619,7 @@
             <DefaultProviderPolicy
                 defaultSystemProvider="STEP_COUNT"
                 defaultSystemProviderType="RANGED_VALUE"
-                primaryProvider="com.devlomi.prayerwatchface/com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftProgressComplicationService"
+                primaryProvider="com.devlomi.prayerwear/com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftProgressComplicationService"
                 primaryProviderType="RANGED_VALUE" />
 
 
@@ -2929,7 +2929,7 @@
             <DefaultProviderPolicy
                 defaultSystemProvider="EMPTY"
                 defaultSystemProviderType="SHORT_TEXT"
-                primaryProvider="com.devlomi.prayerwatchface/com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftComplicationService"
+                primaryProvider="com.devlomi.prayerwear/com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftComplicationService"
                 primaryProviderType="SHORT_TEXT" />
 
 
@@ -3348,7 +3348,7 @@
             <DefaultProviderPolicy
                 defaultSystemProvider="EMPTY"
                 defaultSystemProviderType="SHORT_TEXT"
-                primaryProvider="com.devlomi.prayerwatchface/com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationService"
+                primaryProvider="com.devlomi.prayerwear/com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationService"
                 primaryProviderType="SHORT_TEXT" />
 
 

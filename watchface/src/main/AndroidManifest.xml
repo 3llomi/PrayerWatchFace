@@ -4,7 +4,6 @@
 
     <uses-feature android:name="android.hardware.type.watch" />
 
-    <!--        TODO APP NAME-->
 
     <uses-sdk
         android:minSdkVersion="33"
@@ -13,7 +12,8 @@
 
     <application
         android:hasCode="false"
-        android:label="Prayer Watch Face V2">
+        android:label="Prayer Watch Face V2"
+        android:icon="@mipmap/ic_launcher">
 
         <meta-data
             android:name="com.google.android.wearable.standalone"

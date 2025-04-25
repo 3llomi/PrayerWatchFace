@@ -392,10 +392,9 @@ class ConfigureWatchFaceViewModel(
 
 
     fun sendAppToWatch(installAppType: InstallAppType) {
-        //TODO
         val packageName = when(installAppType) {
-            InstallAppType.WATCH_FACE -> "com.devlomi.prayerwatchface"
-            InstallAppType.WEAR -> "com.devlomi.prayerwatchface.wear"
+            InstallAppType.WATCH_FACE -> "com.devlomi.prayerwatchface.v2"
+            InstallAppType.WEAR -> "com.devlomi.prayerwear"
         }
 
         val appLink = "https://play.google.com/store/apps/details?id=$packageName"

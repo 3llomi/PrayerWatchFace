@@ -71,7 +71,6 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
 
         val timeForPrayer = prayerTimes.timeForPrayer(nextPrayer)
 
-        Log.d(TAG, "onComplicationRequest() id: ${request.complicationInstanceId}")
 
         val elapsedEnabled = settingsDataStore.elapsedTimeEnabled.firstOrNull() ?: false
         val elapsedMinutesConfig = settingsDataStore.elapsedTimeMinutes.first()
@@ -79,7 +78,6 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
 
         val timeLeft = prayerTimes.timeForPrayer(nextPrayer).time - now.time
         var previousPrayerDate: Date? = null
-        Log.d("3llomi", "elapsed Enabled ${elapsedEnabled}")
         if (elapsedEnabled) {
             previousPrayerDate = getPreviousPrayerTimeWhenElapsed(
                 elapsedMinutesConfig* 60 * 1000,
@@ -97,7 +95,6 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
 
         val locale = LocaleHelper.getLocale(localeType)
         val pendingIntent = tapPendingIntent.getTapPendingIntent(this)
-        Log.d("3llomi", "timeLeft: $timeLeft")
 
         return when (request.complicationType) {
 
@@ -144,7 +141,6 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
      * Called when the complication has been deactivated.
      */
     override fun onComplicationDeactivated(complicationInstanceId: Int) {
-        Log.d(TAG, "onComplicationDeactivated(): $complicationInstanceId")
     }
 
     companion object {
@@ -160,21 +156,16 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
     ): Date? {
         val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
         val diff = date.time - timeForPrayer.time
-        Log.d("3llomi", "Previous prayer elapsed ${previousPrayer.name}")
-        Log.d("3llomi", "TIME LEFT SERVICE: dif is ${diff} date ${date.time} timeForPrayer ${timeForPrayer.time}")
 //        var minutesMillis = 0L
         if (diff > 0) {
 //            minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
 //            minutesMillis = diff / 1000 / 60
 
-            Log.d("3llomi", "getElapsedMinutes: $elapsedTimeMinutesMillis")
 //            if (minutesMillis < 0) {
 //                minutesMillis = 0
 //            }
 
             if (diff >= elapsedTimeMinutesMillis) {
-                Log.d("3llomi", "minutes > elapsedTimeMinutes ${elapsedTimeMinutesMillis}")
-//                minutesMillis = -1
                 return null
             }
             return timeForPrayer

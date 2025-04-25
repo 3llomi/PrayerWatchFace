@@ -21,7 +21,6 @@ class SchedulePrayerNotification(
     private val getPrayerNameByLocaleUseCase: GetPrayerNameByLocaleUseCase,
 ) {
     suspend fun schedule(context: Context) {
-        Log.d("3llomi","schedule prayer notification")
         var prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(Date())
         var nextPrayer = prayerTimes.nextPrayer()
         if (nextPrayer == Prayer.NONE) {
@@ -44,13 +43,10 @@ class SchedulePrayerNotification(
     }
 
     suspend fun scheduleElapsedTime(context: Context,prayerTime:Long) {
-        Log.d("3llomi","scheduleElapsedTime PRAYER: $prayerTime")
         if (settingsDataStore.elapsedTimeEnabled.first()) {
-            Log.d("3llomi","scheduleElapsedTime: ${settingsDataStore.elapsedTimeEnabled.first()}")
             val elapsedTimeMinutes = settingsDataStore.elapsedTimeMinutes.first()
             val elapsedTime =
                 prayerTime + TimeUnit.MINUTES.toMillis(elapsedTimeMinutes.toLong())
-            Log.d("3llomi","scheduleElapsedTime: $elapsedTime")
             PrayerTimeReceiver.scheduleUpdateElapsedTimeReceiver(context, elapsedTime)
         }
     }
