@@ -5,11 +5,6 @@
     <uses-feature android:name="android.hardware.type.watch" />
 
 
-    <uses-sdk
-        android:minSdkVersion="33"
-        android:targetSdkVersion="33"
-        tools:ignore="GradleOverrides" />
-
     <application
         android:hasCode="false"
         android:label="Prayer Watch Face V2"
@@ -21,7 +16,7 @@
 
         <property
             android:name="com.google.wear.watchface.format.version"
-            android:value="1" />
+            android:value="2" />
     </application>
 
 </manifest>

@@ -113,6 +113,7 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
 //                "3llomi",
 //                "now is not between previous and next prayer ${now.time} $previousPrayerTime $nextPrayerTime"
 //            )
+            Log.w("ProgressComplicationService", "now is not between previous and next prayer ${now.time} $previousPrayerTime $nextPrayerTime")
             return null
         }
 
