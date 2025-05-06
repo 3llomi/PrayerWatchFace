@@ -697,7 +697,7 @@
                         </Group>
                     </Complication>
 
-                    <BoundingBox x="0" y="0" width="0" height="0"
+                    <BoundingBox x="0" y="0" width="450" height="450"
                         outlinePadding="0" />
                 </ComplicationSlot>
 
@@ -2185,6 +2185,870 @@
         </Group>
 
 
+
+
+        <ComplicationSlot
+            height="55"
+            isCustomizable="FALSE"
+            slotId="4"
+            supportedTypes="SHORT_TEXT"
+            width="200"
+            x="0"
+            y="0">
+
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT"
+                primaryProvider="com.devlomi.prayerwear/com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftComplicationService"
+                primaryProviderType="SHORT_TEXT" />
+
+
+            <Complication type="SHORT_TEXT">
+
+                <Group
+                    name="prayer-left-title"
+                    height="50"
+                    width="200"
+                    x="85"
+                    y="330">
+
+                    <ListConfiguration id="font_size">
+                        <ListOption id="0">
+                            <Group
+                                name="prayer-left-title-container"
+                                height="50"
+                                width="200"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="150"
+                                x="-20"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="28"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="150"
+                                x="-20"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="28"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+
+                        <ListOption id="1">
+                            <Group
+                                name="prayer-left-title-container"
+                                height="50"
+                                width="200"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="180"
+                                x="-32"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="32"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="180"
+                                x="-32"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="32"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+                        <ListOption id="2">
+                            <Group
+                                name="prayer-left-title-container"
+                                height="50"
+                                width="200"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="53"
+                                width="200"
+                                x="-32"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="37"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="53"
+                                width="200"
+                                x="-32"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="37"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+                    </ListConfiguration>
+                </Group>
+
+                <Group
+                    name="time-left"
+                    height="50"
+                    width="100"
+                    x="95"
+                    y="358">
+
+                    <ListConfiguration id="font_size">
+
+                        <ListOption id="0">
+                            <Group
+                                name="time-left-container"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="30"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="30"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+                        <ListOption id="1">
+                            <Group
+                                name="time-left-container"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="5">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="34"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="5">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="34"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+                        <ListOption id="2">
+                            <Group
+                                name="time-left-container"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="5">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="39"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="5">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="39"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+                    </ListConfiguration>
+
+
+                </Group>
+
+
+            </Complication>
+
+
+            <BoundingBox x="0" y="0" width="450" height="450"
+                outlinePadding="0" />
+
+
+        </ComplicationSlot>
+
+
+        <Group
+            name="line"
+            height="90"
+            width="20"
+            x="230"
+            y="340">
+
+            <PartDraw
+                alpha="0"
+                height="90"
+                width="20"
+                x="0"
+                y="0">
+
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="255" />
+
+                <Line
+                    endX="0"
+                    endY="75"
+                    startX="0"
+                    startY="0">
+                    <Stroke
+                        color="#ffffff"
+                        thickness="3" />
+                </Line>
+
+
+            </PartDraw>
+
+            <PartDraw
+                alpha="255"
+                height="90"
+                width="20"
+                x="0"
+                y="0">
+
+                <Variant
+                    mode="AMBIENT"
+                    target="alpha"
+                    value="0" />
+                <Line
+                    endX="0"
+                    endY="75"
+                    startX="0"
+                    startY="0">
+                    <Stroke
+                        color="[CONFIGURATION.foreground_color_bottom]"
+                        thickness="3" />
+                </Line>
+
+
+            </PartDraw>
+
+        </Group>
+
+
+        <ComplicationSlot
+            height="55"
+            isCustomizable="FALSE"
+            slotId="5"
+            supportedTypes="SHORT_TEXT"
+            width="200"
+            x="0"
+            y="0">
+
+            <DefaultProviderPolicy
+                defaultSystemProvider="EMPTY"
+                defaultSystemProviderType="SHORT_TEXT"
+                primaryProvider="com.devlomi.prayerwear/com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationService"
+                primaryProviderType="SHORT_TEXT" />
+
+
+            <Complication type="SHORT_TEXT">
+
+                <Group
+                    name="prayer-title"
+                    height="53"
+                    width="200"
+                    x="195"
+                    y="330">
+
+                    <ListConfiguration id="font_size">
+                        <ListOption id="0">
+                            <Group
+                                name="prayer-title-container"
+                                height="53"
+                                width="200"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="200"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="28"
+                                        slant="NORMAL"
+                                        weight="BOLD">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="200"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="28"
+                                        slant="NORMAL"
+                                        weight="BOLD">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+
+                        <ListOption id="1">
+                            <Group
+                                name="prayer-title-container"
+                                height="53"
+                                width="200"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="200"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="32"
+                                        slant="NORMAL"
+                                        weight="BOLD">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="200"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="32"
+                                        slant="NORMAL"
+                                        weight="BOLD">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+
+                        <ListOption id="2">
+                            <Group
+                                name="prayer-title-container"
+                                height="53"
+                                width="200"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="53"
+                                width="200"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="37"
+                                        slant="NORMAL"
+                                        weight="BOLD">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="53"
+                                width="200"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="37"
+                                        slant="NORMAL"
+                                        weight="BOLD">
+                                        <Upper>
+                                            <Template>%s
+                                                <Parameter expression="[COMPLICATION.TITLE]" />
+                                            </Template>
+                                        </Upper>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+                    </ListConfiguration>
+                </Group>
+
+                <Group
+                    name="prayer-time"
+                    height="50"
+                    width="100"
+                    x="245"
+                    y="358">
+
+                    <ListConfiguration id="font_size">
+                        <ListOption id="0">
+                            <Group
+                                name="prayer-time-container"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="30"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="30"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+                        <ListOption id="1">
+                            <Group
+                                name="prayer-time-container"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="5">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="34"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="5">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="34"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+
+                        <ListOption id="2">
+                            <Group
+                                name="prayer-time-container"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="0">
+                            <PartText
+                                alpha="0"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="5">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="255" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="#ffffff"
+                                        family="cairo"
+                                        size="39"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+
+                            <PartText
+                                alpha="255"
+                                height="50"
+                                width="100"
+                                x="0"
+                                y="5">
+                                <Variant
+                                    mode="AMBIENT"
+                                    target="alpha"
+                                    value="0" />
+                                <Text align="CENTER">
+                                    <Font
+                                        color="[CONFIGURATION.foreground_color_bottom]"
+                                        family="cairo"
+                                        size="39"
+                                        slant="NORMAL"
+                                        weight="NORMAL">
+                                        <Template>%s
+                                            <Parameter expression="[COMPLICATION.TEXT]" />
+                                        </Template>
+                                    </Font>
+                                </Text>
+                            </PartText>
+                            </Group>
+                        </ListOption>
+                    </ListConfiguration>
+                </Group>
+
+            </Complication>
+
+            <BoundingBox x="0" y="0" width="450" height="450"
+                outlinePadding="0" />
+
+        </ComplicationSlot>
+
+    <!--  USER COMPLICATIONS   -->
+
         <ComplicationSlot
             name="left_complication"
             displayName="Left Complication"
@@ -3018,867 +3882,6 @@
                     </Default>
                 </Condition>
             </Complication>
-        </ComplicationSlot>
-
-
-        <ComplicationSlot
-            height="55"
-            isCustomizable="FALSE"
-            slotId="4"
-            supportedTypes="SHORT_TEXT"
-            width="200"
-            x="0"
-            y="0">
-
-            <DefaultProviderPolicy
-                defaultSystemProvider="EMPTY"
-                defaultSystemProviderType="SHORT_TEXT"
-                primaryProvider="com.devlomi.prayerwear/com.devlomi.prayerwatchface.complications.NextPrayerTimeLeftComplicationService"
-                primaryProviderType="SHORT_TEXT" />
-
-
-            <Complication type="SHORT_TEXT">
-
-                <Group
-                    name="prayer-left-title"
-                    height="50"
-                    width="200"
-                    x="85"
-                    y="330">
-
-                    <ListConfiguration id="font_size">
-                        <ListOption id="0">
-                            <Group
-                                name="prayer-left-title-container"
-                                height="50"
-                                width="200"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="150"
-                                x="-20"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="28"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="150"
-                                x="-20"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="28"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-
-                        <ListOption id="1">
-                            <Group
-                                name="prayer-left-title-container"
-                                height="50"
-                                width="200"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="180"
-                                x="-32"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="32"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="180"
-                                x="-32"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="32"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-                        <ListOption id="2">
-                            <Group
-                                name="prayer-left-title-container"
-                                height="50"
-                                width="200"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="53"
-                                width="200"
-                                x="-32"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="37"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="53"
-                                width="200"
-                                x="-32"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="37"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-                    </ListConfiguration>
-                </Group>
-
-                <Group
-                    name="time-left"
-                    height="50"
-                    width="100"
-                    x="95"
-                    y="358">
-
-                    <ListConfiguration id="font_size">
-
-                        <ListOption id="0">
-                            <Group
-                                name="time-left-container"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="30"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="30"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-                        <ListOption id="1">
-                            <Group
-                                name="time-left-container"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="5">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="34"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="5">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="34"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-                        <ListOption id="2">
-                            <Group
-                                name="time-left-container"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="5">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="39"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="5">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="39"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-                    </ListConfiguration>
-
-
-                </Group>
-
-
-            </Complication>
-
-
-            <BoundingBox x="0" y="0" width="0" height="0"
-                outlinePadding="0" />
-
-
-        </ComplicationSlot>
-
-
-        <Group
-            name="line"
-            height="90"
-            width="20"
-            x="230"
-            y="340">
-
-            <PartDraw
-                alpha="0"
-                height="90"
-                width="20"
-                x="0"
-                y="0">
-
-                <Variant
-                    mode="AMBIENT"
-                    target="alpha"
-                    value="255" />
-
-                <Line
-                    endX="0"
-                    endY="75"
-                    startX="0"
-                    startY="0">
-                    <Stroke
-                        color="#ffffff"
-                        thickness="3" />
-                </Line>
-
-
-            </PartDraw>
-
-            <PartDraw
-                alpha="255"
-                height="90"
-                width="20"
-                x="0"
-                y="0">
-
-                <Variant
-                    mode="AMBIENT"
-                    target="alpha"
-                    value="0" />
-                <Line
-                    endX="0"
-                    endY="75"
-                    startX="0"
-                    startY="0">
-                    <Stroke
-                        color="[CONFIGURATION.foreground_color_bottom]"
-                        thickness="3" />
-                </Line>
-
-
-            </PartDraw>
-
-        </Group>
-
-
-        <ComplicationSlot
-            height="55"
-            isCustomizable="FALSE"
-            slotId="5"
-            supportedTypes="SHORT_TEXT"
-            width="200"
-            x="0"
-            y="0">
-
-            <DefaultProviderPolicy
-                defaultSystemProvider="EMPTY"
-                defaultSystemProviderType="SHORT_TEXT"
-                primaryProvider="com.devlomi.prayerwear/com.devlomi.prayerwatchface.complications.NextPrayerTimeComplicationService"
-                primaryProviderType="SHORT_TEXT" />
-
-
-            <Complication type="SHORT_TEXT">
-
-                <Group
-                    name="prayer-title"
-                    height="53"
-                    width="200"
-                    x="195"
-                    y="330">
-
-                    <ListConfiguration id="font_size">
-                        <ListOption id="0">
-                            <Group
-                                name="prayer-title-container"
-                                height="53"
-                                width="200"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="200"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="28"
-                                        slant="NORMAL"
-                                        weight="BOLD">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="200"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="28"
-                                        slant="NORMAL"
-                                        weight="BOLD">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-
-                        <ListOption id="1">
-                            <Group
-                                name="prayer-title-container"
-                                height="53"
-                                width="200"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="200"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="32"
-                                        slant="NORMAL"
-                                        weight="BOLD">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="200"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="32"
-                                        slant="NORMAL"
-                                        weight="BOLD">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-
-                        <ListOption id="2">
-                            <Group
-                                name="prayer-title-container"
-                                height="53"
-                                width="200"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="53"
-                                width="200"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="37"
-                                        slant="NORMAL"
-                                        weight="BOLD">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="53"
-                                width="200"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="37"
-                                        slant="NORMAL"
-                                        weight="BOLD">
-                                        <Upper>
-                                            <Template>%s
-                                                <Parameter expression="[COMPLICATION.TITLE]" />
-                                            </Template>
-                                        </Upper>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-                    </ListConfiguration>
-                </Group>
-
-                <Group
-                    name="prayer-time"
-                    height="50"
-                    width="100"
-                    x="245"
-                    y="358">
-
-                    <ListConfiguration id="font_size">
-                        <ListOption id="0">
-                            <Group
-                                name="prayer-time-container"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="30"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="30"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-                        <ListOption id="1">
-                            <Group
-                                name="prayer-time-container"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="5">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="34"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="5">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="34"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-
-                        <ListOption id="2">
-                            <Group
-                                name="prayer-time-container"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="0">
-                            <PartText
-                                alpha="0"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="5">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="255" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="#ffffff"
-                                        family="cairo"
-                                        size="39"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-
-                            <PartText
-                                alpha="255"
-                                height="50"
-                                width="100"
-                                x="0"
-                                y="5">
-                                <Variant
-                                    mode="AMBIENT"
-                                    target="alpha"
-                                    value="0" />
-                                <Text align="CENTER">
-                                    <Font
-                                        color="[CONFIGURATION.foreground_color_bottom]"
-                                        family="cairo"
-                                        size="39"
-                                        slant="NORMAL"
-                                        weight="NORMAL">
-                                        <Template>%s
-                                            <Parameter expression="[COMPLICATION.TEXT]" />
-                                        </Template>
-                                    </Font>
-                                </Text>
-                            </PartText>
-                            </Group>
-                        </ListOption>
-                    </ListConfiguration>
-                </Group>
-
-            </Complication>
-
-            <BoundingBox x="0" y="0" width="0" height="0"
-                outlinePadding="0" />
-
         </ComplicationSlot>
 
 

@@ -7,8 +7,7 @@
 
     <application
         android:hasCode="false"
-        android:label="Prayer Watch Face V2"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Prayer Watch Face V2">
 
         <meta-data
             android:name="com.google.android.wearable.standalone"
