@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wallpaper">Duvar Kağıdı</string>
+    <string name="wallpaper_dim">Soluk Duvar Kağıdı</string>
+    <string name="foreground_color">Ön Plan Rengi</string>
+    <string name="foreground_color_bottom">Alt Kısım Ön Plan Rengi</string>
+    <string name="background_color">Arka Plan Rengi</string>
+    <string name="background_color_bottom">Alt Kısım Arka Plan Rengi</string>
+    <string name="bottom_part">Alt Kısmı</string>
+    <string name="show_progress">Kalan süre için ilerlemeyi göster</string>
+    <string name="progress_color">İlerleme Rengi</string>
+    <string name="font_size">Yazı Boyutu</string>
+    <string name="none_wallpaper">Hiçbiri</string>
+    <string name="small">Küçük</string>
+    <string name="medium">Orta</string>
+    <string name="large">Büyük</string>
+    <string name="huge">Çok Büyük</string>
+</resources>

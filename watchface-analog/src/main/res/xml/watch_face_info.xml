@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WatchFaceInfo>
+<!--    TODO ADD ANALOG PREVIEW-->
+    <Editable value="true" />
+
+    <Preview value="@drawable/preview" />
+</WatchFaceInfo>
