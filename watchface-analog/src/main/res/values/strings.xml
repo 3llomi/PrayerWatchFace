@@ -35,6 +35,10 @@
     <string name="green_3">Green 3</string>
     <string name="velvet">Velvet</string>
     <string name="velvet_2">Velvet 2</string>
+    <string name="hour_hand_color">Hour Hand Color</string>
+    <string name="hour_marker_color">Hour Marker Color</string>
+    <string name="minute_hand_color">Minute Hand Color</string>
+    <string name="second_hand_color">Second Hand Color</string>
 
 
 </resources>

@@ -15,4 +15,9 @@
     <string name="medium">وسط</string>
     <string name="large">كبير</string>
     <string name="huge">ضخم</string>
+    <string name="hour_hand_color">لون عقرب الساعات</string>
+    <string name="hour_marker_color">لون مؤشر الساعة</string>
+    <string name="minute_hand_color">لون عقرب الدقائق</string>
+    <string name="second_hand_color">لون عقرب الثواني</string>
+
 </resources>

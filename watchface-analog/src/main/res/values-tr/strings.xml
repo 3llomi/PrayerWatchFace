@@ -15,4 +15,8 @@
     <string name="medium">Orta</string>
     <string name="large">Büyük</string>
     <string name="huge">Çok Büyük</string>
+    <string name="hour_hand_color">Saat İbresi Rengi</string>
+    <string name="hour_marker_color">Saat İşareti Rengi</string>
+    <string name="minute_hand_color">Dakika İbresi Rengi</string>
+    <string name="second_hand_color">Saniye İbresi Rengi</string>
 </resources>

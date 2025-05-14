@@ -11,9 +11,9 @@
     <UserConfigurations>
         <ColorConfiguration
             defaultValue="12"
-            displayName="hour_hand"
+            displayName="hour_hand_color"
             id="hour_hand"
-            screenReaderText="hour_hand">
+            screenReaderText="hour_hand_color">
             <ColorOption
                 colors="#ffffff"
                 displayName="white"
@@ -69,9 +69,9 @@
         </ColorConfiguration>
         <ColorConfiguration
             defaultValue="12"
-            displayName="minute_hand"
+            displayName="minute_hand_color"
             id="minute_hand"
-            screenReaderText="minute_hand">
+            screenReaderText="minute_hand_color">
             <ColorOption
                 colors="#ffffff"
                 displayName="white"
@@ -127,9 +127,9 @@
         </ColorConfiguration>
         <ColorConfiguration
             defaultValue="12"
-            displayName="second_hand"
+            displayName="second_hand_color"
             id="second_hand"
-            screenReaderText="second_hand">
+            screenReaderText="second_hand_color">
             <ColorOption
                 colors="#ffffff"
                 displayName="white"
@@ -801,10 +801,10 @@
                 <BooleanOption id="TRUE">
                     <Group
                         name="colored-bottom-background"
-                        height="120"
+                        height="160"
                         width="450"
                         x="0"
-                        y="330">
+                        y="290">
 
                         <PartDraw
                             height="330"
@@ -818,7 +818,7 @@
                                 value="0" />
 
                             <Rectangle
-                                height="120"
+                                height="160"
                                 width="450"
                                 x="0"
                                 y="0">
@@ -1871,7 +1871,7 @@
                     height="50"
                     width="200"
                     x="85"
-                    y="330">
+                    y="310">
 
                     <ListConfiguration id="font_size">
                         <ListOption id="0">
@@ -1884,8 +1884,8 @@
                                 <PartText
                                     alpha="0"
                                     height="50"
-                                    width="150"
-                                    x="-20"
+                                    width="200"
+                                    x="-47"
                                     y="0">
                                     <Variant
                                         mode="AMBIENT"
@@ -1910,8 +1910,8 @@
                                 <PartText
                                     alpha="255"
                                     height="50"
-                                    width="150"
-                                    x="-20"
+                                    width="200"
+                                    x="-47"
                                     y="0">
                                     <Variant
                                         mode="AMBIENT"
@@ -2063,7 +2063,7 @@
                     height="50"
                     width="100"
                     x="95"
-                    y="358">
+                    y="348">
 
                     <ListConfiguration id="font_size">
 
@@ -2259,8 +2259,8 @@
             name="line"
             height="90"
             width="20"
-            x="230"
-            y="340">
+            x="225"
+            y="320">
 
             <PartDraw
                 alpha="0"
@@ -2281,7 +2281,7 @@
                     startY="0">
                     <Stroke
                         color="#ffffff"
-                        thickness="3" />
+                        thickness="2" />
                 </Line>
 
 
@@ -2305,7 +2305,7 @@
                     startY="0">
                     <Stroke
                         color="[CONFIGURATION.foreground_color_bottom]"
-                        thickness="3" />
+                        thickness="2" />
                 </Line>
 
 
@@ -2337,7 +2337,7 @@
                     height="53"
                     width="200"
                     x="195"
-                    y="330">
+                    y="310">
 
                     <ListConfiguration id="font_size">
                         <ListOption id="0">
@@ -2530,7 +2530,7 @@
                     height="50"
                     width="100"
                     x="245"
-                    y="358">
+                    y="348">
 
                     <ListConfiguration id="font_size">
                         <ListOption id="0">
@@ -2726,7 +2726,7 @@
             supportedTypes="SHORT_TEXT"
             width="85"
             x="100"
-            y="230">
+            y="190">
             <DefaultProviderPolicy
                 defaultSystemProvider="WATCH_BATTERY"
                 defaultSystemProviderType="SHORT_TEXT"
@@ -3144,7 +3144,7 @@
             supportedTypes="SHORT_TEXT"
             width="85"
             x="250"
-            y="230">
+            y="190">
             <DefaultProviderPolicy
                 defaultSystemProvider="EMPTY"
                 defaultSystemProviderType="SHORT_TEXT"
