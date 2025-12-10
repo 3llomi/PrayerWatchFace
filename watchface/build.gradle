@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace 'com.devlomi.watchface.watchface'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.devlomi.prayerwatchface.v2"
-        minSdk 33
-        targetSdk 34
-        versionCode 6
-        versionName "1.0"
+        minSdk 34
+        targetSdk 35
+        versionCode 10
+        versionName "1.0.1"
 
     }
 

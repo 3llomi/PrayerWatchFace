@@ -76,9 +76,10 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         val elapsedMinutesConfig = settingsDataStore.elapsedTimeMinutes.first()
 
 
-        val timeLeft = prayerTimes.timeForPrayer(nextPrayer).time - now.time
         var previousPrayerDate: Date? = null
         if (elapsedEnabled) {
+            val prayerTimes = timeLeftForNextPrayerWithPrayerTimes.prayerTimesWithoutAdditions
+            val previousPrayer = if (prayerTimes.nextPrayer() == Prayer.NONE) Prayer.ISHA else prayerTimes.previousPrayer()
             previousPrayerDate = getPreviousPrayerTimeWhenElapsed(
                 elapsedMinutesConfig* 60 * 1000,
                 now,
@@ -104,7 +105,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
                         style = TimeDifferenceStyle.STOPWATCH,
                         countUpTimeReference =
                         CountUpTimeReference(instant = previousPrayerDate.toInstant())
-                    ).setText("+^1").build() else
+                    ).setMinimumTimeUnit(TimeUnit.MINUTES).setText("+^1").build() else
                         TimeDifferenceComplicationText.Builder(
                             style = TimeDifferenceStyle.STOPWATCH,
                             countDownTimeReference =
@@ -155,21 +156,19 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         prayerTimes: PrayerTimes
     ): Date? {
         val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
-        val diff = date.time - timeForPrayer.time
-//        var minutesMillis = 0L
+        val diff = date.time - timeForPrayer.time + 10_000 //add 10 seconds to avoid edge cases
+
+
+        Log.d(TAG, "getPreviousPrayerTimeWhenElapsed: timeForPrayer=$timeForPrayer, diff=$diff ms (${diff/1000/60} min), elapsedWindow=${elapsedTimeMinutesMillis/1000/60} min")
         if (diff > 0) {
-//            minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
-//            minutesMillis = diff / 1000 / 60
-
-//            if (minutesMillis < 0) {
-//                minutesMillis = 0
-//            }
-
             if (diff >= elapsedTimeMinutesMillis) {
+                Log.d(TAG, "Elapsed time exceeded window, returning null")
                 return null
             }
+            Log.d(TAG, "Within elapsed window, returning prayer time")
             return timeForPrayer
         }
+        Log.d(TAG, "diff <= 0, prayer time is in future, returning null")
         return null
     }
 }
