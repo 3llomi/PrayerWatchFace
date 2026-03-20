@@ -2,10 +2,13 @@ package com.devlomi.prayerwatchface.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -31,10 +34,10 @@ import com.devlomi.prayerwatchface.ui.configure.color_settings.ColorSettingsScre
 import com.devlomi.prayerwatchface.ui.configure.prayer_times_adjustment.PrayerTimeAdjustmentScreen
 import com.devlomi.prayerwatchface.ui.configure.wallpaper.WallpaperSettingsScreen
 import com.devlomi.prayerwatchface.ui.configure.wallpaper.WallpaperSettingsViewModel
-import com.devlomi.shared.digital.DigitalWatchFacePainter
 import com.devlomi.shared.WatchFacePainter
-import com.devlomi.shared.constants.WatchFacesIds
 import com.devlomi.shared.analog_watch_face.AnalogWatchFacePainter
+import com.devlomi.shared.constants.WatchFacesIds
+import com.devlomi.shared.digital.DigitalWatchFacePainter
 import kotlinx.coroutines.flow.first
 
 
@@ -82,8 +85,13 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     topBar = {
-                        TopAppBar(
-                            title = {
+                        Column(
+                            modifier = Modifier
+                                .background(colorResource(R.color.primary_variant))
+                                .statusBarsPadding()
+                        ) {
+                            TopAppBar(
+                                title = {
                                 Row(
                                     modifier = Modifier.fillMaxWidth()
                                         .padding(top = 4.dp, bottom = 4.dp, end = 40.dp),
@@ -107,8 +115,15 @@ class MainActivity : ComponentActivity() {
                             backgroundColor = colorResource(R.color.primary_color),
 
                             )
-                    }, content = {
-                        Column {
+                        }
+                    }, content = { innerPadding ->
+                        Column (
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .consumeWindowInsets(innerPadding)
+//                                .navigationBarsPadding(),
+
+                        ) {
                             WatchPreviewComposable(viewModel, watchFacePainter)
                             NavHost(
                                 navController = navController,

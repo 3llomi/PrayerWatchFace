@@ -1,9 +1,10 @@
 package com.devlomi.prayerwatchface
 
 import android.content.Context
-import android.util.Log
-import com.batoulapps.adhan.Prayer
+import com.batoulapps.adhan2.Prayer
 import com.devlomi.prayerwatchface.receivers.PrayerTimeReceiver
+import com.devlomi.shared.common.nextPrayer
+import com.devlomi.shared.common.timeForPrayerMillis
 import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
@@ -31,7 +32,7 @@ class SchedulePrayerNotification(
             )
             nextPrayer = prayerTimes.nextPrayer()
         }
-        val nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer)
+        val nextPrayerTime = prayerTimes.timeForPrayerMillis(nextPrayer)
         val localeType =
             LocaleType.values().firstOrNull { it.id == settingsDataStore.locale.first() }
                 ?: LocaleType.ENGLISH
@@ -39,7 +40,7 @@ class SchedulePrayerNotification(
         val prayerName =
             getPrayerNameByLocaleUseCase.getPrayerNameByLocale(nextPrayer, locale)
 
-        PrayerTimeReceiver.schedulePrayerTime(context, nextPrayerTime.time, prayerName)
+        PrayerTimeReceiver.schedulePrayerTime(context, nextPrayerTime, prayerName)
     }
 
     suspend fun scheduleElapsedTime(context: Context,prayerTime:Long) {

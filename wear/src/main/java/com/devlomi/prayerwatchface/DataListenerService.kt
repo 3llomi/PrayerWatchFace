@@ -155,6 +155,9 @@ class DataListenerService : WearableListenerService() {
                         settingsDatStore.setNotificationsEnabled(it)
                         onNotificationsChange(it)
                     }
+                    dataMap.getBooleanOrNull(ConfigKeys.ATHAN_SOUND_ENABLED)?.let {
+                        settingsDatStore.setAthanSoundEnabled(it)
+                    }
                     dataMap.getBooleanOrNull(ConfigKeys.CUSTOM_WALLPAPER_ENABLED)?.let {
                         settingsDatStore.setCustomWallpaperEnabled(it)
                     }

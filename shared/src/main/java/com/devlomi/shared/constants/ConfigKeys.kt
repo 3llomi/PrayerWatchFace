@@ -38,5 +38,6 @@ object ConfigKeys {
     const val HOUR_MARKER_COLOR = "hourMarkerColor"
     const val TAP_TYPE = "tapType"
     const val CURRENT_WATCHFACE_ID = "currentWatchFaceId"
+    const val ATHAN_SOUND_ENABLED = "athanSoundEnabled"
 
 }

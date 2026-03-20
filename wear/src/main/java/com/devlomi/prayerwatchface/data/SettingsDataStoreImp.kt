@@ -164,6 +164,9 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     private val _notificationsEnabled =
         booleanPreferencesKey("notificationsEnabled")
 
+    private val _athanSoundEnabled =
+        booleanPreferencesKey("athanSoundEnabled")
+
     private val _fontSizeConfig =
         intPreferencesKey("fontSizeConfig")
     private val _wallpaperName =
@@ -301,6 +304,17 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
             data[_notificationsEnabled] = boolean
         }
     }
+
+    override val athanSoundEnabled: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[_athanSoundEnabled] ?: false
+    }
+
+    override suspend fun setAthanSoundEnabled(boolean: Boolean) {
+        context.dataStore.edit { data ->
+            data[_athanSoundEnabled] = boolean
+        }
+    }
+
     override val getFontSizeConfig: Flow<Int> = context.dataStore.data.map { preferences ->
         preferences[_fontSizeConfig] ?: FontSize.DEFAULT
     }

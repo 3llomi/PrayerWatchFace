@@ -1,7 +1,9 @@
 package com.devlomi.shared.config
 
+import androidx.annotation.Keep
 import kotlinx.coroutines.flow.Flow
 
+@Keep
 interface SettingsDataStore {
     val calculationMethod: Flow<String?>
 
@@ -116,5 +118,7 @@ interface SettingsDataStore {
     suspend fun setCurrentWatchFaceId(id: String)
     val getCurrentWatchFaceId: Flow<String>
 
+    suspend fun setAthanSoundEnabled(boolean: Boolean)
+    val athanSoundEnabled: Flow<Boolean>
 
 }

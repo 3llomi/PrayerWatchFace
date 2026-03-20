@@ -3,6 +3,7 @@ package com.devlomi.prayerwatchface.ui.configure.prayer_times_adjustment
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -18,7 +19,7 @@ fun PrayerTimeAdjustmentScreen(viewModel: ConfigureWatchFaceViewModel) {
     val items by viewModel.prayerTimesItems
 
     Box() {
-        Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp)) {
+        Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp).navigationBarsPadding()) {
             LazyColumn {
                 items(items) { prayer ->
                     ConfigureItemCardOffset(

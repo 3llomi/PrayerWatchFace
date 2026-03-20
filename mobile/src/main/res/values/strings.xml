@@ -27,6 +27,8 @@
     <string name="locale_device">Device\'s Locale(Default)</string>
     <string name="notifications">Notifications</string>
     <string name="show_notifications_desc">Show a Notification when it\'s time for Prayer.</string>
+    <string name="athan_sound">Play Athan Sound</string>
+    <string name="athan_sound_desc">Play the Athan sound instead of the default notification sound.</string>
     <string name="enable_notifications_notice">Please make sure to open the app on your Watch and Grant Notifications Permissions if granted.\nOn some Watches, you have to Enable notifications using the Watch Manager app as well</string>
     <string name="font_size">Font Size</string>
     <string name="wallpaper">Wallpaper</string>

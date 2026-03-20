@@ -1,7 +1,7 @@
 package com.devlomi.shared.calculationmethod
 
 import android.content.Context
-import com.batoulapps.adhan.CalculationMethod
+import com.batoulapps.adhan2.CalculationMethod
 import com.devlomi.shared.R
 
 object CalculationMethodDataSource {
@@ -16,5 +16,6 @@ object CalculationMethodDataSource {
      CalculationMethodItem(context.getString(R.string.singapore),CalculationMethod.SINGAPORE),
      CalculationMethodItem(context.getString(R.string.moon_sigthing_comittee),CalculationMethod.MOON_SIGHTING_COMMITTEE),
      CalculationMethodItem(context.getString(R.string.isna),CalculationMethod.NORTH_AMERICA),
+     CalculationMethodItem(context.getString(R.string.turkey),CalculationMethod.TURKEY),
     )
 }

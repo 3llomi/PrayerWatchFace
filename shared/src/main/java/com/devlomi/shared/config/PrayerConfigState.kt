@@ -1,8 +1,8 @@
 package com.devlomi.shared.config
 
 import android.util.Log
-import com.batoulapps.adhan.CalculationMethod
-import com.batoulapps.adhan.Madhab
+import com.batoulapps.adhan2.CalculationMethod
+import com.batoulapps.adhan2.Madhab
 import com.devlomi.shared.SimpleTapType
 import com.devlomi.shared.constants.WatchFacesIds
 import com.devlomi.shared.locale.LocaleType
@@ -59,7 +59,8 @@ class PrayerConfigState(
         hourMarkerColor = null,
         wallpaperOpacity = 0,
         tapType = SimpleTapType.SINGLE_TAP,
-        watchFaceId = WatchFacesIds.ANALOG
+        watchFaceId = WatchFacesIds.ANALOG,
+        athanSoundEnabled = false
 
     )
     private val _state = MutableStateFlow(initialState)
@@ -76,6 +77,7 @@ class PrayerConfigState(
         listenForBottomPart()
         listenForShowPrayerTimesOnClick()
         listenForNotifications()
+        listenForAthanSound()
         listenForProgress()
         listenForComplications()
         listenForAnalogSettings()
@@ -378,6 +380,14 @@ class PrayerConfigState(
         scope.launch {
             settingsDataStore.notificationsEnabled.collectLatest { value ->
                 _state.update { it.copy(notificationsEnabled = value) }
+            }
+        }
+    }
+
+    private fun listenForAthanSound() {
+        scope.launch {
+            settingsDataStore.athanSoundEnabled.collectLatest { value ->
+                _state.update { it.copy(athanSoundEnabled = value) }
             }
         }
     }

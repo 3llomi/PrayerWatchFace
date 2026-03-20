@@ -5,11 +5,11 @@ import android.content.res.Configuration
 import android.graphics.Paint
 import android.graphics.Rect
 import android.util.TypedValue
-import com.batoulapps.adhan.CalculationParameters
-import com.batoulapps.adhan.Coordinates
-import com.batoulapps.adhan.Prayer
-import com.batoulapps.adhan.PrayerTimes
-import com.batoulapps.adhan.data.DateComponents
+import com.batoulapps.adhan2.CalculationParameters
+import com.batoulapps.adhan2.Coordinates
+import com.batoulapps.adhan2.Prayer
+import com.batoulapps.adhan2.PrayerTimes
+import com.batoulapps.adhan2.data.DateComponents
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.wearable.DataMap
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -17,9 +17,12 @@ import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.time.Clock
+import kotlin.time.toKotlinInstant
 
 fun spToPx(sp: Float, context: Context): Int {
     return TypedValue.applyDimension(
@@ -94,10 +97,27 @@ fun getIshaaTimePreviousDay(
     cal.add(Calendar.DATE, -1)
     return PrayerTimes(
         coordinates,
-        DateComponents.from(cal.time),
+        DateComponents.from(cal.time.toInstant().toKotlinInstant()),
         prayerTimesParams
-    ).timeForPrayer(Prayer.ISHA).time
+    ).timeForPrayerMillis(Prayer.ISHA)
 }
+
+fun PrayerTimes.nextPrayer(): Prayer {
+    return nextPrayer(Clock.System.now())
+}
+
+
+fun PrayerTimes.timeForPrayerMillis(prayer: Prayer): Long {
+    if (prayer == Prayer.NONE) return 0
+    return timeForPrayer(prayer)!!.toEpochMilliseconds()
+}
+
+fun PrayerTimes.timeForPrayerDate(prayer: Prayer): Date {
+    if (prayer == Prayer.NONE) return Date()
+    val millis = timeForPrayer(prayer)!!.toEpochMilliseconds()
+    return Date(millis)
+}
+
 
 fun Context.getLocaleStringResource(
     locale: Locale,

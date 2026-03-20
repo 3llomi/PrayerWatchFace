@@ -1,6 +1,7 @@
 package com.devlomi.prayerwatchface.data
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 //TODO PERHAPS WE CAN MOVE THIS TO THE SHARED MODULE?
+@Keep
 class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
     private val _calculationMethod = stringPreferencesKey("calculation_method")
@@ -168,6 +170,9 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     private val _notificationsEnabled =
         booleanPreferencesKey("notificationsEnabled")
 
+    private val _athanSoundEnabled =
+        booleanPreferencesKey("athanSoundEnabled")
+
     private val _fontSizeConfig =
         intPreferencesKey("fontSizeConfig")
     private val _wallpaperName =
@@ -303,6 +308,16 @@ class SettingsDataStoreImp(private val context: Context) : SettingsDataStore {
     override suspend fun setNotificationsEnabled(boolean: Boolean) {
         context.dataStore.edit { data ->
             data[_notificationsEnabled] = boolean
+        }
+    }
+
+    override val athanSoundEnabled: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[_athanSoundEnabled] ?: false
+    }
+
+    override suspend fun setAthanSoundEnabled(boolean: Boolean) {
+        context.dataStore.edit { data ->
+            data[_athanSoundEnabled] = boolean
         }
     }
 

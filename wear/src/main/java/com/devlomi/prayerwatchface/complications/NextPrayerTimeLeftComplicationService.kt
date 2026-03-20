@@ -12,11 +12,13 @@ import androidx.wear.watchface.complications.data.TimeDifferenceComplicationText
 import androidx.wear.watchface.complications.data.TimeDifferenceStyle
 import androidx.wear.watchface.complications.datasource.ComplicationRequest
 import androidx.wear.watchface.complications.datasource.SuspendingComplicationDataSourceService
-import com.batoulapps.adhan.Prayer
-import com.batoulapps.adhan.PrayerTimes
+import com.batoulapps.adhan2.Prayer
+import com.batoulapps.adhan2.PrayerTimes
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.shared.common.getLocaleStringResource
+import com.devlomi.shared.common.nextPrayer
 import com.devlomi.shared.common.previousPrayer
+import com.devlomi.shared.common.timeForPrayerDate
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.locale.LocaleHelper
@@ -27,6 +29,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import kotlin.time.toJavaInstant
 
 class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceService() {
     private val settingsDataStore: SettingsDataStore by lazy {
@@ -64,13 +67,12 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         val prayerTimes = timeLeftForNextPrayerWithPrayerTimes.prayerTimes
         val nextPrayer = timeLeftForNextPrayerWithPrayerTimes.nextPrayer
 
-        val noNextPrayerToday = prayerTimes.nextPrayer() == Prayer.NONE
-        val previousPrayer =
-            if (noNextPrayerToday) Prayer.ISHA else prayerTimes.previousPrayer()
+
 
 
         val timeForPrayer = prayerTimes.timeForPrayer(nextPrayer)
 
+        Log.d(TAG,"Time for prayer is null? ${timeForPrayer == null} - time ${timeForPrayer?.toJavaInstant()?.toEpochMilli()}")
 
         val elapsedEnabled = settingsDataStore.elapsedTimeEnabled.firstOrNull() ?: false
         val elapsedMinutesConfig = settingsDataStore.elapsedTimeMinutes.first()
@@ -86,6 +88,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
                 previousPrayer,
                 prayerTimes
             )
+            Log.d(TAG,"Elapsed Enabled, previousPrayerDate=${previousPrayerDate?.time}")
         }
 
         val localTypeInt = settingsDataStore.locale.firstOrNull()
@@ -109,7 +112,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
                         TimeDifferenceComplicationText.Builder(
                             style = TimeDifferenceStyle.STOPWATCH,
                             countDownTimeReference =
-                            CountDownTimeReference(instant = timeForPrayer.toInstant())
+                            CountDownTimeReference(instant = timeForPrayer!!.toJavaInstant())
                         ).setMinimumTimeUnit(TimeUnit.MINUTES).build()
                 ShortTextComplicationData.Builder(
                     text =
@@ -155,7 +158,7 @@ class NextPrayerTimeLeftComplicationService : SuspendingComplicationDataSourceSe
         previousPrayer: Prayer,
         prayerTimes: PrayerTimes
     ): Date? {
-        val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
+        val timeForPrayer = prayerTimes.timeForPrayerDate(previousPrayer)
         val diff = date.time - timeForPrayer.time + 10_000 //add 10 seconds to avoid edge cases
 
 

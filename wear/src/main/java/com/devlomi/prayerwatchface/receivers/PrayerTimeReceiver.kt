@@ -7,14 +7,15 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.SchedulePrayerNotification
 import com.devlomi.prayerwatchface.UpdateComplications
-import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
+import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -103,7 +104,8 @@ class PrayerTimeReceiver : BroadcastReceiver() {
                 val settingsDataStore =
                     (context.applicationContext as PrayerApp).appContainer.settingsDataStore
                 if (settingsDataStore.notificationsEnabled.first()) {
-                    fireNotification(context, prayerName)
+                    val athanSoundEnabled = settingsDataStore.athanSoundEnabled.first()
+                    fireNotification(context, prayerName, athanSoundEnabled)
                 }
                 val getPrayerTimesWithConfigUseCase =
                     GetPrayerTimesWithConfigUseCase(settingsDataStore)
@@ -122,7 +124,7 @@ class PrayerTimeReceiver : BroadcastReceiver() {
         UpdateComplications.update(context)
     }
 
-    private fun fireNotification(context: Context, prayerName: String) {
+    private fun fireNotification(context: Context, prayerName: String,athanSoundEnabled: Boolean) {
         val channelId = "PrayerTimeNotification"
         val notificationChannel = NotificationChannel(
             channelId,
@@ -147,8 +149,21 @@ class PrayerTimeReceiver : BroadcastReceiver() {
                 .setAutoCancel(true)
                 .setVibrate(longArrayOf(500, 500, 500))
 
-
         notificationManager.notify(1, builder.build())
+
+        if (athanSoundEnabled) {
+            playAthanSound(context)
+        }
+    }
+
+    private fun playAthanSound(context: Context) {
+        try {
+            val mediaPlayer = MediaPlayer.create(context, com.devlomi.prayerwatchface.R.raw.azan_short)
+            mediaPlayer?.setOnCompletionListener { it.release() }
+            mediaPlayer?.start()
+        } catch (e: Exception) {
+            Log.e("PrayerTimeReceiver", "Failed to play athan sound", e)
+        }
     }
 
 }

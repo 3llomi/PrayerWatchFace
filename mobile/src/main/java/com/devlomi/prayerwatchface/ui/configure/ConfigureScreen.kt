@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat
 import androidx.navigation.NavHostController
-import com.batoulapps.adhan.CalculationMethod
-import com.batoulapps.adhan.Madhab
+import com.batoulapps.adhan2.CalculationMethod
+import com.batoulapps.adhan2.Madhab
 import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.common.Status
 import com.devlomi.prayerwatchface.common.isLoading
@@ -82,30 +82,30 @@ fun ConfigureScreen(
 
     val calculationMethodsSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
 
     val madhabMethodsSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
 
     val backgroundColorSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
 
     val localesSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
     val installAppBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-        confirmStateChange = { it != ModalBottomSheetValue.HalfExpanded },
+        confirmValueChange = { it != ModalBottomSheetValue.HalfExpanded },
         skipHalfExpanded = true
     )
 
@@ -191,7 +191,7 @@ fun ConfigureScreen(
     Box() {
 
 
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().navigationBarsPadding()) {
             Button(
                 onClick = {
                     coroutineScope.launch {
@@ -345,7 +345,22 @@ fun ConfigureScreen(
                     )
                 }
 
-                item {
+                if (state.notificationsEnabled) {
+                    item {
+                        ConfigureItemCardToggle(
+                            title = stringResource(R.string.athan_sound),
+                            icon = R.drawable.ic_notifications,
+                            subtitle = stringResource(R.string.athan_sound_desc),
+                            checked = state.athanSoundEnabled,
+                            onCheckedChange = {
+                                viewModel.onAthanSoundChecked(it)
+                            },
+                            onClick = {}
+                        )
+                    }
+                }
+
+                item{
                     Text(
                         modifier = Modifier.padding(
                             start = 4.dp,
@@ -407,7 +422,7 @@ fun ConfigureScreen(
             sheetState = backgroundColorSheetState,
             sheetContent = {
                 ClassicColorPicker(
-                    modifier = Modifier.height(300.dp).padding(20.dp),
+                    modifier = Modifier.height(300.dp).padding(20.dp).navigationBarsPadding(),
                     onColorChanged = { color: HsvColor ->
                         // Do something with the color
 
@@ -652,7 +667,7 @@ fun CalculationMethodsBottomSheet(
     onClick: (item: CalculationMethodItem) -> Unit
 ) {
     LazyColumn(
-        modifier = Modifier.padding(all = 4.dp),
+        modifier = Modifier.padding(all = 4.dp).navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         items(itemList) { item ->
@@ -677,7 +692,7 @@ fun MadhabMethodsBottomSheet(
     onClick: (item: MadhabItem) -> Unit
 ) {
     LazyColumn(
-        modifier = Modifier.padding(all = 4.dp),
+        modifier = Modifier.padding(all = 4.dp).navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         items(itemList) { item ->
@@ -702,7 +717,7 @@ fun LocaleBottomSheet(
     onClick: (item: LocaleType) -> Unit
 ) {
     LazyColumn(
-        modifier = Modifier.padding(all = 4.dp),
+        modifier = Modifier.padding(all = 4.dp).navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         items(itemList) { item ->
@@ -868,8 +883,8 @@ fun PickAppToInstallBottomSheet() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PickAppToInstallBottomSheet(onClick:(app:InstallAppType) -> Unit) {
-    Box(modifier = Modifier.fillMaxWidth()) {
+fun PickAppToInstallBottomSheet(onClick: (app: InstallAppType) -> Unit) {
+    Box(modifier = Modifier.fillMaxWidth().navigationBarsPadding()) {
         Column {
             Text(
                 modifier = Modifier.padding(16.dp).align(Alignment.CenterHorizontally),

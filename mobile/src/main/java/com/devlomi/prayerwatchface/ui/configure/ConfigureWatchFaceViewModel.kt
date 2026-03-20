@@ -14,8 +14,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.wear.remote.interactions.RemoteActivityHelper
-import com.batoulapps.adhan.*
-import com.batoulapps.adhan.data.DateComponents
+import com.batoulapps.adhan2.*
+import com.batoulapps.adhan2.data.DateComponents
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.R
 import com.devlomi.prayerwatchface.common.Resource
@@ -32,6 +32,7 @@ import com.devlomi.shared.config.PrayerConfigState
 import com.devlomi.shared.SimpleTapType
 import com.devlomi.shared.common.await
 import com.devlomi.shared.calculationmethod.CalculationMethodDataSource
+import com.devlomi.shared.common.timeForPrayerDate
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.locale.LocaleHelper
 import com.devlomi.shared.madhab.MadhabMethodsDataSource
@@ -46,6 +47,7 @@ import java.time.chrono.HijrahDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
+import kotlin.time.Clock
 
 class ConfigureWatchFaceViewModel(
     private val appContext: Context,
@@ -291,7 +293,7 @@ class ConfigureWatchFaceViewModel(
     private fun initPrayerTimes() {
         prayerTimes = PrayerTimes(
             Coordinates(0.0, 0.0),
-            DateComponents.from(Date()),
+            DateComponents.from(Clock.System.now()),
             CalculationParameters(0.0, 0.0)
         )
     }
@@ -337,7 +339,7 @@ class ConfigureWatchFaceViewModel(
 
 
     private fun getPrayerTime(prayer: Prayer): String {
-        return timeFormat.format(prayerTimes.timeForPrayer(prayer))
+        return timeFormat.format(prayerTimes.timeForPrayerDate(prayer))
     }
 
     private fun updatePreview() {
@@ -717,6 +719,15 @@ class ConfigureWatchFaceViewModel(
             settingsDataStore.setNotificationsEnabled(boolean)
             dataClient.sendToWatch {
                 it.putBoolean(ConfigKeys.NOTIFICATIONS_ENABLED, boolean)
+            }
+        }
+    }
+
+    fun onAthanSoundChecked(boolean: Boolean) {
+        viewModelScope.launch {
+            settingsDataStore.setAthanSoundEnabled(boolean)
+            dataClient.sendToWatch {
+                it.putBoolean(ConfigKeys.ATHAN_SOUND_ENABLED, boolean)
             }
         }
     }

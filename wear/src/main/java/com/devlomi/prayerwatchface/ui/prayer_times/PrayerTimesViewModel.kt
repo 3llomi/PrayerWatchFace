@@ -8,9 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.batoulapps.adhan.Prayer
+import com.batoulapps.adhan2.Prayer
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
+import com.devlomi.shared.common.timeForPrayerDate
 import com.devlomi.shared.usecase.GetPrayerTimesWithConfigUseCase
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.locale.LocaleHelper
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.time.toKotlinInstant
 
 class PrayerTimesViewModel(
     private val appContext: Context,
@@ -62,7 +64,7 @@ class PrayerTimesViewModel(
 
             val date = Date()
             val prayerTimes = getPrayerTimesWithConfigUseCase.getPrayerTimes(date)
-            val nextPrayer = prayerTimes.nextPrayer(date)
+            val nextPrayer = prayerTimes.nextPrayer(date.toInstant().toKotlinInstant())
             val is24Hours = settingsDataStore.is24Hours.first()
 
             val pattern = if (is24Hours) "HH:mm" else "hh:mm"
@@ -78,34 +80,34 @@ class PrayerTimesViewModel(
 
                 PrayerItem(
                     getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.FAJR,locale),
-                    timeFormat.format(prayerTimes.timeForPrayer(Prayer.FAJR)),
+                    timeFormat.format(prayerTimes.timeForPrayerDate(Prayer.FAJR)),
                     nextPrayer == Prayer.FAJR
                 ),
 
                 PrayerItem(
                     getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.SUNRISE,locale),
-                    timeFormat.format(prayerTimes.timeForPrayer(Prayer.SUNRISE)),
+                    timeFormat.format(prayerTimes.timeForPrayerDate(Prayer.SUNRISE)),
                     nextPrayer == Prayer.SUNRISE
                 ),
 
                 PrayerItem(
                     getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.DHUHR,locale),
-                    timeFormat.format(prayerTimes.timeForPrayer(Prayer.DHUHR)),
+                    timeFormat.format(prayerTimes.timeForPrayerDate(Prayer.DHUHR)),
                     nextPrayer == Prayer.DHUHR
                 ),
                 PrayerItem(
                     getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.ASR,locale),
-                    timeFormat.format(prayerTimes.timeForPrayer(Prayer.ASR)),
+                    timeFormat.format(prayerTimes.timeForPrayerDate(Prayer.ASR)),
                     nextPrayer == Prayer.ASR
                 ),
                 PrayerItem(
                     getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.MAGHRIB,locale),
-                    timeFormat.format(prayerTimes.timeForPrayer(Prayer.MAGHRIB)),
+                    timeFormat.format(prayerTimes.timeForPrayerDate(Prayer.MAGHRIB)),
                     nextPrayer == Prayer.MAGHRIB
                 ),
                 PrayerItem(
                     getPrayerNameByLocaleUseCase.getPrayerNameByLocale(Prayer.ISHA,locale),
-                    timeFormat.format(prayerTimes.timeForPrayer(Prayer.ISHA)),
+                    timeFormat.format(prayerTimes.timeForPrayerDate(Prayer.ISHA)),
                     nextPrayer == Prayer.ISHA
                 )
             )

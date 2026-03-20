@@ -10,11 +10,13 @@ import androidx.wear.watchface.complications.data.PlainComplicationText
 import androidx.wear.watchface.complications.data.RangedValueComplicationData
 import androidx.wear.watchface.complications.datasource.ComplicationRequest
 import androidx.wear.watchface.complications.datasource.SuspendingComplicationDataSourceService
-import com.batoulapps.adhan.Prayer
+import com.batoulapps.adhan2.Prayer
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.receivers.ComplicationUpdateReceiver
 import com.devlomi.prayerwatchface.ui.prayer_times.PrayerTimesActivity
+import com.devlomi.shared.common.nextPrayer
 import com.devlomi.shared.common.previousPrayer
+import com.devlomi.shared.common.timeForPrayerMillis
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.usecase.GetNextPrayerUseCase
@@ -86,10 +88,10 @@ class NextPrayerTimeLeftProgressComplicationService : SuspendingComplicationData
 //                        prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time
 //                    }"
 //                )
-                prayerTimesWithoutAdditions.timeForPrayer(previousPrayer).time
+                prayerTimesWithoutAdditions.timeForPrayerMillis(previousPrayer)
             }
 
-        val nextPrayerTime = prayerTimes.timeForPrayer(nextPrayer).time
+        val nextPrayerTime = prayerTimes.timeForPrayerMillis(nextPrayer)
 
 
 //        Log.d("3llomi", "Next Prayer ${nextPrayer.name} Previous ${previousPrayer.name}")

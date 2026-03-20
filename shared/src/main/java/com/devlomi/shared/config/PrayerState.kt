@@ -1,8 +1,8 @@
 package com.devlomi.shared.config
 
-import com.batoulapps.adhan.CalculationMethod
-import com.batoulapps.adhan.Madhab
-import com.batoulapps.adhan.Prayer
+import com.batoulapps.adhan2.CalculationMethod
+import com.batoulapps.adhan2.Madhab
+import com.batoulapps.adhan2.Prayer
 import com.devlomi.shared.SimpleTapType
 import com.devlomi.shared.locale.LocaleType
 
@@ -43,7 +43,8 @@ data class PrayerState(
     val hourMarkerColor:String?,
     val wallpaperOpacity:Int,
     val tapType: SimpleTapType,
-    val watchFaceId:String
+    val watchFaceId:String,
+    val athanSoundEnabled: Boolean = false
 )
 
 fun PrayerState.offsetWithDaylight(prayer: Prayer): Int {

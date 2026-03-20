@@ -10,8 +10,8 @@ import androidx.wear.watchface.complications.data.PlainComplicationText
 import androidx.wear.watchface.complications.data.ShortTextComplicationData
 import androidx.wear.watchface.complications.datasource.ComplicationRequest
 import androidx.wear.watchface.complications.datasource.SuspendingComplicationDataSourceService
-import com.batoulapps.adhan.Prayer
 import com.devlomi.prayerwatchface.PrayerApp
+import com.devlomi.shared.common.timeForPrayerDate
 import com.devlomi.shared.config.SettingsDataStore
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.locale.LocaleHelper
@@ -74,7 +74,7 @@ class NextPrayerTimeComplicationService : SuspendingComplicationDataSourceServic
         val prayerName =
             getPrayerNameByLocaleUseCase.getPrayerNameByLocale(nextPrayer, locale)
 
-        val timeForPrayer = prayerTimes.timeForPrayer(nextPrayer)
+        val timeForPrayer = prayerTimes.timeForPrayerDate(nextPrayer)
         val isTwentyFourHours = DateFormat.is24HourFormat(this)
         val timeFormat =
             java.text.SimpleDateFormat(if (isTwentyFourHours) "HH:mm" else "hh:mm", Locale.US)

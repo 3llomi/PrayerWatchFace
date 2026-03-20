@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.batoulapps.adhan.CalculationMethod
+import com.batoulapps.adhan2.CalculationMethod
 import com.devlomi.prayerwatchface.PrayerApp
 import com.devlomi.prayerwatchface.data.SettingsDataStoreImp
 import com.devlomi.prayerwatchface.ui.sendToMobile

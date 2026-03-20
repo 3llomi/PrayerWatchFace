@@ -1,11 +1,13 @@
 package com.devlomi.shared.locale
 
 import android.content.Context
-import com.batoulapps.adhan.Prayer
+import androidx.annotation.Keep
+import com.batoulapps.adhan2.Prayer
 import com.devlomi.shared.R
 import com.devlomi.shared.common.getLocaleStringResource
 import java.util.Locale
 
+@Keep
 class GetPrayerNameByLocaleUseCase(private val context: Context) {
 
     fun getPrayerNameByLocale(prayer: Prayer, locale: Locale): String {

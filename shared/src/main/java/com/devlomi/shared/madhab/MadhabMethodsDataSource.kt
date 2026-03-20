@@ -1,7 +1,7 @@
 package com.devlomi.shared.madhab
 
 import android.content.Context
-import com.batoulapps.adhan.Madhab
+import com.batoulapps.adhan2.Madhab
 import com.devlomi.shared.R
 
 object MadhabMethodsDataSource {

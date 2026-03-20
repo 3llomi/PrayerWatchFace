@@ -1,6 +1,6 @@
 package com.devlomi.prayerwatchface.ui.configure.prayer_times_adjustment
 
-import com.batoulapps.adhan.Prayer
+import com.batoulapps.adhan2.Prayer
 
 data class PrayerItem(
     val prayer: Prayer,

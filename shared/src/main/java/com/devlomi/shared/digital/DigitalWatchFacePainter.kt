@@ -3,11 +3,10 @@ package com.devlomi.shared.digital
 import android.content.Context
 import android.graphics.*
 import android.text.TextPaint
-import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.withTranslation
-import com.batoulapps.adhan.*
-import com.batoulapps.adhan.data.DateComponents
+import com.batoulapps.adhan2.*
+import com.batoulapps.adhan2.data.DateComponents
 import com.devlomi.shared.R
 import com.devlomi.shared.WatchFacePainter
 import com.devlomi.shared.config.PrayerConfigState
@@ -20,11 +19,14 @@ import com.devlomi.shared.common.dpToPx
 import com.devlomi.shared.common.getBounds
 import com.devlomi.shared.common.getIshaaTimePreviousDay
 import com.devlomi.shared.common.getLocaleStringResource
+import com.devlomi.shared.common.nextPrayer
 import com.devlomi.shared.locale.GetPrayerNameByLocaleUseCase
 import com.devlomi.shared.locale.LocaleHelper
 import com.devlomi.shared.locale.LocaleType
 import com.devlomi.shared.common.previousPrayer
 import com.devlomi.shared.common.spToPx
+import com.devlomi.shared.common.timeForPrayerDate
+import com.devlomi.shared.common.timeForPrayerMillis
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.File
@@ -38,6 +40,7 @@ import java.time.format.DecimalStyle
 import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.time.toKotlinInstant
 
 
 class DigitalWatchFacePainter(
@@ -98,9 +101,7 @@ class DigitalWatchFacePainter(
 
 
     private var prayerTimesParams: CalculationParameters =
-        CalculationMethod.EGYPTIAN.parameters.also {
-            it.madhab = Madhab.SHAFI
-        }
+        CalculationMethod.EGYPTIAN.parameters.copy(madhab = Madhab.SHAFI)
     private var locale: Locale = Locale.US
     private var wallpaperBitmap: Bitmap? = null
 
@@ -114,15 +115,17 @@ class DigitalWatchFacePainter(
 
         scope.launch {
             state.collectLatest {
-                prayerTimesParams = it.calculationMethod.parameters.also { calcParams ->
-                    calcParams.madhab = it.madhab
-                }
-                prayerTimesParams.adjustments.dhuhr = it.offsetWithDaylight(Prayer.DHUHR)
-                prayerTimesParams.adjustments.asr = it.offsetWithDaylight(Prayer.ASR)
-                prayerTimesParams.adjustments.maghrib = it.offsetWithDaylight(Prayer.MAGHRIB)
-                prayerTimesParams.adjustments.isha = it.offsetWithDaylight(Prayer.ISHA)
-                prayerTimesParams.adjustments.fajr = it.offsetWithDaylight(Prayer.FAJR)
-                prayerTimesParams.adjustments.sunrise = it.offsetWithDaylight(Prayer.SUNRISE)
+                prayerTimesParams = it.calculationMethod.parameters.copy(
+                    madhab = it.madhab,
+                    prayerAdjustments = PrayerAdjustments(
+                        fajr = it.offsetWithDaylight(Prayer.FAJR),
+                        sunrise = it.offsetWithDaylight(Prayer.SUNRISE),
+                        dhuhr = it.offsetWithDaylight(Prayer.DHUHR),
+                        asr = it.offsetWithDaylight(Prayer.ASR),
+                        maghrib = it.offsetWithDaylight(Prayer.MAGHRIB),
+                        isha = it.offsetWithDaylight(Prayer.ISHA)
+                    ),
+                )
                 coordinates = Coordinates(it.lat, it.lng)
                 LocaleType.values()
                     .firstOrNull { localeType: LocaleType -> localeType == it.localeType }
@@ -329,19 +332,19 @@ class DigitalWatchFacePainter(
             val previousPrayerTime =
                 if (previousPrayer == Prayer.NONE || previousPrayer == Prayer.ISHA) {
                     getIshaaTimePreviousDay(
-                        prayerTimes.timeForPrayer(previousPrayer).time,
+                        prayerTimes.timeForPrayerMillis(previousPrayer),
                         coordinates,
                         prayerTimesParams
                     )
                 } else {
-                    prayerTimes.timeForPrayer(previousPrayer).time
+                    prayerTimes.timeForPrayerMillis(previousPrayer)
                 }
 
             drawRemainingCircle(
                 canvas,
                 previousPrayerTime,
                 date.time,
-                prayerTimes.timeForPrayer(prayerTimes.nextPrayer()).time
+                prayerTimes.timeForPrayerMillis(prayerTimes.nextPrayer())
             )
         }
         if (state.value.complicationsEnabled) {
@@ -439,8 +442,8 @@ class DigitalWatchFacePainter(
             return
         }
 
-        val timeForPrayer = prayerTimes.timeForPrayer(nextPrayer)
-        val diff = timeForPrayer.time - date.time
+        val timeForPrayer = prayerTimes.timeForPrayerMillis(nextPrayer)
+        val diff = timeForPrayer - date.time
 
         var minutes = 0L
         var hours = 0L
@@ -487,8 +490,8 @@ class DigitalWatchFacePainter(
 
     private fun drawElapsedTime(canvas: Canvas, date: Date, previousPrayer: Prayer) {
 
-        val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
-        val diff = date.time - timeForPrayer.time
+        val timeForPrayer = prayerTimes.timeForPrayerMillis(previousPrayer)
+        val diff = date.time - timeForPrayer
 
         var minutes = 0L
         if (diff > 0) {
@@ -533,9 +536,9 @@ class DigitalWatchFacePainter(
 
     private fun shouldDrawElapsedTime(date: Date, previousPrayer: Prayer): Boolean {
         if (state.value.elapsedTimeEnabled) {
-            val timeForPrayer = prayerTimes.timeForPrayer(previousPrayer)
+            val timeForPrayer = prayerTimes.timeForPrayerMillis(previousPrayer)
 
-            val diff = date.time - timeForPrayer.time
+            val diff = date.time - timeForPrayer
             if (diff >= 0) {
                 val minutes = TimeUnit.MILLISECONDS.toMinutes(diff)
                 if (minutes <= state.value.elapsedTimeMinutes) {
@@ -611,7 +614,7 @@ class DigitalWatchFacePainter(
         y: Float,
         prayerNameWidth: Float
     ) {
-        val timeForPrayer = prayerTimes.timeForPrayer(prayer)
+        val timeForPrayer = prayerTimes.timeForPrayerDate(prayer)
         val time = timeFormat.format(timeForPrayer)
         val height = time.getBounds(prayerTimeTextPaint).height()
         val width = prayerTimeTextPaint.measureText(time)
@@ -692,7 +695,7 @@ class DigitalWatchFacePainter(
 
 
     private fun initPrayerTimes(date: Date) {
-        val dateComponents = DateComponents.from(date)
+        val dateComponents = DateComponents.from(date.toInstant().toKotlinInstant())
         prayerTimes = PrayerTimes(coordinates, dateComponents, prayerTimesParams)
     }
 

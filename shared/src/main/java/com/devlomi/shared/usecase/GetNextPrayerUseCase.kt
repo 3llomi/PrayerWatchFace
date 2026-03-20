@@ -1,7 +1,8 @@
 package com.devlomi.shared.usecase
 
-import com.batoulapps.adhan.Prayer
+import com.batoulapps.adhan2.Prayer
 import com.devlomi.shared.PrayerTimesWithNextPrayer
+import com.devlomi.shared.common.nextPrayer
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.Date
